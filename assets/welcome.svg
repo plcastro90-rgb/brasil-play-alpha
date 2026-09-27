@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400" width="100%">
+  <defs>
+    <linearGradient id="cardGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#800014"/>
+      <stop offset="100%" stop-color="#1a0004"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="400" rx="15" fill="url(#cardGrad)" stroke="#b31217" stroke-width="3"/>
+  <path d="M0,300 Q400,100 800,300" fill="none" stroke="#ff0022" stroke-width="3" opacity="0.5"/>
+  <text x="400" y="180" font-family="'Impact', sans-serif" font-size="52" fill="#FFFFFF" text-anchor="middle" letter-spacing="3">BRASIL</text>
+  <text x="400" y="240" font-family="'Impact', sans-serif" font-size="64" fill="#B31217" text-anchor="middle" letter-spacing="5">PLAY ALPHA</text>
+</svg>
