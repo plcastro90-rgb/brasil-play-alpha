@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Brasil Play Alpha | Portal Oficial</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Overlay para liberação de som pelo navegador -->
+  <div id="start-overlay">
+    <div class="overlay-content">
+      <h1>BRASIL PLAY ALPHA</h1>
+      <p>Clique no botão abaixo para acessar o portal e ativar o som oficial</p>
+      <button id="btn-start" class="btn-primary">ENTRAR NO PORTAL</button>
+    </div>
+  </div>
+
+  <!-- Controles Globais de Áudio -->
+  <audio id="bg-music" src="assets/bg-music.mp3" loop></audio>
+  <audio id="click-sound" src="assets/click.mp3" preload="auto"></audio>
+
+  <div class="container">
+    <!-- Cabeçalho de Navegação -->
+    <header>
+      <div class="logo">BRASIL PLAY <span class="highlight">ALPHA</span></div>
+      <nav>
+        <button class="nav-btn active" data-tab="tab-wel">Boas-Vindas</button>
+        <button class="nav-btn" data-tab="tab-down">Downloads</button>
+        <button class="nav-btn" data-tab="tab-ips">Servidores / IPs</button>
+      </nav>
+      <button id="btn-mute" class="btn-secondary">🔊 Som</button>
+    </header>
+
+    <!-- Conteúdo das Abas -->
+    <main>
+      <!-- Aba 1: Boas-Vindas -->
+      <section id="tab-wel" class="tab-content active">
+        <div class="card">
+          <img src="assets/welcome.svg" alt="Boas-Vindas Brasil Play Alpha" class="tab-img">
+          <h2>Seja Bem-Vindo ao Brasil Play Alpha!</h2>
+          <p>Conecte-se ao nosso servidor de SA-MP e viva a melhor experiência de RPG no Android. Respeite as regras e entre na nossa comunidade oficial no Discord.</p>
+          <a href="#" target="_blank" class="btn-primary">Entrar no Discord</a>
+        </div>
+      </section>
+
+      <!-- Aba 2: Downloads -->
+      <section id="tab-down" class="tab-content">
+        <div class="card">
+          <img src="assets/download.svg" alt="Downloads Brasil Play Alpha" class="tab-img">
+          <h2>Downloads Oficiais</h2>
+          <p>Baixe o Launcher oficial e a DATA modificada para jogar sem travamentos no seu dispositivo.</p>
+          
+          <div class="download-links">
+            <a href="https://mediafire.com" target="_blank" class="btn-download">
+              <span>📱 Baixar APK (Launcher)</span>
+            </a>
+            <a href="https://mediafire.com" target="_blank" class="btn-download">
+              <span>📂 Baixar DATA Modificada</span>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- Aba 3: IPs dos Servidores -->
+      <section id="tab-ips" class="tab-content">
+        <div class="card">
+          <h2>Servidores Oficiais</h2>
+          <p>Copie o IP abaixo e adicione na aba de favoritos do seu Launcher.</p>
+          
+          <div class="ip-box">
+            <div class="ip-info">
+              <span class="server-name">Servidor 1 - RPG Principal</span>
+              <span class="server-ip" id="ip-servidor-1">jogar.brasilplayalpha.com:7777</span>
+            </div>
+            <button class="btn-copy" onclick="copiarIP('ip-servidor-1')">Copiar IP</button>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <p>&copy; 2026 Brasil Play Alpha - Todos os direitos reservados.</p>
+    </footer>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
