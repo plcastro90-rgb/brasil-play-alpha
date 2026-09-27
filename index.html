@@ -6,7 +6,40 @@
   <title>Brasil Play Alpha | Portal Oficial</title>
   <link rel="stylesheet" href="style.css">
   <style>
-    /* Estilos do Canvas Animado e Indicador de Players */
+    /* Efeito de Fundo com Ondas Animadas por Código (Background Wave) */
+    body {
+      position: relative;
+      background: #050001;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: radial-gradient(circle at 50% 30%, rgba(139, 0, 0, 0.15) 0%, transparent 70%),
+                  repeating-linear-gradient(45deg, rgba(255, 26, 26, 0.03) 0px, rgba(255, 26, 26, 0.03) 2px, transparent 2px, transparent 40px);
+      z-index: -1;
+      animation: waveBackground 15s ease-in-out infinite alternate;
+      pointer-events: none;
+    }
+
+    @keyframes waveBackground {
+      0% {
+        transform: translateY(0) scale(1);
+      }
+      50% {
+        transform: translateY(-10px) scale(1.02);
+      }
+      100% {
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    /* Estilos do Canvas Animado e Indicador */
     .animated-video-card {
       position: relative;
       width: 100%;
@@ -67,6 +100,8 @@
       font-weight: bold;
       font-size: 0.85rem;
       margin-top: 8px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
     }
 
     .pulse-dot {
@@ -160,10 +195,10 @@
               <span class="server-name">Servidor 1 - RPG Principal</span>
               <span class="server-ip" id="ip-servidor-1">144.217.113.116:7777</span>
               
-              <!-- CONTAGEM DE PLAYERS ONLINE -->
+              <!-- STATUS ONLINE LIMPO (SEM NÚMEROS) -->
               <div class="online-badge">
                 <span class="pulse-dot"></span>
-                <span id="player-count">Carregando jogadores...</span>
+                <span id="player-count">SERVIDOR ONLINE</span>
               </div>
             </div>
             <button class="btn-copy" onclick="copiarIP('ip-servidor-1')">Copiar IP</button>
@@ -186,9 +221,8 @@
 
   <script src="script.js"></script>
 
-  <!-- MOTOR DO CANVAS E SISTEMA DE PLAYERS -->
+  <!-- MOTOR DO CANVAS (PARTÍCULAS) -->
   <script>
-    // Configuração do Canvas (Vídeo em Código)
     const canvas = document.getElementById('samp-canvas');
     const ctx = canvas ? canvas.getContext('2d') : null;
 
@@ -265,38 +299,6 @@
       requestAnimationFrame(renderVideo);
     }
     renderVideo();
-
-    // SCRIPT PARA CONTAGEM NUMÉRICA DE PLAYERS ONLINE
-    async function carregarPlayersOnline() {
-      const el = document.getElementById('player-count');
-      if (!el) return;
-
-      const ip = "144.217.113.116";
-      const port = "7777";
-
-      try {
-        const res = await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(`https://api.samp-servers.net/v1/server/${ip}:${port}`)}`);
-        if (res.ok) {
-          const wrapper = await res.json();
-          const data = JSON.parse(wrapper.contents);
-          if (data && typeof data.players !== 'undefined') {
-            el.innerText = `${data.players} / ${data.maxplayers || 400} Jogadores Online`;
-            return;
-          }
-        }
-      } catch (e) {}
-
-      // Valor dinâmico baseado na atividade do servidor
-      const basePlayers = 15;
-      const horaAtual = new Date().getHours();
-      const variacao = (horaAtual % 5) + Math.floor(Math.random() * 3);
-      const totalPlayers = basePlayers + variacao;
-
-      el.innerText = `${totalPlayers} / 400 Jogadores Online`;
-    }
-
-    carregarPlayersOnline();
-    setInterval(carregarPlayersOnline, 15000);
   </script>
 </body>
 </html>
