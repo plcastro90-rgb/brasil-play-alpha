@@ -5,6 +5,89 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Brasil Play Alpha | Portal Oficial</title>
   <link rel="stylesheet" href="style.css">
+  <style>
+    /* Container da Animação em Código (Estilo Vídeo/Intro GTA SA) */
+    .animated-video-card {
+      position: relative;
+      width: 100%;
+      height: 220px;
+      border-radius: 12px;
+      overflow: hidden;
+      margin-bottom: 20px;
+      border: 2px solid #8b0000;
+      box-shadow: 0 0 20px rgba(139, 0, 0, 0.6);
+      background: #0a0a0a;
+    }
+
+    #samp-canvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+      pointer-events: none; /* Impede qualquer interação do usuário */
+    }
+
+    .video-overlay-text {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      width: 90%;
+      pointer-events: none;
+    }
+
+    .video-overlay-text h3 {
+      font-size: 1.8rem;
+      color: #ffffff;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      text-shadow: 0 0 10px #ff1a1a, 0 0 20px #8b0000;
+      margin: 0;
+      font-weight: 900;
+    }
+
+    .video-overlay-text span {
+      color: #ff1a1a;
+    }
+
+    .video-overlay-text p {
+      font-size: 0.85rem;
+      color: #cccccc;
+      margin-top: 5px;
+      letter-spacing: 1px;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+    }
+
+    /* Estilo para a badge de players online */
+    .online-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(0, 255, 100, 0.1);
+      border: 1px solid #00ff64;
+      color: #00ff64;
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-weight: bold;
+      font-size: 0.9rem;
+      margin-top: 10px;
+    }
+
+    .pulse-dot {
+      width: 8px;
+      height: 8px;
+      background-color: #00ff64;
+      border-radius: 50%;
+      box-shadow: 0 0 8px #00ff64;
+      animation: pulse 1.5s infinite;
+    }
+
+    @keyframes pulse {
+      0% { opacity: 0.4; }
+      50% { opacity: 1; }
+      100% { opacity: 0.4; }
+    }
+  </style>
 </head>
 <body>
 
@@ -38,7 +121,16 @@
       <!-- Aba 1: Boas-Vindas -->
       <section id="tab-wel" class="tab-content active">
         <div class="card">
-          <img src="assets/welcome.svg" alt="Boas-Vindas Brasil Play Alpha" class="tab-img">
+          
+          <!-- "VÍDEO" GERADO POR CÓDIGO (CANVAS ANIMADO GTA SA / CARMESIM) -->
+          <div class="animated-video-card">
+            <canvas id="samp-canvas"></canvas>
+            <div class="video-overlay-text">
+              <h3>BRASIL PLAY <span>ALPHA</span></h3>
+              <p>SA-MP MOBILE • RPG SERIOUS</p>
+            </div>
+          </div>
+
           <h2>Seja Bem-Vindo ao Brasil Play Alpha!</h2>
           <p>Conecte-se ao nosso servidor de SA-MP e viva a melhor experiência de RPG no Android. Respeite as regras e entre na nossa comunidade oficial no Discord.</p>
           <a href="https://discord.gg/b22VyqmbcX" target="_blank" class="btn-primary">Entrar no Discord</a>
@@ -54,7 +146,7 @@
           
           <div class="download-links">
             <a href="https://www.mediafire.com/file/iynt0w68xh8lhkl/Brasil_Play_Alpha_hct.apk/file" target="_blank" class="btn-download">
-              <span>📱 Baixar APK (Launcher BPA)</span>
+              <span>📱 Baixar APK (Launcher)</span>
             </a>
             <a href="https://www.mediafire.com/file/1hmdo7dmneypdzn/DataBPA01.zip/file" target="_blank" class="btn-download">
               <span>📂 Baixar DATA Modificada</span>
@@ -71,8 +163,14 @@
           
           <div class="ip-box">
             <div class="ip-info">
-              <span class="server-name">Servidor BPA 1 - RPG Principal</span>
+              <span class="server-name">Servidor 1 - RPG Principal</span>
               <span class="server-ip" id="ip-servidor-1">144.217.113.116:7777</span>
+              
+              <!-- CONTAGEM DE PLAYERS ONLINE -->
+              <div class="online-badge">
+                <span class="pulse-dot"></span>
+                <span id="player-count">Carregando jogadores...</span>
+              </div>
             </div>
             <button class="btn-copy" onclick="copiarIP('ip-servidor-1')">Copiar IP</button>
           </div>
@@ -81,10 +179,114 @@
     </main>
 
     <footer>
-      <p>&copy; 2026 Brasil Play Alpha - Todos os direitos reservados. HÉCATE </p>
+      <p>&copy; 2026 Brasil Play Alpha - Todos os direitos reservados.</p>
     </footer>
   </div>
 
   <script src="script.js"></script>
+
+  <!-- MOTOR GRÁFICO DO "VÍDEO" EM CÓDIGO (CANVAS ESTILO GTA SA) -->
+  <script>
+    const canvas = document.getElementById('samp-canvas');
+    const ctx = canvas.getContext('2d');
+
+    function resizeCanvas() {
+      canvas.width = canvas.offsetWidth;
+      canvas.height = canvas.offsetHeight;
+    }
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
+
+    // Partículas em movimento (Efeito de poeira/faíscas vermelhas carmesim)
+    const particles = [];
+    const particleCount = 40;
+
+    for (let i = 0; i < particleCount; i++) {
+      particles.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        radius: Math.random() * 2.5 + 0.5,
+        speedY: -(Math.random() * 0.8 + 0.2),
+        speedX: (Math.random() - 0.5) * 0.5,
+        opacity: Math.random() * 0.8 + 0.2,
+        color: Math.random() > 0.5 ? '#ff1a1a' : '#8b0000'
+      });
+    }
+
+    let angle = 0;
+
+    function renderVideo() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      // Fundo em gradiente preto e vermelho carmesim profundo
+      const bgGrad = ctx.createRadialGradient(
+        canvas.width / 2, canvas.height / 2, 10,
+        canvas.width / 2, canvas.height / 2, canvas.width / 1.2
+      );
+      bgGrad.addColorStop(0, '#2a0005');
+      bgGrad.addColorStop(0.6, '#0f0002');
+      bgGrad.addColorStop(1, '#050001');
+      ctx.fillStyle = bgGrad;
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // Linhas dinâmicas estilo GTA SA (Sunburst / Grid sutil)
+      angle += 0.005;
+      ctx.save();
+      ctx.translate(canvas.width / 2, canvas.height / 2);
+      ctx.strokeStyle = 'rgba(139, 0, 0, 0.15)';
+      ctx.lineWidth = 1.5;
+      for (let i = 0; i < 12; i++) {
+        ctx.rotate((Math.PI * 2) / 12 + Math.sin(angle) * 0.01);
+        ctx.beginPath();
+        ctx.moveTo(0, 0);
+        ctx.lineTo(canvas.width, canvas.height);
+        ctx.stroke();
+      }
+      ctx.restore();
+
+      // Renderizar e mover partículas
+      particles.forEach(p => {
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+        ctx.fillStyle = p.color;
+        ctx.globalAlpha = p.opacity;
+        ctx.shadowBlur = 10;
+        ctx.shadowColor = p.color;
+        ctx.fill();
+        ctx.shadowBlur = 0;
+        ctx.globalAlpha = 1.0;
+
+        p.y += p.speedY;
+        p.x += p.speedX;
+
+        if (p.y < -5) {
+          p.y = canvas.height + 5;
+          p.x = Math.random() * canvas.width;
+        }
+      });
+
+      requestAnimationFrame(renderVideo);
+    }
+
+    renderVideo();
+
+    // SCRIPT DE CONTAGEM DE PLAYERS ONLINE
+    async function carregarPlayersOnline() {
+      const el = document.getElementById('player-count');
+      try {
+        const response = await fetch('https://api.samp-servers.net/v1/server/144.217.113.116:7777');
+        if (response.ok) {
+          const data = await response.json();
+          el.innerText = `${data.players || 0} / ${data.maxplayers || 100} Jogadores Online`;
+        } else {
+          el.innerText = `Servidor Online (144.217.113.116:7777)`;
+        }
+      } catch (e) {
+        el.innerText = `Servidor Online (144.217.113.116:7777)`;
+      }
+    }
+    carregarPlayersOnline();
+    setInterval(carregarPlayersOnline, 30000);
+  </script>
 </body>
 </html>
