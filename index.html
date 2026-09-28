@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Brasil Play Alpha | Site Oficial</title>
+  <title>Brasil Play Alpha | Portal Oficial</title>
   <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <style>
-    /* Efeito de Fundo com Ondas Animadas por Código (Background Wave) */
     body {
       position: relative;
       background: #050001;
@@ -28,18 +28,11 @@
     }
 
     @keyframes waveBackground {
-      0% {
-        transform: translateY(0) scale(1);
-      }
-      50% {
-        transform: translateY(-10px) scale(1.02);
-      }
-      100% {
-        transform: translateY(0) scale(1);
-      }
+      0% { transform: translateY(0) scale(1); }
+      50% { transform: translateY(-10px) scale(1.02); }
+      100% { transform: translateY(0) scale(1); }
     }
 
-    /* Estilos do Canvas Animado e Indicador */
     .animated-video-card {
       position: relative;
       width: 100%;
@@ -78,15 +71,8 @@
       font-weight: 900;
     }
 
-    .video-overlay-text span {
-      color: #ff1a1a;
-    }
-
-    .video-overlay-text p {
-      font-size: 0.8rem;
-      color: #cccccc;
-      margin-top: 5px;
-    }
+    .video-overlay-text span { color: #ff1a1a; }
+    .video-overlay-text p { font-size: 0.8rem; color: #cccccc; margin-top: 5px; }
 
     .online-badge {
       display: inline-flex;
@@ -118,38 +104,77 @@
       50% { opacity: 1; }
       100% { opacity: 0.4; }
     }
+
+    /* Estilos para Formulários UCP e Denúncias */
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-bottom: 12px;
+      text-align: left;
+    }
+
+    .form-group label {
+      font-size: 0.85rem;
+      color: #ffcccc;
+    }
+
+    .form-control {
+      background: #0d0003;
+      border: 1px solid #8b0000;
+      padding: 10px;
+      border-radius: 8px;
+      color: #fff;
+      font-size: 0.9rem;
+    }
+
+    .form-control:focus {
+      outline: none;
+      border-color: #ff1a1a;
+      box-shadow: 0 0 8px rgba(255, 26, 26, 0.4);
+    }
+
+    textarea.form-control {
+      resize: vertical;
+      min-height: 80px;
+    }
+
+    .auth-toggle {
+      margin-top: 10px;
+      font-size: 0.85rem;
+      color: #aaa;
+      cursor: pointer;
+    }
+    .auth-toggle span { color: #ff1a1a; text-decoration: underline; }
   </style>
 </head>
 <body>
 
-  <!-- Overlay para liberação de som pelo navegador -->
   <div id="start-overlay">
     <div class="overlay-content">
       <h1>BRASIL PLAY ALPHA</h1>
-      <p>Clique no botão abaixo para acessar o Brasil Play Alpha e ativar o som oficial</p>
+      <p>Clique no botão abaixo para acessar o portal e ativar o som oficial</p>
       <button id="btn-start" class="btn-primary">ENTRAR NO PORTAL</button>
     </div>
   </div>
 
-  <!-- Controles Globais de Áudio -->
   <audio id="bg-music" src="assets/bg-music.mp3" loop></audio>
   <audio id="click-sound" src="assets/click.mp3" preload="auto"></audio>
 
   <div class="container">
-    <!-- Cabeçalho de Navegação -->
     <header>
       <div class="logo">BRASIL PLAY <span class="highlight">ALPHA</span></div>
       <nav>
-        <button class="nav-btn active" data-tab="tab-wel">Boas-Vindas</button>
+        <button class="nav-btn active" data-tab="tab-wel">Início</button>
         <button class="nav-btn" data-tab="tab-down">Downloads</button>
-        <button class="nav-btn" data-tab="tab-ips">Servidores / IPs</button>
+        <button class="nav-btn" data-tab="tab-ips">IPs</button>
+        <button class="nav-btn" data-tab="tab-ucp">UCP / Login</button>
+        <button class="nav-btn" data-tab="tab-report">Denúncias</button>
       </nav>
       <button id="btn-mute" class="btn-secondary">🔊 Som</button>
     </header>
 
-    <!-- Conteúdo das Abas (Layout Horizontal Adaptativo) -->
     <main>
-      <!-- Aba 1: Boas-Vindas -->
       <section id="tab-wel" class="tab-content active">
         <div class="card horizontal-layout">
           <div class="animated-video-card">
@@ -161,53 +186,103 @@
           </div>
           <div>
             <h2>Seja Bem-Vindo!</h2>
-            <p style="margin: 10px 0; color: #ddd;">Conecte-se ao nosso servidor de SA-MP e viva a melhor experiência de RPG no Android. Respeite as regras e entre na nossa comunidade oficial no Discord.</p>
+            <p style="margin: 10px 0; color: #ddd;">Conecte-se ao nosso servidor de SA-MP e viva a melhor experiência de RPG no Android.</p>
             <a href="https://discord.gg/b22VyqmbcX" target="_blank" class="btn-primary">Entrar no Discord</a>
           </div>
         </div>
       </section>
 
-      <!-- Aba 2: Downloads -->
       <section id="tab-down" class="tab-content">
         <div class="card">
           <h2>Downloads Oficiais</h2>
-          <p style="color: #ccc; margin-top: 5px;">Baixe o Launcher oficial e a DATA modificada para jogar sem travamentos no seu dispositivo.</p>
-          
           <div class="download-links">
-            <a href="https://www.mediafire.com/file/iynt0w68xh8lhkl/Brasil_Play_Alpha_hct.apk/file" target="_blank" class="btn-download">
-              <span>📱 Baixar APK (Launcher BPA)</span>
-            </a>
-            <a href="https://www.mediafire.com/file/1hmdo7dmneypdzn/DataBPA01.zip/file" target="_blank" class="btn-download">
-              <span>📂 Baixar DATA Modificada</span>
-            </a>
+            <a href="https://www.mediafire.com/file/iynt0w68xh8lhkl/Brasil_Play_Alpha_hct.apk/file" target="_blank" class="btn-download">📱 Baixar APK</a>
+            <a href="https://www.mediafire.com/file/1hmdo7dmneypdzn/DataBPA01.zip/file" target="_blank" class="btn-download">📂 Baixar DATA</a>
           </div>
         </div>
       </section>
 
-      <!-- Aba 3: IPs dos Servidores -->
       <section id="tab-ips" class="tab-content">
         <div class="card">
-          <h2>Servidores Oficiais</h2>
-          <p style="color: #ccc; margin-top: 5px;">Copie o IP abaixo e adicione na aba de favoritos do seu Launcher.</p>
-          
+          <h2>Servidor Oficial</h2>
           <div class="ip-box">
             <div class="ip-info">
               <span class="server-name">Servidor 1 - RPG Principal</span>
               <span class="server-ip" id="ip-servidor-1">144.217.113.116:7777</span>
-              
-              <!-- STATUS ONLINE LIMPO (SEM NÚMEROS) -->
               <div class="online-badge">
                 <span class="pulse-dot"></span>
-                <span id="player-count">SERVIDOR ONLINE</span>
+                <span>SERVIDOR ONLINE</span>
               </div>
             </div>
             <button class="btn-copy" onclick="copiarIP('ip-servidor-1')">Copiar IP</button>
           </div>
         </div>
       </section>
+
+      <section id="tab-ucp" class="tab-content">
+        <div class="card" style="max-width: 400px; margin: 0 auto;">
+          <h2 id="auth-title">Painel UCP - Login</h2>
+          <p id="auth-subtitle" style="color: #aaa; font-size: 0.85rem; margin-bottom: 15px;">Acesse sua conta para gerenciar seu perfil.</p>
+          
+          <div id="auth-form-container">
+            <div class="form-group">
+              <label>E-mail</label>
+              <input type="email5" id="auth-email" class="form-control" placeholder="seu@email.com">
+            </div>
+            <div class="form-group">
+              <label>Senha</label>
+              <input type="password" id="auth-password" class="form-control" placeholder="******">
+            </div>
+            <button id="btn-auth-action" class="btn-primary" style="width: 100%; margin-top: 10px;">Entrar na Conta</button>
+            <div class="auth-toggle" onclick="alternarModoAuth()">
+              Não tem conta? <span id="toggle-text">Cadastre-se</span>
+            </div>
+          </div>
+
+          <div id="user-dashboard" style="display: none;">
+            <p style="color: #00ff64; margin-bottom: 15px; font-weight: bold;">✅ Conta Conectada com Sucesso!</p>
+            <p id="user-email-display" style="font-size: 0.9rem; color: #ddd; margin-bottom: 15px;"></p>
+            <button onclick="fazerLogout()" class="btn-secondary" style="width: 100%;">Sair da Conta</button>
+          </div>
+        </div>
+      </section>
+
+      <section id="tab-report" class="tab-content">
+        <div class="card" style="max-width: 500px; margin: 0 auto;">
+          <h2>Central de Denúncias</h2>
+          <p style="color: #ccc; font-size: 0.85rem; margin-bottom: 15px;">Relate infrações cometidas por jogadores com provas (Prints/Vídeos).</p>
+          
+          <div class="form-group">
+            <label>Seu Nick no Jogo</label>
+            <input type="text" id="report-author" class="form-control" placeholder="Ex: Seu_Nome">
+          </div>
+            <div class="form-group">
+            <label>Nick do Acusado</label>
+            <input type="text" id="report-target" class="form-control" placeholder="Ex: Acusado_Nome">
+          </div>
+          <div class="form-group">
+            <label>Motivo da Denúncia</label>
+            <select id="report-reason" class="form-control">
+              <option value="DM">Deathmatch (DM)</option>
+              <option value="DB">Drive-By (DB)</option>
+              <option value="Antijogo">Antijogo / Anti-RP</option>
+              <option value="Uso de Cheats">Uso de Cheats / Hack</option>
+              <option value="Outros">Outros</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Provas (Link do YouTube, Imgur ou Discord)</label>
+            <input type="text" id="report-proof" class="form-control" placeholder="https://...">
+          </div>
+          <div class="form-group">
+            <label>Descrição dos Fatos</label>
+            <textarea id="report-desc" class="form-control" placeholder="Descreva o que aconteceu..."></textarea>
+          </div>
+          <button onclick="enviarDenuncia()" class="btn-primary" style="width: 100%;">Enviar Denúncia</button>
+        </div>
+      </section>
     </main>
 
-    <!-- PERSONAGENS DO GTA SAN ANDREAS NO RODAPÉ -->
     <div class="gta-characters-footer">
       <img src="https://assets.open.mp/assets/images/skins/293.png" alt="CJ" class="gta-char" onerror="this.style.display='none'">
       <img src="https://assets.open.mp/assets/images/skins/270.png" alt="Sweet" class="gta-char" onerror="this.style.display='none'">
@@ -215,13 +290,107 @@
     </div>
 
     <footer>
-      <p>&copy; 2026 Brasil Play Alpha - Todos os direitos reservados. HÉCATE </p>
+      <p>&copy; 2026 Brasil Play Alpha - Todos os direitos reservados.</p>
     </footer>
   </div>
 
   <script src="script.js"></script>
 
-  <!-- MOTOR DO CANVAS (PARTÍCULAS) -->
+  <script>
+    // Insira aqui as suas credenciais gratuitas do Supabase (supabase.com)
+    const SUPABASE_URL = 'https://SEU-PROJETO.supabase.co';
+    const SUPABASE_ANON_KEY = 'SUA-CHAVE-ANON';
+    
+    // Inicialização do cliente Supabase (funciona nativamente no browser)
+    const supabaseClient = (SUPABASE_URL !== 'https://SEU-PROJETO.supabase.co') 
+      ? supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY) 
+      : null;
+
+    let isRegistering = false;
+
+    function alternarModoAuth() {
+      isRegistering = !isRegistering;
+      document.getElementById('auth-title').innerText = isRegistering ? 'Painel UCP - Cadastro' : 'Painel UCP - Login';
+      document.getElementById('auth-subtitle').innerText = isRegistering ? 'Crie sua conta e verifique seu e-mail.' : 'Acesse sua conta para gerenciar seu perfil.';
+      document.getElementById('btn-auth-action').innerText = isRegistering ? 'Criar Conta' : 'Entrar na Conta';
+      document.getElementById('toggle-text').innerText = isRegistering ? 'Fazer Login' : 'Cadastre-se';
+    }
+
+    document.getElementById('btn-auth-action').addEventListener('click', async () => {
+      const email = document.getElementById('auth-email').value;
+      const password = document.getElementById('auth-password').value;
+
+      if (!supabaseClient) {
+        alert('Configure suas chaves do Supabase no código para ativar o login real!');
+        return;
+      }
+
+      if (isRegistering) {
+        const { data, error } = await supabaseClient.auth.signUp({ email, password });
+        if (error) alert('Erro ao cadastrar: ' + error.message);
+        else alert('Conta criada! Verifique sua caixa de entrada para confirmar o e-mail.');
+      } else {
+        const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
+        if (error) alert('Erro ao entrar: ' + error.message);
+        else verificarSessao();
+      }
+    });
+
+    async function verificarSessao() {
+      if (!supabaseClient) return;
+      const { data: { session } } = await supabaseClient.auth.getSession();
+      if (session) {
+        document.getElementById('auth-form-container').style.display = 'none';
+        document.getElementById('user-dashboard').style.display = 'block';
+        document.getElementById('user-email-display').innerText = `E-mail conectado: ${session.user.email}`;
+      } else {
+        document.getElementById('auth-form-container').style.display = 'block';
+        document.getElementById('user-dashboard').style.display = 'none';
+      }
+    }
+
+    async function fazerLogout() {
+      if (!supabaseClient) return;
+      await supabaseClient.auth.signOut();
+      verificarSessao();
+    }
+
+    if (supabaseClient) verificarSessao();
+
+    // Sistema de Envio de Denúncias
+    async function enviarDenuncia() {
+      const author = document.getElementById('report-author').value;
+      const target = document.getElementById('report-target').value;
+      const reason = document.getElementById('report-reason').value;
+      const proof = document.getElementById('report-proof').value;
+      const desc = document.getElementById('report-desc').value;
+
+      if (!author || !target || !proof || !desc) {
+        alert('Por favor, preencha todos os campos da denúncia.');
+        return;
+      }
+
+      if (!supabaseClient) {
+        alert('Denúncia simulada enviada com sucesso! (Configure o Supabase para salvá-la no banco de dados).');
+        return;
+      }
+
+      const { data, error } = await supabaseClient
+        .from('denuncias')
+        .insert([{ author, target, reason, proof, desc, created_at: new Date() }]);
+
+      if (error) {
+        alert('Erro ao enviar denúncia: ' + error.message);
+      } else {
+        alert('Denúncia enviada com sucesso para a administração!');
+        document.getElementById('report-author').value = '';
+        document.getElementById('report-target').value = '';
+        document.getElementById('report-proof').value = '';
+        document.getElementById('report-desc').value = '';
+      }
+    }
+  </script>
+
   <script>
     const canvas = document.getElementById('samp-canvas');
     const ctx = canvas ? canvas.getContext('2d') : null;
