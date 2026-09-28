@@ -1,348 +1,548 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>UCP - Brasil Play Alpha</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #0d0d0d;
-            color: #e0e0e0;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-        }
-        .hidden { display: none !important; }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Brasil Play Alpha | Portal Oficial</title>
+  <style>
+    /* ESTILOS GLOBAIS E FUNDO ANIMADO */
+    body {
+      position: relative;
+      background: #050001;
+      color: #e0e0e0;
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
 
-        /* ESTILOS DO ECRÃ DE LOGIN / REGISTO */
-        #authScreen {
-            background-color: #161616;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 4px 20px rgba(255, 0, 0, 0.2);
-            border: 1px solid #4a0d0d;
-            width: 100%;
-            max-width: 380px;
-        }
-        #authScreen h2 { text-align: center; color: #ff1a1a; margin-bottom: 20px; font-family: 'Impact', sans-serif; letter-spacing: 1px; }
-        #authScreen label { display: block; margin-top: 15px; font-size: 13px; color: #aaa; }
-        #authScreen input { width: 100%; padding: 12px; margin-top: 5px; background-color: #0b0b0b; border: 1px solid #444; color: #fff; border-radius: 5px; box-sizing: border-box; }
-        #authScreen button { width: 100%; margin-top: 15px; padding: 12px; background-color: #b30000; color: white; border: none; border-radius: 5px; font-size: 15px; cursor: pointer; font-weight: bold; transition: background 0.2s; }
-        #authScreen button:hover { background-color: #ff1a1a; }
-        .btn-secondary { background-color: #1b4d1b !important; }
-        .btn-secondary:hover { background-color: #28a745 !important; }
-        #mensagem { margin-top: 15px; text-align: center; font-weight: bold; font-size: 13px; }
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: radial-gradient(circle at 50% 30%, rgba(139, 0, 0, 0.15) 0%, transparent 70%),
+                  repeating-linear-gradient(45deg, rgba(255, 26, 26, 0.03) 0px, rgba(255, 26, 26, 0.03) 2px, transparent 2px, transparent 40px);
+      z-index: -1;
+      animation: waveBackground 15s ease-in-out infinite alternate;
+      pointer-events: none;
+    }
 
-        /* ESTILOS DO SITE ORIGINAL DO VÍDEO */
-        #siteScreen {
-            background-color: #090909;
-            color: #fff;
-            width: 100%;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 15px;
-            box-sizing: border-box;
-        }
-        .site-container {
-            width: 100%;
-            max-width: 750px;
-            background: linear-gradient(180deg, #150303 0%, #090303 100%);
-            border: 1px solid #520e0e;
-            border-radius: 8px;
-            box-shadow: 0 0 25px rgba(255, 0, 0, 0.15);
-            display: flex;
-            flex-direction: column;
-            min-height: 95vh;
-            box-sizing: border-box;
-            overflow: hidden;
-        }
-        header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 15px 20px;
-            border-bottom: 2px solid #7a1111;
-            background: #110202;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-        .logo { font-weight: 900; color: #ff1a1a; font-size: 16px; letter-spacing: 0.5px; }
-        .nav-tabs { display: flex; gap: 6px; flex-wrap: wrap; }
-        .tab-btn {
-            background-color: #240505;
-            border: 1px solid #800000;
-            color: #fff;
-            padding: 6px 12px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 11px;
-            font-weight: bold;
-        }
-        .tab-btn.active, .tab-btn:hover { background-color: #cc0000; border-color: #ff1a1a; }
-        .sound-btn { background-color: #222; border: 1px solid #555; color: #fff; padding: 6px 10px; border-radius: 4px; cursor: pointer; font-size: 11px; }
+    @keyframes waveBackground {
+      0% { transform: translateY(0) scale(1); }
+      50% { transform: translateY(-10px) scale(1.02); }
+      100% { transform: translateY(0) scale(1); }
+    }
 
-        .content-area {
-            padding: 20px;
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-        }
-        .section-content { width: 100%; display: flex; flex-direction: column; align-items: center; }
+    .hidden { display: none !important; }
 
-        .welcome-box {
-            background: #1c0404;
-            border: 1px solid #8b0000;
-            padding: 20px;
-            border-radius: 6px;
-            width: 100%;
-            box-sizing: border-box;
-            margin-bottom: 25px;
-            box-shadow: inset 0 0 15px rgba(255,0,0,0.05);
-        }
-        .welcome-box h3 { color: #ff3333; margin-top: 0; font-size: 18px; }
-        .welcome-box p { font-size: 13px; line-height: 1.5; color: #ccc; }
+    /* ECRÃ DE LOGIN / REGISTO */
+    #authScreen {
+      background-color: #0e0202;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 0 25px rgba(255, 0, 0, 0.3);
+      border: 2px solid #8b0000;
+      width: 100%;
+      max-width: 380px;
+      box-sizing: border-box;
+      z-index: 10;
+    }
+    #authScreen h2 { text-align: center; color: #ff1a1a; margin-bottom: 20px; font-weight: 900; letter-spacing: 1px; text-shadow: 0 0 10px rgba(255,26,26,0.5); }
+    #authScreen label { display: block; margin-top: 15px; font-size: 13px; color: #ccc; }
+    #authScreen input { width: 100%; padding: 12px; margin-top: 5px; background-color: #050001; border: 1px solid #520e0e; color: #fff; border-radius: 6px; box-sizing: border-box; }
+    #authScreen input:focus { border-color: #ff1a1a; outline: none; box-shadow: 0 0 8px rgba(255,26,26,0.4); }
+    
+    .btn-primary-auth { width: 100%; margin-top: 15px; padding: 12px; background-color: #b30000; color: white; border: none; border-radius: 6px; font-size: 15px; cursor: pointer; font-weight: bold; box-shadow: 0 4px 10px rgba(179,0,0,0.4); }
+    .btn-primary-auth:hover { background-color: #ff1a1a; }
+    .btn-secondary-auth { background-color: #113311 !important; border: 1px solid #28a745; }
+    .btn-secondary-auth:hover { background-color: #194d19 !important; }
+    #mensagem { margin-top: 15px; text-align: center; font-weight: bold; font-size: 13px; }
 
-        .btn-red {
-            background-color: #b30000;
-            color: white;
-            border: none;
-            padding: 10px 22px;
-            border-radius: 4px;
-            font-weight: bold;
-            cursor: pointer;
-            font-size: 13px;
-            text-decoration: none;
-            display: inline-block;
-            box-shadow: 0 4px 10px rgba(179,0,0,0.4);
-            margin-top: 10px;
-        }
-        .btn-red:hover { background-color: #ff1a1a; }
+    /* CONTANER PRINCIPAL DO PORTAL (APÓS LOGIN) */
+    #siteScreen {
+      width: 100%;
+      max-width: 750px;
+      padding: 20px;
+      box-sizing: border-box;
+    }
 
-        /* PERSONAGENS DO SA-MP NO RODAPÉ DO SITE (ORIGINAIS) */
-        .characters-container {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin: 25px 0 15px 0;
-            width: 100%;
-        }
-        .character-img {
-            width: 55px;
-            height: 95px;
-            object-fit: contain;
-            filter: drop-shadow(0 0 5px rgba(255,0,0,0.3));
-        }
+    .container {
+      background: rgba(14, 2, 2, 0.95);
+      border: 2px solid #8b0000;
+      border-radius: 12px;
+      box-shadow: 0 0 30px rgba(139, 0, 0, 0.4);
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
 
-        .ip-card {
-            background: #140303;
-            border: 1px solid #7a1111;
-            padding: 15px;
-            border-radius: 6px;
-            width: 100%;
-            box-sizing: border-box;
-            margin-top: 10px;
-        }
-        .ip-text { font-family: monospace; color: #00ffcc; font-size: 14px; margin: 10px 0; background: #080101; padding: 8px; border-radius: 4px; border: 1px solid #330808; }
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 2px solid #8b0000;
+      padding-bottom: 15px;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
 
-        footer {
-            text-align: center;
-            font-size: 10px;
-            color: #777;
-            padding: 15px;
-            border-top: 1px solid #240505;
-            background: #0b0202;
-            width: 100%;
-            box-sizing: border-box;
-        }
-    </style>
+    .logo { font-weight: 900; color: #fff; font-size: 1.1rem; letter-spacing: 1px; }
+    .logo .highlight { color: #ff1a1a; text-shadow: 0 0 8px #ff1a1a; }
+
+    nav { display: flex; gap: 8px; flex-wrap: wrap; }
+    .nav-btn {
+      background-color: #1f0404;
+      border: 1px solid #8b0000;
+      color: #fff;
+      padding: 8px 14px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.8rem;
+      font-weight: bold;
+      transition: all 0.2s;
+    }
+    .nav-btn.active, .nav-btn:hover { background-color: #ff1a1a; border-color: #ff4d4d; box-shadow: 0 0 10px rgba(255,26,26,0.5); }
+
+    .btn-secondary { background-color: #222; border: 1px solid #555; color: #fff; padding: 8px 12px; border-radius: 6px; cursor: pointer; font-size: 0.8rem; }
+
+    /* CARTÕES E CONTEÚDO */
+    .card {
+      background: #140303;
+      border: 1px solid #520e0e;
+      border-radius: 10px;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+
+    .horizontal-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      align-items: center;
+    }
+    @media (max-width: 600px) {
+      .horizontal-layout { grid-template-columns: 1fr; }
+    }
+
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+
+    .animated-video-card {
+      position: relative;
+      width: 100%;
+      height: 180px;
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid #8b0000;
+      background: #0a0a0a;
+    }
+
+    #samp-canvas { width: 100%; height: 100%; display: block; }
+
+    .video-overlay-text {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      width: 90%;
+      pointer-events: none;
+    }
+
+    .video-overlay-text h3 {
+      font-size: 1.3rem;
+      color: #ffffff;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      text-shadow: 0 0 10px #ff1a1a;
+      margin: 0;
+      font-weight: 900;
+    }
+
+    .video-overlay-text span { color: #ff1a1a; }
+    .video-overlay-text p { font-size: 0.75rem; color: #ccc; margin-top: 5px; }
+
+    .btn-primary {
+      background-color: #b30000;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 6px;
+      font-weight: bold;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+      box-shadow: 0 4px 10px rgba(179,0,0,0.4);
+      font-size: 0.85rem;
+      margin-top: 10px;
+    }
+    .btn-primary:hover { background-color: #ff1a1a; }
+
+    .download-links { display: flex; flex-direction: column; gap: 10px; margin-top: 15px; }
+    .btn-download {
+      background: #1f0404;
+      border: 1px solid #8b0000;
+      color: #fff;
+      padding: 12px;
+      border-radius: 6px;
+      text-decoration: none;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.9rem;
+      transition: background 0.2s;
+    }
+    .btn-download:hover { background: #8b0000; }
+
+    .ip-box {
+      background: #0b0101;
+      border: 1px solid #7a1111;
+      padding: 15px;
+      border-radius: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 15px;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .server-name { display: block; font-weight: bold; font-size: 0.9rem; color: #ff4d4d; }
+    .server-ip { font-family: monospace; color: #00ffcc; font-size: 1rem; display: block; margin: 5px 0; }
+
+    .online-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(0, 255, 100, 0.1);
+      border: 1px solid #00ff64;
+      color: #00ff64;
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-weight: bold;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+    }
+    .pulse-dot { width: 6px; height: 6px; background-color: #00ff64; border-radius: 50%; box-shadow: 0 0 6px #00ff64; animation: pulse 1.5s infinite; }
+    @keyframes pulse { 0% { opacity: 0.4; } 50% { opacity: 1; } 100% { opacity: 0.4; } }
+
+    .btn-copy { background: #b30000; color: #fff; border: none; padding: 8px 14px; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 0.8rem; }
+    .btn-copy:hover { background: #ff1a1a; }
+
+    /* PERSONAGENS DO RODAPÉ */
+    .gta-characters-footer {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin-top: 10px;
+    }
+    .gta-char {
+      width: 50px;
+      height: 85px;
+      object-fit: contain;
+      filter: drop-shadow(0 0 6px rgba(255,0,0,0.4));
+    }
+
+    footer { text-align: center; font-size: 0.75rem; color: #777; border-top: 1px solid #330808; padding-top: 15px; }
+  </style>
 </head>
 <body>
 
-    <!-- MÚSICA DE FUNDO -->
-    <audio id="bgMusic" loop>
-        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mp3">
-    </audio>
+  <!-- ÁUDIO DE FUNDO -->
+  <audio id="bg-music" src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" loop></audio>
 
-    <!-- ECRÃ DE LOGIN / REGISTO -->
-    <div id="authScreen">
-        <h2>BRASIL PLAY ALPHA</h2>
-        <form id="authForm" onsubmit="return false;">
-            <label for="email">E-mail:</label>
-            <input type="email" id="email" required placeholder="seu_email@exemplo.com">
+  <!-- 1. ECRÃ DE LOGIN / REGISTO -->
+  <div id="authScreen">
+    <h2>BRASIL PLAY ALPHA</h2>
+    <form id="authForm" onsubmit="return false;">
+      <label for="email">E-mail da Conta:</label>
+      <input type="email" id="email" required placeholder="seu_email@exemplo.com">
 
-            <label for="password">Palavra-passe:</label>
-            <input type="password" id="password" required placeholder="Sua palavra-passe">
+      <label for="password">Palavra-passe:</label>
+      <input type="password" id="password" required placeholder="Sua palavra-passe">
 
-            <button type="button" id="btnLogin">Entrar</button>
-            <button type="button" id="btnRegister" class="btn-secondary">Criar Conta</button>
-        </form>
-        <div id="mensagem"></div>
-    </div>
+      <button type="button" id="btnLogin" class="btn-primary-auth">Entrar no Portal</button>
+      <button type="button" id="btnRegister" class="btn-primary-auth btn-secondary-auth">Criar Nova Conta</button>
+    </form>
+    <div id="mensagem"></div>
+  </div>
 
-    <!-- ECRÃ DO SITE COMPLETO COM O DESIGN ORIGINAL -->
-    <div id="siteScreen" class="hidden">
-        <div class="site-container">
-            <header>
-                <div class="logo">BRASIL PLAY <span style="color:#fff">ALPHA</span></div>
-                <div class="nav-tabs">
-                    <button class="tab-btn active" onclick="switchTab('tabBemVindo')">Bem-Vindo</button>
-                    <button class="tab-btn" onclick="switchTab('tabDownloads')">Downloads</button>
-                    <button class="tab-btn" onclick="switchTab('tabServidores')">Servidores / IPs</button>
-                </div>
-                <button class="sound-btn" id="soundToggle" onclick="toggleAudio()">🔊 Som</button>
-            </header>
+  <!-- 2. ECRÃ DO PORTAL COMPLETO (APÓS LOGIN) -->
+  <div id="siteScreen" class="hidden">
+    <div class="container">
+      <!-- Cabeçalho -->
+      <header>
+        <div class="logo">BRASIL PLAY <span class="highlight">ALPHA</span></div>
+        <nav>
+          <button class="nav-btn active" onclick="switchTab('tab-wel', this)">Boas-Vindas</button>
+          <button class="nav-btn" onclick="switchTab('tab-down', this)">Downloads</button>
+          <button class="nav-btn" onclick="switchTab('tab-ips', this)">Servidores / IPs</button>
+        </nav>
+        <button id="btn-mute" class="btn-secondary" onclick="toggleAudio()">🔊 Som</button>
+      </header>
 
-            <div class="content-area">
-                <!-- ABA 1: BEM-VINDO -->
-                <div id="tabBemVindo" class="section-content">
-                    <div class="welcome-box">
-                        <h3>Seja Bem-Vindo!</h3>
-                        <p>
-                            Conecte-se ao nosso servidor de SA-MP e viva a melhor experiência de RP no Android. Mantenha-se a regras e a dentro de tudo com o nosso Discord oficial!
-                        </p>
-                        <a href="https://discord.gg/exemplo" target="_blank" class="btn-red">Entrar no Discord</a>
-                    </div>
-                </div>
-
-                <!-- ABA 2: DOWNLOADS -->
-                <div id="tabDownloads" class="section-content hidden">
-                    <div class="welcome-box">
-                        <h3>Downloads Oficiais</h3>
-                        <p>Baixe o launcher oficial e a data modificada para jogar sem travamentos no seu dispositivo.</p>
-                        <div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-top: 15px;">
-                            <a href="#" class="btn-red" onclick="alert('A descarregar APK Launcher BPA...')">Baixar APK (Launcher BPA)</a>
-                            <a href="#" class="btn-red" onclick="alert('A descarregar Data Modificada...')">Baixar DATA Modificada</a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- ABA 3: SERVIDORES / IPS -->
-                <div id="tabServidores" class="section-content hidden">
-                    <div class="welcome-box">
-                        <h3>Servidores Oficiais</h3>
-                        <p>Copie o IP abaixo e adicione aos seus favoritos no Launcher.</p>
-                        <div class="ip-card">
-                            <p style="margin: 0; font-weight: bold; font-size: 13px;">Servidor - BPA Principal</p>
-                            <div class="ip-text">144.217.159.116:7777</div>
-                            <button class="btn-red" style="padding: 6px 12px; font-size: 11px;" onclick="navigator.clipboard.writeText('144.217.159.116:7777'); alert('IP copiado com sucesso!');">Copiar IP</button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- PERSONAGENS ORIGINAIS DO SA-MP (VISUAIS DO VÍDEO) -->
-                <div class="characters-container">
-                    <img src="https://sampwiki.blast.hk/w/images/thumb/7/70/Skin_0.png/60px-Skin_0.png" class="character-img" alt="Skin 1">
-                    <img src="https://sampwiki.blast.hk/w/images/thumb/2/22/Skin_1.png/60px-Skin_1.png" class="character-img" alt="Skin 2">
-                    <img src="https://sampwiki.blast.hk/w/images/thumb/3/36/Skin_2.png/60px-Skin_2.png" class="character-img" alt="Skin 3">
-                </div>
-
-                <button class="tab-btn" style="background:#222; margin-top:10px; width:100%; padding:10px;" onclick="fazerLogout()">Terminar Sessão</button>
+      <!-- Conteúdo Principal -->
+      <main>
+        <!-- Aba 1: Boas-Vindas -->
+        <section id="tab-wel" class="tab-content active">
+          <div class="card horizontal-layout">
+            <div class="animated-video-card">
+              <canvas id="samp-canvas"></canvas>
+              <div class="video-overlay-text">
+                <h3>BRASIL PLAY <span>ALPHA</span></h3>
+                <p>SA-MP MOBILE • RPG SERIOUS</p>
+              </div>
             </div>
+            <div>
+              <h2 style="color: #ff4d4d; margin-top: 0;">Seja Bem-Vindo!</h2>
+              <p style="margin: 10px 0; color: #ddd; font-size: 0.85rem; line-height: 1.4;">Conecte-se ao nosso servidor de SA-MP e viva a melhor experiência de RPG no Android. Respeite as regras e entre na nossa comunidade oficial no Discord.</p>
+              <a href="https://discord.gg/b22VyqmbcX" target="_blank" class="btn-primary">Entrar no Discord</a>
+            </div>
+          </div>
+        </section>
 
-            <footer>
-                © 2026 Brasil Play Alpha. Todos os direitos reservados. HÉCATE.
-            </footer>
+        <!-- Aba 2: Downloads -->
+        <section id="tab-down" class="tab-content">
+          <div class="card">
+            <h2 style="color: #ff4d4d; margin-top: 0;">Downloads Oficiais</h2>
+            <p style="color: #ccc; font-size: 0.85rem;">Baixe o Launcher oficial e a DATA modificada para jogar sem travamentos no seu dispositivo.</p>
+            
+            <div class="download-links">
+              <a href="https://www.mediafire.com/file/iynt0w68xh8lhkl/Brasil_Play_Alpha_hct.apk/file" target="_blank" class="btn-download">
+                <span>📱 Baixar APK (Launcher BPA)</span>
+              </a>
+              <a href="https://www.mediafire.com/file/1hmdo7dmneypdzn/DataBPA01.zip/file" target="_blank" class="btn-download">
+                <span>📂 Baixar DATA Modificada</span>
+              </a>
+            </div>
+          </div>
+        </section>
+
+        <!-- Aba 3: IPs dos Servidores -->
+        <section id="tab-ips" class="tab-content">
+          <div class="card">
+            <h2 style="color: #ff4d4d; margin-top: 0;">Servidores Oficiais</h2>
+            <p style="color: #ccc; font-size: 0.85rem;">Copie o IP abaixo e adicione na aba de favoritos do seu Launcher.</p>
+            
+            <div class="ip-box">
+              <div>
+                <span class="server-name">Servidor 1 - RPG Principal</span>
+                <span class="server-ip" id="ip-servidor-1">144.217.113.116:7777</span>
+                <div class="online-badge">
+                  <span class="pulse-dot"></span>
+                  <span>SERVIDOR ONLINE</span>
+                </div>
+              </div>
+              <button class="btn-copy" onclick="copiarIP('ip-servidor-1')">Copiar IP</button>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <!-- BOTÃO DE TERMINAR SESSÃO E PERSONAGENS -->
+      <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; border-top: 1px solid #330808; padding-top: 15px;">
+        <button class="btn-secondary" style="background: #330000; border-color: #8b0000; color: #ff9999; font-weight: bold;" onclick="fazerLogout()">Terminar Sessão</button>
+        
+        <div class="gta-characters-footer" style="margin-top: 0;">
+          <img src="https://assets.open.mp/assets/images/skins/293.png" alt="CJ" class="gta-char" onerror="this.style.display='none'">
+          <img src="https://assets.open.mp/assets/images/skins/270.png" alt="Sweet" class="gta-char" onerror="this.style.display='none'">
+          <img src="https://assets.open.mp/assets/images/skins/271.png" alt="Ryder" class="gta-char" onerror="this.style.display='none'">
         </div>
+      </div>
+
+      <footer>
+        <p>&copy; 2026 Brasil Play Alpha - Todos os direitos reservados. HÉCATE.</p>
+      </footer>
     </div>
+  </div>
 
-    <script>
-        const authScreen = document.getElementById('authScreen');
-        const siteScreen = document.getElementById('siteScreen');
-        const mensagemDiv = document.getElementById('mensagem');
-        const bgMusic = document.getElementById('bgMusic');
-        let audioLigado = false;
+  <!-- MOTOR DE SCRIPTS E CANVAS -->
+  <script>
+    const authScreen = document.getElementById('authScreen');
+    const siteScreen = document.getElementById('siteScreen');
+    const mensagemDiv = document.getElementById('mensagem');
+    const bgMusic = document.getElementById('bg-music');
+    let audioLigado = false;
 
-        function toggleAudio() {
-            if (audioLigado) {
-                bgMusic.pause();
-                document.getElementById('soundToggle').innerText = '🔇 Som';
-                audioLigado = false;
-            } else {
-                bgMusic.play().catch(() => {});
-                document.getElementById('soundToggle').innerText = '🔊 Som';
-                audioLigado = true;
-            }
+    function toggleAudio() {
+      if (audioLigado) {
+        bgMusic.pause();
+        document.getElementById('btn-mute').innerText = '🔇 Som';
+        audioLigado = false;
+      } else {
+        bgMusic.play().catch(() => {});
+        document.getElementById('btn-mute').innerText = '🔊 Som';
+        audioLigado = true;
+      }
+    }
+
+    function entrarNoSite() {
+      authScreen.classList.add('hidden');
+      siteScreen.classList.remove('hidden');
+      bgMusic.play().then(() => {
+        audioLigado = true;
+        document.getElementById('btn-mute').innerText = '🔊 Som';
+      }).catch(() => {
+        audioLigado = false;
+        document.getElementById('btn-mute').innerText = '🔇 Som';
+      });
+      resizeCanvas();
+    }
+
+    function fazerLogout() {
+      bgMusic.pause();
+      siteScreen.classList.add('hidden');
+      authScreen.classList.remove('hidden');
+      document.getElementById('email').value = '';
+      document.getElementById('password').value = '';
+      mensagemDiv.innerText = '';
+    }
+
+    function switchTab(tabId, btnElement) {
+      document.querySelectorAll('.tab-content').forEach(sec => sec.classList.remove('active'));
+      document.getElementById(tabId).classList.add('active');
+      document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+      btnElement.classList.add('active');
+    }
+
+    function copiarIP(elementId) {
+      const ipText = document.getElementById(elementId).innerText;
+      navigator.clipboard.writeText(ipText).then(() => {
+        alert('IP copiado com sucesso!');
+      });
+    }
+
+    // Criar Conta
+    document.getElementById('btnRegister').addEventListener('click', () => {
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value.trim();
+
+      if (!email || !password) {
+        mensagemDiv.style.color = '#dc3545';
+        mensagemDiv.innerText = 'Preencha todos os campos.';
+        return;
+      }
+
+      const contaExistente = localStorage.getItem('ucp_email_' + email);
+      if (contaExistente) {
+        mensagemDiv.style.color = '#dc3545';
+        mensagemDiv.innerText = 'Este e-mail já está registado!';
+        return;
+      }
+
+      localStorage.setItem('ucp_email_' + email, password);
+      entrarNoSite();
+    });
+
+    // Entrar (Login)
+    document.getElementById('btnLogin').addEventListener('click', () => {
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value.trim();
+
+      if (!email || !password) {
+        mensagemDiv.style.color = '#dc3545';
+        mensagemDiv.innerText = 'Preencha todos os campos.';
+        return;
+      }
+
+      const senhaGuardada = localStorage.getItem('ucp_email_' + email);
+
+      if (!senhaGuardada || senhaGuardada !== password) {
+        mensagemDiv.style.color = '#dc3545';
+        mensagemDiv.innerText = 'E-mail ou palavra-passe incorretos.';
+        return;
+      }
+
+      entrarNoSite();
+    });
+
+    // MOTOR DO CANVAS (PARTÍCULAS)
+    const canvas = document.getElementById('samp-canvas');
+    const ctx = canvas ? canvas.getContext('2d') : null;
+
+    function resizeCanvas() {
+      if (!canvas) return;
+      canvas.width = canvas.offsetWidth;
+      canvas.height = canvas.offsetHeight;
+    }
+    window.addEventListener('resize', resizeCanvas);
+
+    const particles = [];
+    for (let i = 0; i < 30; i++) {
+      particles.push({
+        x: Math.random() * 300,
+        y: Math.random() * 180,
+        radius: Math.random() * 2 + 0.5,
+        speedY: -(Math.random() * 0.7 + 0.2),
+        speedX: (Math.random() - 0.5) * 0.4,
+        opacity: Math.random() * 0.8 + 0.2,
+        color: Math.random() > 0.5 ? '#ff1a1a' : '#8b0000'
+      });
+    }
+
+    let angle = 0;
+    function renderVideo() {
+      if (!canvas || !ctx || canvas.width === 0) {
+        requestAnimationFrame(renderVideo);
+        return;
+      }
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      const bgGrad = ctx.createRadialGradient(
+        canvas.width / 2, canvas.height / 2, 10,
+        canvas.width / 2, canvas.height / 2, canvas.width / 1.2
+      );
+      bgGrad.addColorStop(0, '#2a0005');
+      bgGrad.addColorStop(0.6, '#0f0002');
+      bgGrad.addColorStop(1, '#050001');
+      ctx.fillStyle = bgGrad;
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      angle += 0.005;
+      ctx.save();
+      ctx.translate(canvas.width / 2, canvas.height / 2);
+      ctx.strokeStyle = 'rgba(139, 0, 0, 0.15)';
+      ctx.lineWidth = 1.5;
+      for (let i = 0; i < 12; i++) {
+        ctx.rotate((Math.PI * 2) / 12 + Math.sin(angle) * 0.01);
+        ctx.beginPath();
+        ctx.moveTo(0, 0);
+        ctx.lineTo(canvas.width, canvas.height);
+        ctx.stroke();
+      }
+      ctx.restore();
+
+      particles.forEach(p => {
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+        ctx.fillStyle = p.color;
+        ctx.globalAlpha = p.opacity;
+        ctx.shadowBlur = 8;
+        ctx.shadowColor = p.color;
+        ctx.fill();
+        ctx.shadowBlur = 0;
+        ctx.globalAlpha = 1.0;
+
+        p.y += p.speedY;
+        p.x += p.speedX;
+
+        if (p.y < -5) {
+          p.y = canvas.height + 5;
+          p.x = Math.random() * canvas.width;
         }
+      });
 
-        function entrarNoSite() {
-            authScreen.classList.add('hidden');
-            siteScreen.classList.remove('hidden');
-            bgMusic.play().then(() => {
-                audioLigado = true;
-                document.getElementById('soundToggle').innerText = '🔊 Som';
-            }).catch(() => {
-                audioLigado = false;
-                document.getElementById('soundToggle').innerText = '🔇 Som';
-            });
-        }
-
-        function fazerLogout() {
-            bgMusic.pause();
-            siteScreen.classList.add('hidden');
-            authScreen.classList.remove('hidden');
-            document.getElementById('email').value = '';
-            document.getElementById('password').value = '';
-            mensagemDiv.innerText = '';
-        }
-
-        function switchTab(tabId) {
-            document.querySelectorAll('.section-content').forEach(sec => sec.classList.add('hidden'));
-            document.getElementById(tabId).classList.remove('hidden');
-            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-            event.target.classList.add('active');
-        }
-
-        // Criar Conta
-        document.getElementById('btnRegister').addEventListener('click', () => {
-            const email = document.getElementById('email').value.trim();
-            const password = document.getElementById('password').value.trim();
-
-            if (!email || !password) {
-                mensagemDiv.style.color = '#dc3545';
-                mensagemDiv.innerText = 'Preencha todos os campos.';
-                return;
-            }
-
-            const contaExistente = localStorage.getItem('ucp_email_' + email);
-            if (contaExistente) {
-                mensagemDiv.style.color = '#dc3545';
-                mensagemDiv.innerText = 'Este e-mail já está registado!';
-                return;
-            }
-
-            localStorage.setItem('ucp_email_' + email, password);
-            entrarNoSite();
-        });
-
-        // Entrar (Login)
-        document.getElementById('btnLogin').addEventListener('click', () => {
-            const email = document.getElementById('email').value.trim();
-            const password = document.getElementById('password').value.trim();
-
-            if (!email || !password) {
-                mensagemDiv.style.color = '#dc3545';
-                mensagemDiv.innerText = 'Preencha todos os campos.';
-                return;
-            }
-
-            const senhaGuardada = localStorage.getItem('ucp_email_' + email);
-
-            if (!senhaGuardada || senhaGuardada !== password) {
-                mensagemDiv.style.color = '#dc3545';
-                mensagemDiv.innerText = 'E-mail ou palavra-passe incorretos.';
-                return;
-            }
-
-            entrarNoSite();
-        });
-    </script>
+      requestAnimationFrame(renderVideo);
+    }
+    renderVideo();
+  </script>
 </body>
 </html>
