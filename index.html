@@ -29,22 +29,15 @@
       background: radial-gradient(circle at 50% 30%, rgba(139, 0, 0, 0.15) 0%, transparent 70%),
                   repeating-linear-gradient(45deg, rgba(255, 26, 26, 0.03) 0px, rgba(255, 26, 26, 0.03) 2px, transparent 2px, transparent 40px);
       z-index: -1;
-      animation: waveBackground 15s ease-in-out infinite alternate;
       pointer-events: none;
-    }
-
-    @keyframes waveBackground {
-      0% { transform: translateY(0) scale(1); }
-      50% { transform: translateY(-10px) scale(1.02); }
-      100% { transform: translateY(0) scale(1); }
     }
 
     .hidden { display: none !important; }
 
-    /* ECRÃ DE LOGIN / REGISTO COM FUNDO ESTILO LOADING SCREEN */
+    /* ECRÃ DE LOGIN / REGISTO COM FUNDO DE LOADING SCREEN */
     #authScreen {
       position: relative;
-      background-color: rgba(14, 2, 2, 0.85);
+      background-color: rgba(10, 2, 2, 0.82);
       padding: 30px;
       border-radius: 12px;
       box-shadow: 0 0 25px rgba(255, 0, 0, 0.3);
@@ -63,14 +56,18 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background-image: url('https://assets.open.mp/assets/images/skins/190.png');
+      background-image: url('https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=800&q=80');
       background-size: cover;
       background-position: center;
-      filter: blur(5px) brightness(0.4);
-      opacity: 0.35;
+      filter: blur(4px) brightness(0.55);
+      opacity: 0.45;
       z-index: 0;
       pointer-events: none;
     }
+
+    /* CORREÇÃO DE URL ALTERNATIVA CASO PRECISE DE ARTE OFICIAL DO GTA (EXEMPLO DE LOADING SCREEN) */
+    /* Se preferir a arte clássica de loading com personagem feminina: */
+    /* background-image: url('https://i.imgur.com/4X6V3yv.jpg'); */
 
     /* GARANTE QUE O FORMULÁRIO FIQUE ACIMA DA IMAGEM DE FUNDO */
     #authScreen h2, #authForm, #mensagem {
@@ -80,7 +77,7 @@
 
     #authScreen h2 { text-align: center; color: #ff1a1a; margin-bottom: 20px; font-weight: 900; letter-spacing: 1px; text-shadow: 0 0 10px rgba(255,26,26,0.5); }
     #authScreen label { display: block; margin-top: 15px; font-size: 13px; color: #ccc; }
-    #authScreen input { width: 100%; padding: 12px; margin-top: 5px; background-color: rgba(5, 0, 1, 0.8); border: 1px solid #520e0e; color: #fff; border-radius: 6px; box-sizing: border-box; }
+    #authScreen input { width: 100%; padding: 12px; margin-top: 5px; background-color: rgba(5, 0, 1, 0.85); border: 1px solid #520e0e; color: #fff; border-radius: 6px; box-sizing: border-box; }
     #authScreen input:focus { border-color: #ff1a1a; outline: none; box-shadow: 0 0 8px rgba(255,26,26,0.4); }
     
     .btn-primary-auth { width: 100%; margin-top: 15px; padding: 12px; background-color: #b30000; color: white; border: none; border-radius: 6px; font-size: 15px; cursor: pointer; font-weight: bold; box-shadow: 0 4px 10px rgba(179,0,0,0.4); }
@@ -391,7 +388,6 @@
     const bgMusic = document.getElementById('bg-music');
     let audioLigado = false;
 
-    // GERADOR DE SOM DE CLIQUE EM CÓDIGO (Web Audio API)
     let audioCtx = null;
     function tocarClick() {
       try {
@@ -416,9 +412,7 @@
 
         osc.start();
         osc.stop(audioCtx.currentTime + 0.05);
-      } catch (e) {
-        // Ignora caso o navegador bloqueie antes da primeira interação
-      }
+      } catch (e) {}
     }
 
     function toggleAudio() {
@@ -571,29 +565,4 @@
       }
       ctx.restore();
 
-      particles.forEach(p => {
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-        ctx.fillStyle = p.color;
-        ctx.globalAlpha = p.opacity;
-        ctx.shadowBlur = 8;
-        ctx.shadowColor = p.color;
-        ctx.fill();
-        ctx.shadowBlur = 0;
-        ctx.globalAlpha = 1.0;
-
-        p.y += p.speedY;
-        p.x += p.speedX;
-
-        if (p.y < -5) {
-          p.y = canvas.height + 5;
-          p.x = Math.random() * canvas.width;
-        }
-      });
-
-      requestAnimationFrame(renderVideo);
-    }
-    renderVideo();
-  </script>
-</body>
-</html>
+      particles.
