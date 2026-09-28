@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>UCP - Brasil Play Alpha</title>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -39,14 +38,14 @@
 
     <div class="container">
         <h2>Brasil Play Alpha - UCP</h2>
-        <form id="authForm">
+        <form id="authForm" onsubmit="return false;">
             <label for="email">E-mail:</label>
             <input type="email" id="email" required placeholder="seu_email@exemplo.com">
 
             <label for="password">Palavra-passe:</label>
             <input type="password" id="password" required placeholder="Sua palavra-passe">
 
-            <button type="submit" id="btnLogin">Entrar</button>
+            <button type="button" id="btnLogin">Entrar</button>
             <button type="button" id="btnRegister" class="btn-secondary">Criar Conta</button>
         </form>
         <div id="mensagem"></div>
@@ -55,14 +54,13 @@
     <script>
         const SUPABASE_URL = 'https://yayjfnzval.supabase.co';
         const SUPABASE_ANON_KEY = 'sb_publishable_TvJJMdZBhsCdPAI0wYyjzg_g-YYZN3t';
-
-        const { createClient } = supabase;
-        const _supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
         const mensagemDiv = document.getElementById('mensagem');
 
-        // Botão de Criar Conta
+        // Criar Conta via REST API Direta
         document.getElementById('btnRegister').addEventListener('click', async () => {
-            mensagemDiv.innerText = '';
+            mensagemDiv.innerText = 'A processar registo...';
+            mensagemDiv.style.color = '#ffc107';
+            
             const email = document.getElementById('email').value.trim();
             const password = document.getElementById('password').value.trim();
 
@@ -73,29 +71,39 @@
             }
 
             try {
-                const { error } = await _supabase
-                    .from('contas')
-                    .insert([{ email: email, password: password }]);
+                const response = await fetch(`${SUPABASE_URL}/rest/v1/contas`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'apikey': SUPABASE_ANON_KEY,
+                        'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+                        'Prefer': 'return=representation'
+                    },
+                    body: JSON.stringify({ email, password })
+                });
 
-                if (error) {
-                    if (error.code === '23505') {
+                if (!response.ok) {
+                    const errData = await response.json();
+                    if (errData.code === '23505') {
                         throw new Error('Este e-mail já está registado.');
                     }
-                    throw error;
+                    throw new Error(errData.message || 'Erro ao inserir na base de dados.');
                 }
 
                 mensagemDiv.style.color = '#28a745';
                 mensagemDiv.innerText = 'Conta criada com sucesso! Já pode entrar.';
             } catch (err) {
+                console.error(err);
                 mensagemDiv.style.color = '#dc3545';
                 mensagemDiv.innerText = 'Erro ao criar conta: ' + err.message;
             }
         });
 
-        // Botão de Entrar (Login)
-        document.getElementById('btnLogin').addEventListener('click', async (e) => {
-            e.preventDefault();
-            mensagemDiv.innerText = '';
+        // Entrar (Login) via REST API Direta
+        document.getElementById('btnLogin').addEventListener('click', async () => {
+            mensagemDiv.innerText = 'A verificar login...';
+            mensagemDiv.style.color = '#ffc107';
+
             const email = document.getElementById('email').value.trim();
             const password = document.getElementById('password').value.trim();
 
@@ -106,20 +114,28 @@
             }
 
             try {
-                const { data, error } = await _supabase
-                    .from('contas')
-                    .select('*')
-                    .eq('email', email)
-                    .eq('password', password)
-                    .single();
+                const response = await fetch(`${SUPABASE_URL}/rest/v1/contas?email=eq.${encodeURIComponent(email)}&password=eq.${encodeURIComponent(password)}&select=*`, {
+                    method: 'GET',
+                    headers: {
+                        'apikey': SUPABASE_ANON_KEY,
+                        'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
+                    }
+                });
 
-                if (error || !data) {
+                if (!response.ok) {
+                    throw new Error('Erro na consulta ao servidor.');
+                }
+
+                const data = await response.json();
+
+                if (!data || data.length === 0) {
                     throw new Error('E-mail ou palavra-passe incorretos.');
                 }
 
                 mensagemDiv.style.color = '#28a745';
                 mensagemDiv.innerText = 'Login efetuado com sucesso! Bem-vindo ao servidor.';
             } catch (err) {
+                console.error(err);
                 mensagemDiv.style.color = '#dc3545';
                 mensagemDiv.innerText = 'Erro no login: ' + err.message;
             }
