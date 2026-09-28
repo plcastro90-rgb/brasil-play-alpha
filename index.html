@@ -7,7 +7,7 @@
   <style>
     body {
       position: relative;
-      background: #050001;
+      background-color: #030001;
       color: #e0e0e0;
       font-family: Arial, sans-serif;
       margin: 0;
@@ -19,6 +19,7 @@
       overflow-x: hidden;
     }
 
+    /* FUNDO GERAL COM A PERSONAGEM EXATA QUE ENVIOU EM SEGUNDO PLANO (ATRÁS DE TUDO) */
     body::before {
       content: "";
       position: fixed;
@@ -26,53 +27,43 @@
       left: 0;
       width: 100vw;
       height: 100vh;
-      background: radial-gradient(circle at 50% 30%, rgba(139, 0, 0, 0.15) 0%, transparent 70%),
-                  repeating-linear-gradient(45deg, rgba(255, 26, 26, 0.03) 0px, rgba(255, 26, 26, 0.03) 2px, transparent 2px, transparent 40px);
+      /* Utiliza a imagem exacta da personagem de referência fornecida */
+      background-image: url('1001774643.jpg'); /* Certifique-se de colocar o ficheiro na mesma pasta ou usar o link direto */
+      background-size: cover;
+      background-position: center;
+      filter: blur(8px) brightness(0.35);
+      opacity: 0.45;
+      z-index: -2;
+      pointer-events: none;
+    }
+
+    /* CAMADA DE VINHETA ESCURA PARA DAR PROFUNDIDADE ESTILO GTA */
+    body::after {
+      content: "";
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: radial-gradient(circle at 50% 40%, rgba(139, 0, 0, 0.15) 0%, rgba(3, 0, 1, 0.9) 85%);
       z-index: -1;
       pointer-events: none;
     }
 
     .hidden { display: none !important; }
 
-    /* ECRÃ DE LOGIN / REGISTO COM FUNDO DE LOADING SCREEN */
+    /* ECRÃ DE LOGIN / REGISTO CENTRALIZADO */
     #authScreen {
       position: relative;
-      background-color: rgba(10, 2, 2, 0.82);
+      background-color: rgba(10, 2, 2, 0.88);
       padding: 30px;
       border-radius: 12px;
-      box-shadow: 0 0 25px rgba(255, 0, 0, 0.3);
+      box-shadow: 0 0 30px rgba(255, 0, 0, 0.35);
       border: 2px solid #8b0000;
       width: 100%;
       max-width: 380px;
       box-sizing: border-box;
       z-index: 10;
-      overflow: hidden;
-    }
-
-    /* IMAGEM DE FUNDO DA MULHER DO GTA SA EM SEGUNDO PLANO E DESFOCADA */
-    .auth-bg-character {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-image: url('https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=800&q=80');
-      background-size: cover;
-      background-position: center;
-      filter: blur(4px) brightness(0.55);
-      opacity: 0.45;
-      z-index: 0;
-      pointer-events: none;
-    }
-
-    /* CORREÇÃO DE URL ALTERNATIVA CASO PRECISE DE ARTE OFICIAL DO GTA (EXEMPLO DE LOADING SCREEN) */
-    /* Se preferir a arte clássica de loading com personagem feminina: */
-    /* background-image: url('https://i.imgur.com/4X6V3yv.jpg'); */
-
-    /* GARANTE QUE O FORMULÁRIO FIQUE ACIMA DA IMAGEM DE FUNDO */
-    #authScreen h2, #authForm, #mensagem {
-      position: relative;
-      z-index: 1;
     }
 
     #authScreen h2 { text-align: center; color: #ff1a1a; margin-bottom: 20px; font-weight: 900; letter-spacing: 1px; text-shadow: 0 0 10px rgba(255,26,26,0.5); }
@@ -92,6 +83,8 @@
       max-width: 750px;
       padding: 20px;
       box-sizing: border-box;
+      z-index: 10;
+      position: relative;
     }
 
     .container {
@@ -257,30 +250,15 @@
     .btn-copy { background: #b30000; color: #fff; border: none; padding: 8px 14px; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 0.8rem; }
     .btn-copy:hover { background: #ff1a1a; }
 
-    .gta-characters-footer {
-      display: flex;
-      justify-content: center;
-      gap: 15px;
-      margin-top: 10px;
-    }
-    .gta-char {
-      width: 50px;
-      height: 85px;
-      object-fit: contain;
-      filter: drop-shadow(0 0 6px rgba(255,0,0,0.4));
-    }
-
     footer { text-align: center; font-size: 0.75rem; color: #777; border-top: 1px solid #330808; padding-top: 15px; }
   </style>
 </head>
 <body>
 
-  <!-- MÚSICA DE FUNDO DO REPOSITÓRIO -->
   <audio id="bg-music" src="assets/bg-music.mp3" loop preload="auto"></audio>
 
-  <!-- 1. ECRÃ DE LOGIN / REGISTO COM PERSONAGEM EM SEGUNDO PLANO -->
+  <!-- 1. ECRÃ DE LOGIN / REGISTO -->
   <div id="authScreen">
-    <div class="auth-bg-character"></div>
     <h2>BRASIL PLAY ALPHA</h2>
     <form id="authForm" onsubmit="return false;">
       <label for="email">E-mail da Conta:</label>
@@ -295,7 +273,7 @@
     <div id="mensagem"></div>
   </div>
 
-  <!-- 2. ECRÃ DO PORTAL COMPLETO (APÓS LOGIN) -->
+  <!-- 2. ECRÃ DO PORTAL COMPLETO -->
   <div id="siteScreen" class="hidden">
     <div class="container">
       <header>
@@ -309,7 +287,6 @@
       </header>
 
       <main>
-        <!-- Aba 1: Boas-Vindas -->
         <section id="tab-wel" class="tab-content active">
           <div class="card horizontal-layout">
             <div class="animated-video-card">
@@ -321,43 +298,32 @@
             </div>
             <div>
               <h2 style="color: #ff4d4d; margin-top: 0;">Seja Bem-Vindo!</h2>
-              <p style="margin: 10px 0; color: #ddd; font-size: 0.85rem; line-height: 1.4;">Conecte-se ao nosso servidor de SA-MP e viva a melhor experiência de RPG no Android. Respeite as regras e entre na nossa comunidade oficial no Discord.</p>
+              <p style="margin: 10px 0; color: #ddd; font-size: 0.85rem; line-height: 1.4;">Conecte-se ao nosso servidor de SA-MP e viva a melhor experiência de RPG no Android. Respeite as regras e entre na nossa comunidade oficial.</p>
               <a href="https://discord.gg/b22VyqmbcX" target="_blank" class="btn-primary" onclick="tocarClick()">Entrar no Discord</a>
             </div>
           </div>
         </section>
 
-        <!-- Aba 2: Downloads -->
         <section id="tab-down" class="tab-content">
           <div class="card">
             <h2 style="color: #ff4d4d; margin-top: 0;">Downloads Oficiais</h2>
-            <p style="color: #ccc; font-size: 0.85rem;">Baixe o Launcher oficial e a DATA modificada para jogar sem travamentos no seu dispositivo.</p>
-            
+            <p style="color: #ccc; font-size: 0.85rem;">Baixe o Launcher oficial e a DATA modificada para jogar sem travamentos.</p>
             <div class="download-links">
-              <a href="https://www.mediafire.com/file/iynt0w68xh8lhkl/Brasil_Play_Alpha_hct.apk/file" target="_blank" class="btn-download" onclick="tocarClick()">
-                <span>📱 Baixar APK (Launcher BPA)</span>
-              </a>
-              <a href="https://www.mediafire.com/file/1hmdo7dmneypdzn/DataBPA01.zip/file" target="_blank" class="btn-download" onclick="tocarClick()">
-                <span>📂 Baixar DATA Modificada</span>
-              </a>
+              <a href="https://www.mediafire.com/file/iynt0w68xh8lhkl/Brasil_Play_Alpha_hct.apk/file" target="_blank" class="btn-download" onclick="tocarClick()"><span>📱 Baixar APK (Launcher BPA)</span></a>
+              <a href="https://www.mediafire.com/file/1hmdo7dmneypdzn/DataBPA01.zip/file" target="_blank" class="btn-download" onclick="tocarClick()"><span>📂 Baixar DATA Modificada</span></a>
             </div>
           </div>
         </section>
 
-        <!-- Aba 3: IPs dos Servidores -->
         <section id="tab-ips" class="tab-content">
           <div class="card">
             <h2 style="color: #ff4d4d; margin-top: 0;">Servidores Oficiais</h2>
-            <p style="color: #ccc; font-size: 0.85rem;">Copie o IP abaixo e adicione na aba de favoritos do seu Launcher.</p>
-            
+            <p style="color: #ccc; font-size: 0.85rem;">Copie o IP abaixo e adicione na aba de favoritos.</p>
             <div class="ip-box">
               <div>
                 <span class="server-name">Servidor 1 - RPG Principal</span>
                 <span class="server-ip" id="ip-servidor-1">144.217.113.116:7777</span>
-                <div class="online-badge">
-                  <span class="pulse-dot"></span>
-                  <span>SERVIDOR ONLINE</span>
-                </div>
+                <div class="online-badge"><span class="pulse-dot"></span><span>SERVIDOR ONLINE</span></div>
               </div>
               <button class="btn-copy" onclick="tocarClick(); copiarIP('ip-servidor-1')">Copiar IP</button>
             </div>
@@ -365,14 +331,8 @@
         </section>
       </main>
 
-      <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; border-top: 1px solid #330808; padding-top: 15px;">
+      <div style="display: flex; justify-content: space-between; align-items: center; padding-top: 15px; border-top: 1px solid #330808;">
         <button class="btn-secondary" style="background: #330000; border-color: #8b0000; color: #ff9999; font-weight: bold;" onclick="tocarClick(); fazerLogout()">Terminar Sessão</button>
-        
-        <div class="gta-characters-footer" style="margin-top: 0;">
-          <img src="https://assets.open.mp/assets/images/skins/293.png" alt="CJ" class="gta-char" onerror="this.style.display='none'">
-          <img src="https://assets.open.mp/assets/images/skins/270.png" alt="Sweet" class="gta-char" onerror="this.style.display='none'">
-          <img src="https://assets.open.mp/assets/images/skins/271.png" alt="Ryder" class="gta-char" onerror="this.style.display='none'">
-        </div>
       </div>
 
       <footer>
@@ -391,25 +351,17 @@
     let audioCtx = null;
     function tocarClick() {
       try {
-        if (!audioCtx) {
-          audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        }
-        if (audioCtx.state === 'suspended') {
-          audioCtx.resume();
-        }
+        if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        if (audioCtx.state === 'suspended') audioCtx.resume();
         const osc = audioCtx.createOscillator();
-        const gainNode = audioCtx.createGain();
-
+        const gain = audioCtx.createGain();
         osc.type = 'sine';
         osc.frequency.setValueAtTime(600, audioCtx.currentTime);
         osc.frequency.exponentialRampToValueAtTime(200, audioCtx.currentTime + 0.05);
-
-        gainNode.gain.setValueAtTime(0.15, audioCtx.currentTime);
-        gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.05);
-
-        osc.connect(gainNode);
-        gainNode.connect(audioCtx.destination);
-
+        gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.05);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
         osc.start();
         osc.stop(audioCtx.currentTime + 0.05);
       } catch (e) {}
@@ -431,15 +383,10 @@
       tocarClick();
       authScreen.classList.add('hidden');
       siteScreen.classList.remove('hidden');
-      
       bgMusic.play().then(() => {
         audioLigado = true;
         document.getElementById('btn-mute').innerText = '🔊 Som';
-      }).catch(() => {
-        audioLigado = false;
-        document.getElementById('btn-mute').innerText = '🔇 Som';
-      });
-
+      }).catch(() => {});
       resizeCanvas();
     }
 
@@ -461,29 +408,15 @@
 
     function copiarIP(elementId) {
       const ipText = document.getElementById(elementId).innerText;
-      navigator.clipboard.writeText(ipText).then(() => {
-        alert('IP copiado com sucesso!');
-      });
+      navigator.clipboard.writeText(ipText).then(() => alert('IP copiado com sucesso!'));
     }
 
     document.getElementById('btnRegister').addEventListener('click', () => {
       tocarClick();
       const email = document.getElementById('email').value.trim();
       const password = document.getElementById('password').value.trim();
-
-      if (!email || !password) {
-        mensagemDiv.style.color = '#dc3545';
-        mensagemDiv.innerText = 'Preencha todos os campos.';
-        return;
-      }
-
-      const contaExistente = localStorage.getItem('ucp_email_' + email);
-      if (contaExistente) {
-        mensagemDiv.style.color = '#dc3545';
-        mensagemDiv.innerText = 'Este e-mail já está registado!';
-        return;
-      }
-
+      if (!email || !password) { mensagemDiv.style.color = '#dc3545'; mensagemDiv.innerText = 'Preencha todos os campos.'; return; }
+      if (localStorage.getItem('ucp_email_' + email)) { mensagemDiv.style.color = '#dc3545'; mensagemDiv.innerText = 'Este e-mail já está registado!'; return; }
       localStorage.setItem('ucp_email_' + email, password);
       entrarNoSite();
     });
@@ -492,77 +425,39 @@
       tocarClick();
       const email = document.getElementById('email').value.trim();
       const password = document.getElementById('password').value.trim();
-
-      if (!email || !password) {
-        mensagemDiv.style.color = '#dc3545';
-        mensagemDiv.innerText = 'Preencha todos os campos.';
-        return;
-      }
-
-      const senhaGuardada = localStorage.getItem('ucp_email_' + email);
-
-      if (!senhaGuardada || senhaGuardada !== password) {
-        mensagemDiv.style.color = '#dc3545';
-        mensagemDiv.innerText = 'E-mail ou palavra-passe incorretos.';
-        return;
-      }
-
+      if (!email || !password) { mensagemDiv.style.color = '#dc3545'; mensagemDiv.innerText = 'Preencha todos os campos.'; return; }
+      if (localStorage.getItem('ucp_email_' + email) !== password) { mensagemDiv.style.color = '#dc3545'; mensagemDiv.innerText = 'E-mail ou palavra-passe incorretos.'; return; }
       entrarNoSite();
     });
 
     const canvas = document.getElementById('samp-canvas');
     const ctx = canvas ? canvas.getContext('2d') : null;
-
-    function resizeCanvas() {
-      if (!canvas) return;
-      canvas.width = canvas.offsetWidth;
-      canvas.height = canvas.offsetHeight;
-    }
+    function resizeCanvas() { if (canvas) { canvas.width = canvas.offsetWidth; canvas.height = canvas.offsetHeight; } }
     window.addEventListener('resize', resizeCanvas);
 
     const particles = [];
-    for (let i = 0; i < 30; i++) {
-      particles.push({
-        x: Math.random() * 300,
-        y: Math.random() * 180,
-        radius: Math.random() * 2 + 0.5,
-        speedY: -(Math.random() * 0.7 + 0.2),
-        speedX: (Math.random() - 0.5) * 0.4,
-        opacity: Math.random() * 0.8 + 0.2,
-        color: Math.random() > 0.5 ? '#ff1a1a' : '#8b0000'
-      });
+    for (let i = 0; i < 25; i++) {
+      particles.push({ x: Math.random() * 300, y: Math.random() * 180, radius: Math.random() * 2 + 0.5, speedY: -(Math.random() * 0.7 + 0.2), color: Math.random() > 0.5 ? '#ff1a1a' : '#8b0000', opacity: Math.random() * 0.8 + 0.2 });
     }
 
-    let angle = 0;
     function renderVideo() {
-      if (!canvas || !ctx || canvas.width === 0) {
-        requestAnimationFrame(renderVideo);
-        return;
-      }
+      if (!canvas || !ctx || canvas.width === 0) { requestAnimationFrame(renderVideo); return; }
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-      const bgGrad = ctx.createRadialGradient(
-        canvas.width / 2, canvas.height / 2, 10,
-        canvas.width / 2, canvas.height / 2, canvas.width / 1.2
-      );
-      bgGrad.addColorStop(0, '#2a0005');
-      bgGrad.addColorStop(0.6, '#0f0002');
-      bgGrad.addColorStop(1, '#050001');
-      ctx.fillStyle = bgGrad;
+      ctx.fillStyle = '#0f0002';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-      angle += 0.005;
-      ctx.save();
-      ctx.translate(canvas.width / 2, canvas.height / 2);
-      ctx.strokeStyle = 'rgba(139, 0, 0, 0.15)';
-      ctx.lineWidth = 1.5;
-      for (let i = 0; i < 12; i++) {
-        ctx.rotate((Math.PI * 2) / 12 + Math.sin(angle) * 0.01);
+      particles.forEach(p => {
         ctx.beginPath();
-        ctx.moveTo(0, 0);
-        ctx.lineTo(canvas.width, canvas.height);
-        ctx.stroke();
-      }
-      ctx.restore();
-
-      particles.
+        ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+        ctx.fillStyle = p.color;
+        ctx.globalAlpha = p.opacity;
+        ctx.fill();
+        ctx.globalAlpha = 1.0;
+        p.y += p.speedY;
+        if (p.y < 0) { p.y = canvas.height; p.x = Math.random() * canvas.width; }
+      });
+      requestAnimationFrame(renderVideo);
+    }
+    renderVideo();
+  </script>
+</body>
+</html>
