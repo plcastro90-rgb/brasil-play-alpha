@@ -41,9 +41,10 @@
 
     .hidden { display: none !important; }
 
-    /* ECRÃ DE LOGIN / REGISTO */
+    /* ECRÃ DE LOGIN / REGISTO COM FUNDO ESTILO LOADING SCREEN */
     #authScreen {
-      background-color: #0e0202;
+      position: relative;
+      background-color: rgba(14, 2, 2, 0.85);
       padding: 30px;
       border-radius: 12px;
       box-shadow: 0 0 25px rgba(255, 0, 0, 0.3);
@@ -52,10 +53,34 @@
       max-width: 380px;
       box-sizing: border-box;
       z-index: 10;
+      overflow: hidden;
     }
+
+    /* IMAGEM DE FUNDO DA MULHER DO GTA SA EM SEGUNDO PLANO E DESFOCADA */
+    .auth-bg-character {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: url('https://assets.open.mp/assets/images/skins/190.png');
+      background-size: cover;
+      background-position: center;
+      filter: blur(5px) brightness(0.4);
+      opacity: 0.35;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    /* GARANTE QUE O FORMULÁRIO FIQUE ACIMA DA IMAGEM DE FUNDO */
+    #authScreen h2, #authForm, #mensagem {
+      position: relative;
+      z-index: 1;
+    }
+
     #authScreen h2 { text-align: center; color: #ff1a1a; margin-bottom: 20px; font-weight: 900; letter-spacing: 1px; text-shadow: 0 0 10px rgba(255,26,26,0.5); }
     #authScreen label { display: block; margin-top: 15px; font-size: 13px; color: #ccc; }
-    #authScreen input { width: 100%; padding: 12px; margin-top: 5px; background-color: #050001; border: 1px solid #520e0e; color: #fff; border-radius: 6px; box-sizing: border-box; }
+    #authScreen input { width: 100%; padding: 12px; margin-top: 5px; background-color: rgba(5, 0, 1, 0.8); border: 1px solid #520e0e; color: #fff; border-radius: 6px; box-sizing: border-box; }
     #authScreen input:focus { border-color: #ff1a1a; outline: none; box-shadow: 0 0 8px rgba(255,26,26,0.4); }
     
     .btn-primary-auth { width: 100%; margin-top: 15px; padding: 12px; background-color: #b30000; color: white; border: none; border-radius: 6px; font-size: 15px; cursor: pointer; font-weight: bold; box-shadow: 0 4px 10px rgba(179,0,0,0.4); }
@@ -253,9 +278,12 @@
 </head>
 <body>
 
+  <!-- MÚSICA DE FUNDO DO REPOSITÓRIO -->
   <audio id="bg-music" src="assets/bg-music.mp3" loop preload="auto"></audio>
 
+  <!-- 1. ECRÃ DE LOGIN / REGISTO COM PERSONAGEM EM SEGUNDO PLANO -->
   <div id="authScreen">
+    <div class="auth-bg-character"></div>
     <h2>BRASIL PLAY ALPHA</h2>
     <form id="authForm" onsubmit="return false;">
       <label for="email">E-mail da Conta:</label>
@@ -270,6 +298,7 @@
     <div id="mensagem"></div>
   </div>
 
+  <!-- 2. ECRÃ DO PORTAL COMPLETO (APÓS LOGIN) -->
   <div id="siteScreen" class="hidden">
     <div class="container">
       <header>
@@ -283,6 +312,7 @@
       </header>
 
       <main>
+        <!-- Aba 1: Boas-Vindas -->
         <section id="tab-wel" class="tab-content active">
           <div class="card horizontal-layout">
             <div class="animated-video-card">
@@ -300,6 +330,7 @@
           </div>
         </section>
 
+        <!-- Aba 2: Downloads -->
         <section id="tab-down" class="tab-content">
           <div class="card">
             <h2 style="color: #ff4d4d; margin-top: 0;">Downloads Oficiais</h2>
@@ -316,6 +347,7 @@
           </div>
         </section>
 
+        <!-- Aba 3: IPs dos Servidores -->
         <section id="tab-ips" class="tab-content">
           <div class="card">
             <h2 style="color: #ff4d4d; margin-top: 0;">Servidores Oficiais</h2>
