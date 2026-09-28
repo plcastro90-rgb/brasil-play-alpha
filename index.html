@@ -22,20 +22,24 @@
             border-radius: 8px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.6);
             width: 100%;
-            max-width: 400px;
+            max-width: 420px;
         }
         h2 { text-align: center; color: #ffffff; margin-bottom: 20px; }
         label { display: block; margin-top: 15px; font-size: 14px; }
         input { width: 100%; padding: 12px; margin-top: 5px; background-color: #2d2d2d; border: 1px solid #444; color: #fff; border-radius: 4px; box-sizing: border-box; }
-        button { width: 100%; margin-top: 20px; padding: 12px; background-color: #007bff; color: white; border: none; border-radius: 4px; font-size: 16px; cursor: pointer; font-weight: bold; }
+        button { width: 100%; margin-top: 15px; padding: 12px; background-color: #007bff; color: white; border: none; border-radius: 4px; font-size: 16px; cursor: pointer; font-weight: bold; }
         button:hover { background-color: #0056b3; }
-        .btn-secondary { background-color: #28a745; margin-top: 10px; }
+        .btn-secondary { background-color: #28a745; }
         .btn-secondary:hover { background-color: #218838; }
-        .btn-logout { background-color: #dc3545; margin-top: 20px; }
+        .btn-discord { background-color: #5865F2; }
+        .btn-discord:hover { background-color: #4752C4; }
+        .btn-logout { background-color: #dc3545; }
         .btn-logout:hover { background-color: #c82333; }
         #mensagem { margin-top: 15px; text-align: center; font-weight: bold; font-size: 14px; }
         .hidden { display: none; }
-        .info-box { background: #2d2d2d; padding: 15px; border-radius: 4px; margin-top: 15px; }
+        .card { background: #2d2d2d; padding: 15px; border-radius: 6px; margin-top: 15px; border-left: 4px solid #007bff; }
+        .card p { margin: 8px 0; font-size: 14px; }
+        .ip-box { background: #111; padding: 10px; border-radius: 4px; text-align: center; font-family: monospace; font-size: 15px; color: #00ffcc; margin-top: 10px; }
     </style>
 </head>
 <body>
@@ -43,7 +47,7 @@
     <div class="container">
         <!-- ECRÃ DE LOGIN / REGISTO -->
         <div id="authScreen">
-            <h2>Brasil Play Alpha - UCP</h2>
+            <h2>Brasil Play Alpha</h2>
             <form id="authForm" onsubmit="return false;">
                 <label for="email">E-mail:</label>
                 <input type="email" id="email" required placeholder="seu_email@exemplo.com">
@@ -57,14 +61,22 @@
             <div id="mensagem"></div>
         </div>
 
-        <!-- ECRÃ DO PAINEL (DASHBOARD) -->
+        <!-- ECRÃ DA UCP / PAINEL COMPLETO -->
         <div id="dashboardScreen" class="hidden">
             <h2>Painel do Jogador</h2>
-            <div class="info-box">
-                <p><strong>Estado:</strong> <span style="color: #28a745;">Conectado</span></p>
+            
+            <div class="card">
                 <p><strong>Conta:</strong> <span id="userEmailDisplay"></span></p>
+                <p><strong>Estado:</strong> <span style="color: #28a745;">Online na UCP</span></p>
                 <p><strong>Servidor:</strong> Brasil Play Alpha [SA-MP]</p>
             </div>
+
+            <div class="ip-box">
+                IP: play.brasilplayalpha.com:7777
+            </div>
+
+            <button type="button" class="btn-secondary" onclick="alert('A descarregar Launcher APK...')">Baixar Launcher APK</button>
+            <button type="button" class="btn-discord" onclick="window.open('https://discord.gg/exemplo', '_blank')">Entrar no Discord</button>
             <button type="button" id="btnLogout" class="btn-logout">Terminar Sessão</button>
         </div>
     </div>
