@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Brasil Play Alpha | Portal Oficial</title>
   <style>
-    /* ESTILOS GLOBAIS E FUNDO ANIMADO */
     body {
       position: relative;
       background: #050001;
@@ -65,7 +64,7 @@
     .btn-secondary-auth:hover { background-color: #194d19 !important; }
     #mensagem { margin-top: 15px; text-align: center; font-weight: bold; font-size: 13px; }
 
-    /* CONTANER PRINCIPAL DO PORTAL (APÓS LOGIN) */
+    /* PORTAL PRINCIPAL */
     #siteScreen {
       width: 100%;
       max-width: 750px;
@@ -113,7 +112,6 @@
 
     .btn-secondary { background-color: #222; border: 1px solid #555; color: #fff; padding: 8px 12px; border-radius: 6px; cursor: pointer; font-size: 0.8rem; }
 
-    /* CARTÕES E CONTEÚDO */
     .card {
       background: #140303;
       border: 1px solid #520e0e;
@@ -237,7 +235,6 @@
     .btn-copy { background: #b30000; color: #fff; border: none; padding: 8px 14px; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 0.8rem; }
     .btn-copy:hover { background: #ff1a1a; }
 
-    /* PERSONAGENS DO RODAPÉ */
     .gta-characters-footer {
       display: flex;
       justify-content: center;
@@ -256,10 +253,8 @@
 </head>
 <body>
 
-  <!-- ÁUDIO DE FUNDO -->
-  <audio id="bg-music" src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" loop></audio>
+  <audio id="bg-music" src="assets/bg-music.mp3" loop preload="auto"></audio>
 
-  <!-- 1. ECRÃ DE LOGIN / REGISTO -->
   <div id="authScreen">
     <h2>BRASIL PLAY ALPHA</h2>
     <form id="authForm" onsubmit="return false;">
@@ -275,23 +270,19 @@
     <div id="mensagem"></div>
   </div>
 
-  <!-- 2. ECRÃ DO PORTAL COMPLETO (APÓS LOGIN) -->
   <div id="siteScreen" class="hidden">
     <div class="container">
-      <!-- Cabeçalho -->
       <header>
         <div class="logo">BRASIL PLAY <span class="highlight">ALPHA</span></div>
         <nav>
-          <button class="nav-btn active" onclick="switchTab('tab-wel', this)">Boas-Vindas</button>
-          <button class="nav-btn" onclick="switchTab('tab-down', this)">Downloads</button>
-          <button class="nav-btn" onclick="switchTab('tab-ips', this)">Servidores / IPs</button>
+          <button class="nav-btn active" onclick="tocarClick(); switchTab('tab-wel', this)">Boas-Vindas</button>
+          <button class="nav-btn" onclick="tocarClick(); switchTab('tab-down', this)">Downloads</button>
+          <button class="nav-btn" onclick="tocarClick(); switchTab('tab-ips', this)">Servidores / IPs</button>
         </nav>
-        <button id="btn-mute" class="btn-secondary" onclick="toggleAudio()">🔊 Som</button>
+        <button id="btn-mute" class="btn-secondary" onclick="tocarClick(); toggleAudio()">🔊 Som</button>
       </header>
 
-      <!-- Conteúdo Principal -->
       <main>
-        <!-- Aba 1: Boas-Vindas -->
         <section id="tab-wel" class="tab-content active">
           <div class="card horizontal-layout">
             <div class="animated-video-card">
@@ -304,29 +295,27 @@
             <div>
               <h2 style="color: #ff4d4d; margin-top: 0;">Seja Bem-Vindo!</h2>
               <p style="margin: 10px 0; color: #ddd; font-size: 0.85rem; line-height: 1.4;">Conecte-se ao nosso servidor de SA-MP e viva a melhor experiência de RPG no Android. Respeite as regras e entre na nossa comunidade oficial no Discord.</p>
-              <a href="https://discord.gg/b22VyqmbcX" target="_blank" class="btn-primary">Entrar no Discord</a>
+              <a href="https://discord.gg/b22VyqmbcX" target="_blank" class="btn-primary" onclick="tocarClick()">Entrar no Discord</a>
             </div>
           </div>
         </section>
 
-        <!-- Aba 2: Downloads -->
         <section id="tab-down" class="tab-content">
           <div class="card">
             <h2 style="color: #ff4d4d; margin-top: 0;">Downloads Oficiais</h2>
             <p style="color: #ccc; font-size: 0.85rem;">Baixe o Launcher oficial e a DATA modificada para jogar sem travamentos no seu dispositivo.</p>
             
             <div class="download-links">
-              <a href="https://www.mediafire.com/file/iynt0w68xh8lhkl/Brasil_Play_Alpha_hct.apk/file" target="_blank" class="btn-download">
+              <a href="https://www.mediafire.com/file/iynt0w68xh8lhkl/Brasil_Play_Alpha_hct.apk/file" target="_blank" class="btn-download" onclick="tocarClick()">
                 <span>📱 Baixar APK (Launcher BPA)</span>
               </a>
-              <a href="https://www.mediafire.com/file/1hmdo7dmneypdzn/DataBPA01.zip/file" target="_blank" class="btn-download">
+              <a href="https://www.mediafire.com/file/1hmdo7dmneypdzn/DataBPA01.zip/file" target="_blank" class="btn-download" onclick="tocarClick()">
                 <span>📂 Baixar DATA Modificada</span>
               </a>
             </div>
           </div>
         </section>
 
-        <!-- Aba 3: IPs dos Servidores -->
         <section id="tab-ips" class="tab-content">
           <div class="card">
             <h2 style="color: #ff4d4d; margin-top: 0;">Servidores Oficiais</h2>
@@ -341,15 +330,14 @@
                   <span>SERVIDOR ONLINE</span>
                 </div>
               </div>
-              <button class="btn-copy" onclick="copiarIP('ip-servidor-1')">Copiar IP</button>
+              <button class="btn-copy" onclick="tocarClick(); copiarIP('ip-servidor-1')">Copiar IP</button>
             </div>
           </div>
         </section>
       </main>
 
-      <!-- BOTÃO DE TERMINAR SESSÃO E PERSONAGENS -->
       <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; border-top: 1px solid #330808; padding-top: 15px;">
-        <button class="btn-secondary" style="background: #330000; border-color: #8b0000; color: #ff9999; font-weight: bold;" onclick="fazerLogout()">Terminar Sessão</button>
+        <button class="btn-secondary" style="background: #330000; border-color: #8b0000; color: #ff9999; font-weight: bold;" onclick="tocarClick(); fazerLogout()">Terminar Sessão</button>
         
         <div class="gta-characters-footer" style="margin-top: 0;">
           <img src="https://assets.open.mp/assets/images/skins/293.png" alt="CJ" class="gta-char" onerror="this.style.display='none'">
@@ -364,13 +352,42 @@
     </div>
   </div>
 
-  <!-- MOTOR DE SCRIPTS E CANVAS -->
   <script>
     const authScreen = document.getElementById('authScreen');
     const siteScreen = document.getElementById('siteScreen');
     const mensagemDiv = document.getElementById('mensagem');
     const bgMusic = document.getElementById('bg-music');
     let audioLigado = false;
+
+    // GERADOR DE SOM DE CLIQUE EM CÓDIGO (Web Audio API)
+    let audioCtx = null;
+    function tocarClick() {
+      try {
+        if (!audioCtx) {
+          audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        }
+        if (audioCtx.state === 'suspended') {
+          audioCtx.resume();
+        }
+        const osc = audioCtx.createOscillator();
+        const gainNode = audioCtx.createGain();
+
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(600, audioCtx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(200, audioCtx.currentTime + 0.05);
+
+        gainNode.gain.setValueAtTime(0.15, audioCtx.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.05);
+
+        osc.connect(gainNode);
+        gainNode.connect(audioCtx.destination);
+
+        osc.start();
+        osc.stop(audioCtx.currentTime + 0.05);
+      } catch (e) {
+        // Ignora caso o navegador bloqueie antes da primeira interação
+      }
+    }
 
     function toggleAudio() {
       if (audioLigado) {
@@ -385,8 +402,10 @@
     }
 
     function entrarNoSite() {
+      tocarClick();
       authScreen.classList.add('hidden');
       siteScreen.classList.remove('hidden');
+      
       bgMusic.play().then(() => {
         audioLigado = true;
         document.getElementById('btn-mute').innerText = '🔊 Som';
@@ -394,6 +413,7 @@
         audioLigado = false;
         document.getElementById('btn-mute').innerText = '🔇 Som';
       });
+
       resizeCanvas();
     }
 
@@ -420,8 +440,8 @@
       });
     }
 
-    // Criar Conta
     document.getElementById('btnRegister').addEventListener('click', () => {
+      tocarClick();
       const email = document.getElementById('email').value.trim();
       const password = document.getElementById('password').value.trim();
 
@@ -442,8 +462,8 @@
       entrarNoSite();
     });
 
-    // Entrar (Login)
     document.getElementById('btnLogin').addEventListener('click', () => {
+      tocarClick();
       const email = document.getElementById('email').value.trim();
       const password = document.getElementById('password').value.trim();
 
@@ -464,7 +484,6 @@
       entrarNoSite();
     });
 
-    // MOTOR DO CANVAS (PARTÍCULAS)
     const canvas = document.getElementById('samp-canvas');
     const ctx = canvas ? canvas.getContext('2d') : null;
 
