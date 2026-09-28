@@ -54,10 +54,12 @@
 
     <script>
         const SUPABASE_URL = 'https://yayjfnzval.supabase.co';
-        const SUPABASE_ANON_KEY = 'sb_publishable_TvJJMdZBhsCdPAI0wYyjzg_g-YYZN3t';
+        const SUPABASE_ANON_KEY = 'sb_publishable_y5EAu_0UgDJia0G9XrKkag_jvWmMvdf';
 
         const { createClient } = supabase;
-        const _supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        const _supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+            auth: { persistSession: false, autoRefreshToken: false }
+        });
         const mensagemDiv = document.getElementById('mensagem');
 
         // Criar Conta
@@ -77,19 +79,16 @@
             try {
                 const { data, error } = await _supabase
                     .from('contas')
-                    .insert([{ email, password }])
-                    .select();
+                    .insert([{ email, password }]);
 
-                if (error) {
-                    throw error;
-                }
+                if (error) throw error;
 
                 mensagemDiv.style.color = '#28a745';
                 mensagemDiv.innerText = 'Conta criada com sucesso!';
             } catch (err) {
                 console.error(err);
                 mensagemDiv.style.color = '#dc3545';
-                mensagemDiv.innerText = 'Erro Registo: ' + (err.message || JSON.stringify(err));
+                mensagemDiv.innerText = 'Erro Registo: ' + (err.message || 'Falha de ligação');
             }
         });
 
@@ -114,9 +113,7 @@
                     .eq('email', email)
                     .eq('password', password);
 
-                if (error) {
-                    throw error;
-                }
+                if (error) throw error;
 
                 if (!data || data.length === 0) {
                     throw new Error('E-mail ou palavra-passe incorretos.');
@@ -127,7 +124,7 @@
             } catch (err) {
                 console.error(err);
                 mensagemDiv.style.color = '#dc3545';
-                mensagemDiv.innerText = 'Erro Login: ' + (err.message || JSON.stringify(err));
+                mensagemDiv.innerText = 'Erro Login: ' + (err.message || 'Falha de ligação');
             }
         });
     </script>
