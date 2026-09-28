@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - Brasil Play Alpha</title>
+    <!-- Supabase CDN oficial -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
         body {
@@ -72,6 +73,7 @@
             text-align: center;
             font-weight: bold;
             font-size: 14px;
+            word-break: break-all;
         }
     </style>
 </head>
@@ -93,13 +95,18 @@
     </div>
 
     <script>
+        // Configuração do Supabase
         const SUPABASE_URL = 'https://yayjfnzval.supabase.co';
         const SUPABASE_ANON_KEY = 'sb_publishable_TvJJMdZBhsCdPAI0wYyjzg_g-YYZN3t';
 
-        const { createClient } = supabase;
-        const _supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        let _supabase;
+        try {
+            const { createClient } = supabase;
+            _supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        } catch (err) {
+            console.error('Erro ao inicializar Supabase:', err);
+        }
 
-        const form = document.getElementById('authForm');
         const mensagemDiv = document.getElementById('mensagem');
 
         // Ação de Login
@@ -107,14 +114,17 @@
             e.preventDefault();
             mensagemDiv.innerText = '';
 
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value.trim();
 
             if (!email || !password) {
                 mensagemDiv.style.color = '#dc3545';
                 mensagemDiv.innerText = 'Preencha o e-mail e a palavra-passe.';
                 return;
             }
+
+            mensagemDiv.style.color = '#ffc107';
+            mensagemDiv.innerText = 'A processar login...';
 
             try {
                 const { data, error } = await _supabase.auth.signInWithPassword({
@@ -125,27 +135,30 @@
                 if (error) throw error;
 
                 mensagemDiv.style.color = '#28a745';
-                mensagemDiv.innerText = 'Login efetuado com sucesso! Bem-vindo.';
+                mensagemDiv.innerText = 'Login efetuado com sucesso!';
             } catch (error) {
                 console.error('Erro no login:', error);
                 mensagemDiv.style.color = '#dc3545';
-                mensagemDiv.innerText = 'Erro ao entrar: ' + error.message;
+                mensagemDiv.innerText = 'Erro: ' + (error.message || error);
             }
         });
 
-        // Ação de Criar Conta (Registo rápido)
+        // Ação de Criar Conta
         document.getElementById('btnRegister').addEventListener('click', async (e) => {
             e.preventDefault();
             mensagemDiv.innerText = '';
 
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value.trim();
 
             if (!email || !password) {
                 mensagemDiv.style.color = '#dc3545';
-                mensagemDiv.innerText = 'Preencha o e-mail e a palavra-passe para registar.';
+                mensagemDiv.innerText = 'Preencha o e-mail e a palavra-passe.';
                 return;
             }
+
+            mensagemDiv.style.color = '#ffc107';
+            mensagemDiv.innerText = 'A criar conta...';
 
             try {
                 const { data, error } = await _supabase.auth.signUp({
@@ -156,11 +169,11 @@
                 if (error) throw error;
 
                 mensagemDiv.style.color = '#28a745';
-                mensagemDiv.innerText = 'Conta criada com sucesso! Já pode fazer login.';
+                mensagemDiv.innerText = 'Conta criada com sucesso! Verifique se recebeu confirmação ou tente entrar.';
             } catch (error) {
                 console.error('Erro no registo:', error);
                 mensagemDiv.style.color = '#dc3545';
-                mensagemDiv.innerText = 'Erro ao registar: ' + error.message;
+                mensagemDiv.innerText = 'Erro: ' + (error.message || error);
             }
         });
     </script>
