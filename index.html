@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Brasil Play Alpha | Portal Oficial</title>
   <link rel="stylesheet" href="style.css">
+  <!-- Supabase JS Client -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <style>
     body {
@@ -150,6 +151,7 @@
 </head>
 <body>
 
+  <!-- Overlay de Som -->
   <div id="start-overlay">
     <div class="overlay-content">
       <h1>BRASIL PLAY ALPHA</h1>
@@ -175,6 +177,7 @@
     </header>
 
     <main>
+      <!-- Aba 1: Boas-Vindas -->
       <section id="tab-wel" class="tab-content active">
         <div class="card horizontal-layout">
           <div class="animated-video-card">
@@ -192,6 +195,7 @@
         </div>
       </section>
 
+      <!-- Aba 2: Downloads -->
       <section id="tab-down" class="tab-content">
         <div class="card">
           <h2>Downloads Oficiais</h2>
@@ -202,6 +206,7 @@
         </div>
       </section>
 
+      <!-- Aba 3: IPs -->
       <section id="tab-ips" class="tab-content">
         <div class="card">
           <h2>Servidor Oficial</h2>
@@ -219,6 +224,7 @@
         </div>
       </section>
 
+      <!-- Aba 4: UCP / Login & Cadastro -->
       <section id="tab-ucp" class="tab-content">
         <div class="card" style="max-width: 400px; margin: 0 auto;">
           <h2 id="auth-title">Painel UCP - Login</h2>
@@ -227,7 +233,7 @@
           <div id="auth-form-container">
             <div class="form-group">
               <label>E-mail</label>
-              <input type="email5" id="auth-email" class="form-control" placeholder="seu@email.com">
+              <input type="email" id="auth-email" class="form-control" placeholder="seu@email.com">
             </div>
             <div class="form-group">
               <label>Senha</label>
@@ -239,6 +245,7 @@
             </div>
           </div>
 
+          <!-- Painel Logado (Oculto inicialmente) -->
           <div id="user-dashboard" style="display: none;">
             <p style="color: #00ff64; margin-bottom: 15px; font-weight: bold;">✅ Conta Conectada com Sucesso!</p>
             <p id="user-email-display" style="font-size: 0.9rem; color: #ddd; margin-bottom: 15px;"></p>
@@ -247,6 +254,7 @@
         </div>
       </section>
 
+      <!-- Aba 5: Central de Denúncias -->
       <section id="tab-report" class="tab-content">
         <div class="card" style="max-width: 500px; margin: 0 auto;">
           <h2>Central de Denúncias</h2>
@@ -256,7 +264,7 @@
             <label>Seu Nick no Jogo</label>
             <input type="text" id="report-author" class="form-control" placeholder="Ex: Seu_Nome">
           </div>
-            <div class="form-group">
+          <div class="form-group">
             <label>Nick do Acusado</label>
             <input type="text" id="report-target" class="form-control" placeholder="Ex: Acusado_Nome">
           </div>
@@ -283,6 +291,7 @@
       </section>
     </main>
 
+    <!-- Personagens GTA SA -->
     <div class="gta-characters-footer">
       <img src="https://assets.open.mp/assets/images/skins/293.png" alt="CJ" class="gta-char" onerror="this.style.display='none'">
       <img src="https://assets.open.mp/assets/images/skins/270.png" alt="Sweet" class="gta-char" onerror="this.style.display='none'">
@@ -296,15 +305,12 @@
 
   <script src="script.js"></script>
 
+  <!-- CONFIGURAÇÃO SUPABASE E SISTEMAS UCP / DENÚNCIA -->
   <script>
-    // Insira aqui as suas credenciais gratuitas do Supabase (supabase.com)
-    const SUPABASE_URL = 'https://SEU-PROJETO.supabase.co';
-    const SUPABASE_ANON_KEY = 'SUA-CHAVE-ANON';
+    const SUPABASE_URL = 'https://yayjfnzvalumdganjxxt.supabase.co';
+    const SUPABASE_ANON_KEY = 'sb_publishable_TvJJMdZBhsCdPAI0wYyjzg_g-YYZN3';
     
-    // Inicialização do cliente Supabase (funciona nativamente no browser)
-    const supabaseClient = (SUPABASE_URL !== 'https://SEU-PROJETO.supabase.co') 
-      ? supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY) 
-      : null;
+    const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
     let isRegistering = false;
 
@@ -320,8 +326,8 @@
       const email = document.getElementById('auth-email').value;
       const password = document.getElementById('auth-password').value;
 
-      if (!supabaseClient) {
-        alert('Configure suas chaves do Supabase no código para ativar o login real!');
+      if (!email || !password) {
+        alert('Preencha o e-mail e a senha.');
         return;
       }
 
@@ -337,7 +343,6 @@
     });
 
     async function verificarSessao() {
-      if (!supabaseClient) return;
       const { data: { session } } = await supabaseClient.auth.getSession();
       if (session) {
         document.getElementById('auth-form-container').style.display = 'none';
@@ -350,12 +355,11 @@
     }
 
     async function fazerLogout() {
-      if (!supabaseClient) return;
       await supabaseClient.auth.signOut();
       verificarSessao();
     }
 
-    if (supabaseClient) verificarSessao();
+    verificarSessao();
 
     // Sistema de Envio de Denúncias
     async function enviarDenuncia() {
@@ -370,14 +374,9 @@
         return;
       }
 
-      if (!supabaseClient) {
-        alert('Denúncia simulada enviada com sucesso! (Configure o Supabase para salvá-la no banco de dados).');
-        return;
-      }
-
       const { data, error } = await supabaseClient
         .from('denuncias')
-        .insert([{ author, target, reason, proof, desc, created_at: new Date() }]);
+        .insert([{ author, target, reason, proof, desc }]);
 
       if (error) {
         alert('Erro ao enviar denúncia: ' + error.message);
@@ -391,6 +390,7 @@
     }
   </script>
 
+  <!-- MOTOR DO CANVAS (PARTÍCULAS) -->
   <script>
     const canvas = document.getElementById('samp-canvas');
     const ctx = canvas ? canvas.getContext('2d') : null;
