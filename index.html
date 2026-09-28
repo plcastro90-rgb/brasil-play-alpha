@@ -19,7 +19,7 @@
       overflow-x: hidden;
     }
 
-    /* FUNDO GERAL COM A PERSONAGEM EXATA QUE ENVIOU EM SEGUNDO PLANO (ATRÁS DE TUDO) */
+    /* FUNDO GERADO PURAMENTE EM CÓDIGO (GRADIENTE EFEITO GTA) */
     body::before {
       content: "";
       position: fixed;
@@ -27,38 +27,20 @@
       left: 0;
       width: 100vw;
       height: 100vh;
-      /* Utiliza a imagem exacta da personagem de referência fornecida */
-      background-image: url('1001774643.jpg'); /* Certifique-se de colocar o ficheiro na mesma pasta ou usar o link direto */
-      background-size: cover;
-      background-position: center;
-      filter: blur(8px) brightness(0.35);
-      opacity: 0.45;
-      z-index: -2;
-      pointer-events: none;
-    }
-
-    /* CAMADA DE VINHETA ESCURA PARA DAR PROFUNDIDADE ESTILO GTA */
-    body::after {
-      content: "";
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      background: radial-gradient(circle at 50% 40%, rgba(139, 0, 0, 0.15) 0%, rgba(3, 0, 1, 0.9) 85%);
+      background: radial-gradient(circle at 50% 30%, rgba(120, 0, 0, 0.35) 0%, rgba(5, 0, 2, 0.98) 85%);
       z-index: -1;
       pointer-events: none;
     }
 
     .hidden { display: none !important; }
 
-    /* ECRÃ DE LOGIN / REGISTO CENTRALIZADO */
+    /* ECRÃ DE LOGIN / REGISTO */
     #authScreen {
       position: relative;
-      background-color: rgba(10, 2, 2, 0.88);
+      background-color: rgba(10, 2, 2, 0.92);
       padding: 30px;
       border-radius: 12px;
-      box-shadow: 0 0 30px rgba(255, 0, 0, 0.35);
+      box-shadow: 0 0 30px rgba(255, 0, 0, 0.4);
       border: 2px solid #8b0000;
       width: 100%;
       max-width: 380px;
@@ -250,6 +232,19 @@
     .btn-copy { background: #b30000; color: #fff; border: none; padding: 8px 14px; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 0.8rem; }
     .btn-copy:hover { background: #ff1a1a; }
 
+    /* OS 3 PERSONAGENS CLÁSSICOS NO RODAPÉ */
+    .gta-characters-footer {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+    }
+    .gta-char {
+      width: 45px;
+      height: 75px;
+      object-fit: contain;
+      filter: drop-shadow(0 0 6px rgba(255,0,0,0.5));
+    }
+
     footer { text-align: center; font-size: 0.75rem; color: #777; border-top: 1px solid #330808; padding-top: 15px; }
   </style>
 </head>
@@ -257,7 +252,6 @@
 
   <audio id="bg-music" src="assets/bg-music.mp3" loop preload="auto"></audio>
 
-  <!-- 1. ECRÃ DE LOGIN / REGISTO -->
   <div id="authScreen">
     <h2>BRASIL PLAY ALPHA</h2>
     <form id="authForm" onsubmit="return false;">
@@ -273,7 +267,6 @@
     <div id="mensagem"></div>
   </div>
 
-  <!-- 2. ECRÃ DO PORTAL COMPLETO -->
   <div id="siteScreen" class="hidden">
     <div class="container">
       <header>
@@ -331,8 +324,14 @@
         </section>
       </main>
 
-      <div style="display: flex; justify-content: space-between; align-items: center; padding-top: 15px; border-top: 1px solid #330808;">
+      <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; padding-top: 15px; border-top: 1px solid #330808;">
         <button class="btn-secondary" style="background: #330000; border-color: #8b0000; color: #ff9999; font-weight: bold;" onclick="tocarClick(); fazerLogout()">Terminar Sessão</button>
+        
+        <div class="gta-characters-footer">
+          <img src="https://assets.open.mp/assets/images/skins/293.png" alt="CJ" class="gta-char" onerror="this.style.display='none'">
+          <img src="https://assets.open.mp/assets/images/skins/270.png" alt="Sweet" class="gta-char" onerror="this.style.display='none'">
+          <img src="https://assets.open.mp/assets/images/skins/271.png" alt="Ryder" class="gta-char" onerror="this.style.display='none'">
+        </div>
       </div>
 
       <footer>
