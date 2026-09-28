@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - Brasil Play Alpha</title>
-    <!-- Supabase CDN oficial -->
+    <title>UCP - Brasil Play Alpha</title>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
         body {
@@ -26,61 +25,20 @@
             width: 100%;
             max-width: 400px;
         }
-        h2 {
-            text-align: center;
-            color: #ffffff;
-            margin-bottom: 20px;
-        }
-        label {
-            display: block;
-            margin-top: 15px;
-            font-size: 14px;
-        }
-        input {
-            width: 100%;
-            padding: 12px;
-            margin-top: 5px;
-            background-color: #2d2d2d;
-            border: 1px solid #444;
-            color: #fff;
-            border-radius: 4px;
-            box-sizing: border-box;
-        }
-        button {
-            width: 100%;
-            margin-top: 20px;
-            padding: 12px;
-            background-color: #007bff;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            font-size: 16px;
-            cursor: pointer;
-            font-weight: bold;
-        }
-        button:hover {
-            background-color: #0056b3;
-        }
-        .btn-secondary {
-            background-color: #28a745;
-            margin-top: 10px;
-        }
-        .btn-secondary:hover {
-            background-color: #218838;
-        }
-        #mensagem {
-            margin-top: 15px;
-            text-align: center;
-            font-weight: bold;
-            font-size: 14px;
-            word-break: break-all;
-        }
+        h2 { text-align: center; color: #ffffff; margin-bottom: 20px; }
+        label { display: block; margin-top: 15px; font-size: 14px; }
+        input { width: 100%; padding: 12px; margin-top: 5px; background-color: #2d2d2d; border: 1px solid #444; color: #fff; border-radius: 4px; box-sizing: border-box; }
+        button { width: 100%; margin-top: 20px; padding: 12px; background-color: #007bff; color: white; border: none; border-radius: 4px; font-size: 16px; cursor: pointer; font-weight: bold; }
+        button:hover { background-color: #0056b3; }
+        .btn-secondary { background-color: #28a745; margin-top: 10px; }
+        .btn-secondary:hover { background-color: #218838; }
+        #mensagem { margin-top: 15px; text-align: center; font-weight: bold; font-size: 14px; }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <h2>Brasil Play Alpha</h2>
+        <h2>Brasil Play Alpha - UCP</h2>
         <form id="authForm">
             <label for="email">E-mail:</label>
             <input type="email" id="email" required placeholder="seu_email@exemplo.com">
@@ -95,25 +53,16 @@
     </div>
 
     <script>
-        // Configuração do Supabase
         const SUPABASE_URL = 'https://yayjfnzval.supabase.co';
         const SUPABASE_ANON_KEY = 'sb_publishable_TvJJMdZBhsCdPAI0wYyjzg_g-YYZN3t';
 
-        let _supabase;
-        try {
-            const { createClient } = supabase;
-            _supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-        } catch (err) {
-            console.error('Erro ao inicializar Supabase:', err);
-        }
-
+        const { createClient } = supabase;
+        const _supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
         const mensagemDiv = document.getElementById('mensagem');
 
-        // Ação de Login
-        document.getElementById('btnLogin').addEventListener('click', async (e) => {
-            e.preventDefault();
+        // Botão de Criar Conta
+        document.getElementById('btnRegister').addEventListener('click', async () => {
             mensagemDiv.innerText = '';
-
             const email = document.getElementById('email').value.trim();
             const password = document.getElementById('password').value.trim();
 
@@ -123,31 +72,30 @@
                 return;
             }
 
-            mensagemDiv.style.color = '#ffc107';
-            mensagemDiv.innerText = 'A processar login...';
-
             try {
-                const { data, error } = await _supabase.auth.signInWithPassword({
-                    email: email,
-                    password: password,
-                });
+                const { error } = await _supabase
+                    .from('contas')
+                    .insert([{ email: email, password: password }]);
 
-                if (error) throw error;
+                if (error) {
+                    if (error.code === '23505') {
+                        throw new Error('Este e-mail já está registado.');
+                    }
+                    throw error;
+                }
 
                 mensagemDiv.style.color = '#28a745';
-                mensagemDiv.innerText = 'Login efetuado com sucesso!';
-            } catch (error) {
-                console.error('Erro no login:', error);
+                mensagemDiv.innerText = 'Conta criada com sucesso! Já pode entrar.';
+            } catch (err) {
                 mensagemDiv.style.color = '#dc3545';
-                mensagemDiv.innerText = 'Erro: ' + (error.message || error);
+                mensagemDiv.innerText = 'Erro ao criar conta: ' + err.message;
             }
         });
 
-        // Ação de Criar Conta
-        document.getElementById('btnRegister').addEventListener('click', async (e) => {
+        // Botão de Entrar (Login)
+        document.getElementById('btnLogin').addEventListener('click', async (e) => {
             e.preventDefault();
             mensagemDiv.innerText = '';
-
             const email = document.getElementById('email').value.trim();
             const password = document.getElementById('password').value.trim();
 
@@ -157,23 +105,23 @@
                 return;
             }
 
-            mensagemDiv.style.color = '#ffc107';
-            mensagemDiv.innerText = 'A criar conta...';
-
             try {
-                const { data, error } = await _supabase.auth.signUp({
-                    email: email,
-                    password: password,
-                });
+                const { data, error } = await _supabase
+                    .from('contas')
+                    .select('*')
+                    .eq('email', email)
+                    .eq('password', password)
+                    .single();
 
-                if (error) throw error;
+                if (error || !data) {
+                    throw new Error('E-mail ou palavra-passe incorretos.');
+                }
 
                 mensagemDiv.style.color = '#28a745';
-                mensagemDiv.innerText = 'Conta criada com sucesso! Verifique se recebeu confirmação ou tente entrar.';
-            } catch (error) {
-                console.error('Erro no registo:', error);
+                mensagemDiv.innerText = 'Login efetuado com sucesso! Bem-vindo ao servidor.';
+            } catch (err) {
                 mensagemDiv.style.color = '#dc3545';
-                mensagemDiv.innerText = 'Erro: ' + (error.message || error);
+                mensagemDiv.innerText = 'Erro no login: ' + err.message;
             }
         });
     </script>
