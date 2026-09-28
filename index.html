@@ -19,7 +19,7 @@
       overflow-x: hidden;
     }
 
-    /* FUNDO SVG COM PERSONAGEM FEMININA EM NEON DE BAIXA OPACIDADE */
+    /* FUNDO COM A IMAGEM DENTRO DA PASTA ASSETS COM BAIXA OPACIDADE E CONTRASTE */
     body::before {
       content: "";
       position: fixed;
@@ -27,8 +27,7 @@
       left: 0;
       width: 100vw;
       height: 100vh;
-      background-color: #030001;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 800'%3E%3Cdefs%3E%3CradialGradient id='glow' cx='50%25' cy='50%25' r='50%25'%3E%3Cstop offset='0%25' stop-color='%23ff0033' stop-opacity='0.25'/%3E%3Cstop offset='100%25' stop-color='%23030001' stop-opacity='0'/%3E%3C/radialGradient%3E%3C/defs%3E%3Crect width='800' height='800' fill='%23030001'/%3E%3Ccircle cx='400' cy='400' r='380' fill='url(%23glow)'/%3E%3Cg fill='%23ff1a1a' opacity='0.12'%3E%3Cpath d='M400,220 C370,220 350,245 350,275 C350,295 362,312 380,320 L370,390 C360,400 330,420 310,480 C300,510 290,560 280,630 L320,635 C330,580 345,520 355,490 C365,520 375,560 380,620 L420,620 C425,560 435,520 445,490 C455,520 470,580 480,635 L520,630 C510,560 500,510 490,480 C470,420 440,400 430,390 L420,320 C438,312 450,295 450,275 C450,245 430,220 400,220 Z M400,160 C422,160 440,178 440,200 C440,222 422,240 400,240 C378,240 360,222 360,200 C360,178 378,160 400,160 Z'/%3E%3C/g%3E%3C/svg%3E");
+      background: linear-gradient(rgba(3, 0, 1, 0.85), rgba(3, 0, 1, 0.85)), url('assets/background-login.jpg');
       background-size: cover;
       background-position: center;
       z-index: -1;
@@ -235,7 +234,7 @@
     .btn-copy { background: #b30000; color: #fff; border: none; padding: 8px 14px; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 0.8rem; }
     .btn-copy:hover { background: #ff1a1a; }
 
-    /* OS 3 PERSONAGENS CLÁSSICOS NO RODAPÉ */
+    /* OS 3 PERSONAGENS NO RODAPÉ */
     .gta-characters-footer {
       display: flex;
       justify-content: center;
