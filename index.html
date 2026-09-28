@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>UCP - Brasil Play Alpha</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -31,7 +32,7 @@
         button:hover { background-color: #0056b3; }
         .btn-secondary { background-color: #28a745; margin-top: 10px; }
         .btn-secondary:hover { background-color: #218838; }
-        #mensagem { margin-top: 15px; text-align: center; font-weight: bold; font-size: 14px; }
+        #mensagem { margin-top: 15px; text-align: center; font-weight: bold; font-size: 14px; word-break: break-all; }
     </style>
 </head>
 <body>
@@ -54,54 +55,47 @@
     <script>
         const SUPABASE_URL = 'https://yayjfnzval.supabase.co';
         const SUPABASE_ANON_KEY = 'sb_publishable_TvJJMdZBhsCdPAI0wYyjzg_g-YYZN3t';
+
+        const { createClient } = supabase;
+        const _supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
         const mensagemDiv = document.getElementById('mensagem');
 
-        // Criar Conta via REST API Direta
+        // Criar Conta
         document.getElementById('btnRegister').addEventListener('click', async () => {
-            mensagemDiv.innerText = 'A processar registo...';
+            mensagemDiv.innerText = 'A criar conta...';
             mensagemDiv.style.color = '#ffc107';
-            
+
             const email = document.getElementById('email').value.trim();
             const password = document.getElementById('password').value.trim();
 
             if (!email || !password) {
                 mensagemDiv.style.color = '#dc3545';
-                mensagemDiv.innerText = 'Preencha o e-mail e a palavra-passe.';
+                mensagemDiv.innerText = 'Preencha todos os campos.';
                 return;
             }
 
             try {
-                const response = await fetch(`${SUPABASE_URL}/rest/v1/contas`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'apikey': SUPABASE_ANON_KEY,
-                        'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
-                        'Prefer': 'return=representation'
-                    },
-                    body: JSON.stringify({ email, password })
-                });
+                const { data, error } = await _supabase
+                    .from('contas')
+                    .insert([{ email, password }])
+                    .select();
 
-                if (!response.ok) {
-                    const errData = await response.json();
-                    if (errData.code === '23505') {
-                        throw new Error('Este e-mail já está registado.');
-                    }
-                    throw new Error(errData.message || 'Erro ao inserir na base de dados.');
+                if (error) {
+                    throw error;
                 }
 
                 mensagemDiv.style.color = '#28a745';
-                mensagemDiv.innerText = 'Conta criada com sucesso! Já pode entrar.';
+                mensagemDiv.innerText = 'Conta criada com sucesso!';
             } catch (err) {
                 console.error(err);
                 mensagemDiv.style.color = '#dc3545';
-                mensagemDiv.innerText = 'Erro ao criar conta: ' + err.message;
+                mensagemDiv.innerText = 'Erro Registo: ' + (err.message || JSON.stringify(err));
             }
         });
 
-        // Entrar (Login) via REST API Direta
+        // Entrar (Login)
         document.getElementById('btnLogin').addEventListener('click', async () => {
-            mensagemDiv.innerText = 'A verificar login...';
+            mensagemDiv.innerText = 'A entrar...';
             mensagemDiv.style.color = '#ffc107';
 
             const email = document.getElementById('email').value.trim();
@@ -109,35 +103,31 @@
 
             if (!email || !password) {
                 mensagemDiv.style.color = '#dc3545';
-                mensagemDiv.innerText = 'Preencha o e-mail e a palavra-passe.';
+                mensagemDiv.innerText = 'Preencha todos os campos.';
                 return;
             }
 
             try {
-                const response = await fetch(`${SUPABASE_URL}/rest/v1/contas?email=eq.${encodeURIComponent(email)}&password=eq.${encodeURIComponent(password)}&select=*`, {
-                    method: 'GET',
-                    headers: {
-                        'apikey': SUPABASE_ANON_KEY,
-                        'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
-                    }
-                });
+                const { data, error } = await _supabase
+                    .from('contas')
+                    .select('*')
+                    .eq('email', email)
+                    .eq('password', password);
 
-                if (!response.ok) {
-                    throw new Error('Erro na consulta ao servidor.');
+                if (error) {
+                    throw error;
                 }
-
-                const data = await response.json();
 
                 if (!data || data.length === 0) {
                     throw new Error('E-mail ou palavra-passe incorretos.');
                 }
 
                 mensagemDiv.style.color = '#28a745';
-                mensagemDiv.innerText = 'Login efetuado com sucesso! Bem-vindo ao servidor.';
+                mensagemDiv.innerText = 'Login efetuado com sucesso!';
             } catch (err) {
                 console.error(err);
                 mensagemDiv.style.color = '#dc3545';
-                mensagemDiv.innerText = 'Erro no login: ' + err.message;
+                mensagemDiv.innerText = 'Erro Login: ' + (err.message || JSON.stringify(err));
             }
         });
     </script>
