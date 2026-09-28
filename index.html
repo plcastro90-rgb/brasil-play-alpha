@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Denúncias BPA</title>
-    <!-- Incluir o script do Supabase Client -->
+    <title>Login - Brasil Play Alpha</title>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
         body {
@@ -20,24 +19,25 @@
         }
         .container {
             background-color: #1e1e1e;
-            padding: 20px;
+            padding: 25px;
             border-radius: 8px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.6);
             width: 100%;
-            max-width: 500px;
+            max-width: 400px;
         }
         h2 {
             text-align: center;
             color: #ffffff;
+            margin-bottom: 20px;
         }
         label {
             display: block;
             margin-top: 15px;
             font-size: 14px;
         }
-        textarea, input {
+        input {
             width: 100%;
-            padding: 10px;
+            padding: 12px;
             margin-top: 5px;
             background-color: #2d2d2d;
             border: 1px solid #444;
@@ -49,79 +49,118 @@
             width: 100%;
             margin-top: 20px;
             padding: 12px;
-            background-color: #28a745;
+            background-color: #007bff;
             color: white;
             border: none;
             border-radius: 4px;
             font-size: 16px;
             cursor: pointer;
+            font-weight: bold;
         }
         button:hover {
+            background-color: #0056b3;
+        }
+        .btn-secondary {
+            background-color: #28a745;
+            margin-top: 10px;
+        }
+        .btn-secondary:hover {
             background-color: #218838;
         }
         #mensagem {
             margin-top: 15px;
             text-align: center;
             font-weight: bold;
+            font-size: 14px;
         }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <h2>Painel de Denúncias BPA</h2>
-        <form id="denunciaForm">
-            <label for="titulo">Título da Denúncia:</label>
-            <input type="text" id="titulo" required placeholder="Ex: Ocorrência na área rural">
+        <h2>Brasil Play Alpha</h2>
+        <form id="authForm">
+            <label for="email">E-mail:</label>
+            <input type="email" id="email" required placeholder="seu_email@exemplo.com">
 
-            <label for="descricao">Descrição:</label>
-            <textarea id="descricao" rows="5" required placeholder="Descreva os detalhes da denúncia..."></textarea>
+            <label for="password">Palavra-passe:</label>
+            <input type="password" id="password" required placeholder="Sua palavra-passe">
 
-            <button type="submit" id="btnEnviar">Enviar Denúncia</button>
+            <button type="submit" id="btnLogin">Entrar</button>
+            <button type="button" id="btnRegister" class="btn-secondary">Criar Conta</button>
         </form>
         <div id="mensagem"></div>
     </div>
 
     <script>
-        // Configuração oficial do Supabase para o seu projeto
         const SUPABASE_URL = 'https://yayjfnzval.supabase.co';
         const SUPABASE_ANON_KEY = 'sb_publishable_TvJJMdZBhsCdPAI0wYyjzg_g-YYZN3t';
 
         const { createClient } = supabase;
         const _supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-        const form = document.getElementById('denunciaForm');
+        const form = document.getElementById('authForm');
         const mensagemDiv = document.getElementById('mensagem');
 
-        form.addEventListener('submit', async (e) => {
+        // Ação de Login
+        document.getElementById('btnLogin').addEventListener('click', async (e) => {
             e.preventDefault();
-            const btnEnviar = document.getElementById('btnEnviar');
-            btnEnviar.disabled = true;
-            btnEnviar.innerText = 'A enviar...';
             mensagemDiv.innerText = '';
 
-            const titulo = document.getElementById('titulo').value;
-            const descricao = document.getElementById('descricao').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            if (!email || !password) {
+                mensagemDiv.style.color = '#dc3545';
+                mensagemDiv.innerText = 'Preencha o e-mail e a palavra-passe.';
+                return;
+            }
 
             try {
-                const { data, error } = await _supabase
-                    .from('Denuncias BPA')
-                    .insert([{ titulo: titulo, descricao: descricao }]);
+                const { data, error } = await _supabase.auth.signInWithPassword({
+                    email: email,
+                    password: password,
+                });
 
-                if (error) {
-                    throw error;
-                }
+                if (error) throw error;
 
                 mensagemDiv.style.color = '#28a745';
-                mensagemDiv.innerText = 'Denúncia enviada com sucesso!';
-                form.reset();
+                mensagemDiv.innerText = 'Login efetuado com sucesso! Bem-vindo.';
             } catch (error) {
-                console.error('Erro ao enviar:', error);
+                console.error('Erro no login:', error);
                 mensagemDiv.style.color = '#dc3545';
-                mensagemDiv.innerText = 'Erro ao enviar denúncia: ' + error.message;
-            } finally {
-                btnEnviar.disabled = false;
-                btnEnviar.innerText = 'Enviar Denúncia';
+                mensagemDiv.innerText = 'Erro ao entrar: ' + error.message;
+            }
+        });
+
+        // Ação de Criar Conta (Registo rápido)
+        document.getElementById('btnRegister').addEventListener('click', async (e) => {
+            e.preventDefault();
+            mensagemDiv.innerText = '';
+
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            if (!email || !password) {
+                mensagemDiv.style.color = '#dc3545';
+                mensagemDiv.innerText = 'Preencha o e-mail e a palavra-passe para registar.';
+                return;
+            }
+
+            try {
+                const { data, error } = await _supabase.auth.signUp({
+                    email: email,
+                    password: password,
+                });
+
+                if (error) throw error;
+
+                mensagemDiv.style.color = '#28a745';
+                mensagemDiv.innerText = 'Conta criada com sucesso! Já pode fazer login.';
+            } catch (error) {
+                console.error('Erro no registo:', error);
+                mensagemDiv.style.color = '#dc3545';
+                mensagemDiv.innerText = 'Erro ao registar: ' + error.message;
             }
         });
     </script>
