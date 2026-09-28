@@ -7,7 +7,7 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #121212;
+            background-color: #0d0d0d;
             color: #e0e0e0;
             margin: 0;
             padding: 0;
@@ -18,110 +18,162 @@
         }
         .hidden { display: none !important; }
 
-        /* ESTILOS DO ECRÃ DE LOGIN */
+        /* ESTILOS DO ECRÃ DE LOGIN / REGISTO */
         #authScreen {
-            background-color: #1e1e1e;
-            padding: 25px;
-            border-radius: 8px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.6);
+            background-color: #161616;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(255, 0, 0, 0.2);
+            border: 1px solid #4a0d0d;
             width: 100%;
             max-width: 380px;
         }
-        #authScreen h2 { text-align: center; color: #ffffff; margin-bottom: 20px; }
-        #authScreen label { display: block; margin-top: 15px; font-size: 14px; }
-        #authScreen input { width: 100%; padding: 12px; margin-top: 5px; background-color: #2d2d2d; border: 1px solid #444; color: #fff; border-radius: 4px; box-sizing: border-box; }
-        #authScreen button { width: 100%; margin-top: 15px; padding: 12px; background-color: #007bff; color: white; border: none; border-radius: 4px; font-size: 16px; cursor: pointer; font-weight: bold; }
-        #authScreen button:hover { background-color: #0056b3; }
-        .btn-secondary { background-color: #28a745 !important; }
-        .btn-secondary:hover { background-color: #218838 !important; }
-        #mensagem { margin-top: 15px; text-align: center; font-weight: bold; font-size: 14px; }
+        #authScreen h2 { text-align: center; color: #ff1a1a; margin-bottom: 20px; font-family: 'Impact', sans-serif; letter-spacing: 1px; }
+        #authScreen label { display: block; margin-top: 15px; font-size: 13px; color: #aaa; }
+        #authScreen input { width: 100%; padding: 12px; margin-top: 5px; background-color: #0b0b0b; border: 1px solid #444; color: #fff; border-radius: 5px; box-sizing: border-box; }
+        #authScreen button { width: 100%; margin-top: 15px; padding: 12px; background-color: #b30000; color: white; border: none; border-radius: 5px; font-size: 15px; cursor: pointer; font-weight: bold; transition: background 0.2s; }
+        #authScreen button:hover { background-color: #ff1a1a; }
+        .btn-secondary { background-color: #1b4d1b !important; }
+        .btn-secondary:hover { background-color: #28a745 !important; }
+        #mensagem { margin-top: 15px; text-align: center; font-weight: bold; font-size: 13px; }
 
-        /* ESTILOS DO SITE OFICIAL (BASEADO NO VÍDEO) */
+        /* ESTILOS DO SITE ORIGINAL DO VÍDEO */
         #siteScreen {
-            background-color: #0b0b0b;
+            background-color: #090909;
             color: #fff;
             width: 100%;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 20px;
+            padding: 15px;
             box-sizing: border-box;
+        }
+        .site-container {
+            width: 100%;
+            max-width: 750px;
+            background: linear-gradient(180deg, #150303 0%, #090303 100%);
+            border: 1px solid #520e0e;
+            border-radius: 8px;
+            box-shadow: 0 0 25px rgba(255, 0, 0, 0.15);
+            display: flex;
+            flex-direction: column;
+            min-height: 95vh;
+            box-sizing: border-box;
+            overflow: hidden;
         }
         header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            width: 100%;
-            max-width: 800px;
-            border-bottom: 2px solid #8b0000;
-            padding-bottom: 15px;
-            margin-bottom: 20px;
+            padding: 15px 20px;
+            border-bottom: 2px solid #7a1111;
+            background: #110202;
+            flex-wrap: wrap;
+            gap: 10px;
         }
-        .logo { font-weight: bold; color: #ff1a1a; font-size: 18px; }
-        .nav-tabs { display: flex; gap: 8px; flex-wrap: wrap; }
+        .logo { font-weight: 900; color: #ff1a1a; font-size: 16px; letter-spacing: 0.5px; }
+        .nav-tabs { display: flex; gap: 6px; flex-wrap: wrap; }
         .tab-btn {
-            background-color: #2a0808;
-            border: 1px solid #ff1a1a;
+            background-color: #240505;
+            border: 1px solid #800000;
             color: #fff;
-            padding: 6px 14px;
+            padding: 6px 12px;
             border-radius: 4px;
             cursor: pointer;
-            font-size: 12px;
+            font-size: 11px;
             font-weight: bold;
         }
-        .tab-btn.active, .tab-btn:hover { background-color: #ff1a1a; }
-        .sound-btn { background-color: #333; border: 1px solid #777; color: #fff; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 12px; }
+        .tab-btn.active, .tab-btn:hover { background-color: #cc0000; border-color: #ff1a1a; }
+        .sound-btn { background-color: #222; border: 1px solid #555; color: #fff; padding: 6px 10px; border-radius: 4px; cursor: pointer; font-size: 11px; }
 
-        .content-section {
-            width: 100%;
-            max-width: 800px;
-            background: #140303;
-            border: 1px solid #4a0d0d;
-            border-radius: 8px;
+        .content-area {
             padding: 20px;
-            box-sizing: border-box;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
             text-align: center;
         }
+        .section-content { width: 100%; display: flex; flex-direction: column; align-items: center; }
+
         .welcome-box {
-            background: #1f0404;
-            border: 1px solid #7a1111;
+            background: #1c0404;
+            border: 1px solid #8b0000;
             padding: 20px;
             border-radius: 6px;
-            margin-bottom: 20px;
+            width: 100%;
+            box-sizing: border-box;
+            margin-bottom: 25px;
+            box-shadow: inset 0 0 15px rgba(255,0,0,0.05);
         }
+        .welcome-box h3 { color: #ff3333; margin-top: 0; font-size: 18px; }
+        .welcome-box p { font-size: 13px; line-height: 1.5; color: #ccc; }
+
         .btn-red {
             background-color: #b30000;
             color: white;
             border: none;
-            padding: 10px 20px;
+            padding: 10px 22px;
             border-radius: 4px;
             font-weight: bold;
             cursor: pointer;
-            margin-top: 10px;
+            font-size: 13px;
             text-decoration: none;
             display: inline-block;
+            box-shadow: 0 4px 10px rgba(179,0,0,0.4);
+            margin-top: 10px;
         }
         .btn-red:hover { background-color: #ff1a1a; }
+
+        /* PERSONAGENS DO SA-MP NO RODAPÉ DO SITE (ORIGINAIS) */
+        .characters-container {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 25px 0 15px 0;
+            width: 100%;
+        }
+        .character-img {
+            width: 55px;
+            height: 95px;
+            object-fit: contain;
+            filter: drop-shadow(0 0 5px rgba(255,0,0,0.3));
+        }
+
         .ip-card {
-            background: #1a0505;
-            border: 1px solid #800000;
+            background: #140303;
+            border: 1px solid #7a1111;
             padding: 15px;
             border-radius: 6px;
-            margin-top: 15px;
+            width: 100%;
+            box-sizing: border-box;
+            margin-top: 10px;
         }
-        .ip-text { font-family: monospace; color: #00ffcc; font-size: 15px; margin: 10px 0; }
-        footer { margin-top: auto; font-size: 11px; color: #666; padding-top: 20px; text-align: center; }
+        .ip-text { font-family: monospace; color: #00ffcc; font-size: 14px; margin: 10px 0; background: #080101; padding: 8px; border-radius: 4px; border: 1px solid #330808; }
+
+        footer {
+            text-align: center;
+            font-size: 10px;
+            color: #777;
+            padding: 15px;
+            border-top: 1px solid #240505;
+            background: #0b0202;
+            width: 100%;
+            box-sizing: border-box;
+        }
     </style>
 </head>
 <body>
 
+    <!-- MÚSICA DE FUNDO -->
     <audio id="bgMusic" loop>
         <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mp3">
     </audio>
 
+    <!-- ECRÃ DE LOGIN / REGISTO -->
     <div id="authScreen">
-        <h2>Brasil Play Alpha</h2>
+        <h2>BRASIL PLAY ALPHA</h2>
         <form id="authForm" onsubmit="return false;">
             <label for="email">E-mail:</label>
             <input type="email" id="email" required placeholder="seu_email@exemplo.com">
@@ -135,52 +187,70 @@
         <div id="mensagem"></div>
     </div>
 
+    <!-- ECRÃ DO SITE COMPLETO COM O DESIGN ORIGINAL -->
     <div id="siteScreen" class="hidden">
-        <header>
-            <div class="logo">BRASIL PLAY <span style="color:#fff">ALPHA</span></div>
-            <div class="nav-tabs">
-                <button class="tab-btn active" onclick="switchTab('tabBemVindo')">Bem-Vindo</button>
-                <button class="tab-btn" onclick="switchTab('tabDownloads')">Downloads</button>
-                <button class="tab-btn" onclick="switchTab('tabServidores')">Servidores / IPs</button>
-            </div>
-            <button class="sound-btn" id="soundToggle" onclick="toggleAudio()">🔊 Som</button>
-        </header>
+        <div class="site-container">
+            <header>
+                <div class="logo">BRASIL PLAY <span style="color:#fff">ALPHA</span></div>
+                <div class="nav-tabs">
+                    <button class="tab-btn active" onclick="switchTab('tabBemVindo')">Bem-Vindo</button>
+                    <button class="tab-btn" onclick="switchTab('tabDownloads')">Downloads</button>
+                    <button class="tab-btn" onclick="switchTab('tabServidores')">Servidores / IPs</button>
+                </div>
+                <button class="sound-btn" id="soundToggle" onclick="toggleAudio()">🔊 Som</button>
+            </header>
 
-        <div id="tabBemVindo" class="content-section">
-            <div class="welcome-box">
-                <h3 style="color: #ff4d4d; margin-top:0;">Seja Bem-Vindo!</h3>
-                <p style="font-size: 13px; line-height: 1.5; color: #ddd;">
-                    Entre no nosso servidor do SA-MP e viva a melhor experiência do RP no Android. Registe-se e entre na nossa comunidade oficial no Discord!
-                </p>
-                <a href="https://discord.gg/exemplo" target="_blank" class="btn-red">Entrar no Discord</a>
+            <div class="content-area">
+                <!-- ABA 1: BEM-VINDO -->
+                <div id="tabBemVindo" class="section-content">
+                    <div class="welcome-box">
+                        <h3>Seja Bem-Vindo!</h3>
+                        <p>
+                            Conecte-se ao nosso servidor de SA-MP e viva a melhor experiência de RP no Android. Mantenha-se a regras e a dentro de tudo com o nosso Discord oficial!
+                        </p>
+                        <a href="https://discord.gg/exemplo" target="_blank" class="btn-red">Entrar no Discord</a>
+                    </div>
+                </div>
+
+                <!-- ABA 2: DOWNLOADS -->
+                <div id="tabDownloads" class="section-content hidden">
+                    <div class="welcome-box">
+                        <h3>Downloads Oficiais</h3>
+                        <p>Baixe o launcher oficial e a data modificada para jogar sem travamentos no seu dispositivo.</p>
+                        <div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-top: 15px;">
+                            <a href="#" class="btn-red" onclick="alert('A descarregar APK Launcher BPA...')">Baixar APK (Launcher BPA)</a>
+                            <a href="#" class="btn-red" onclick="alert('A descarregar Data Modificada...')">Baixar DATA Modificada</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ABA 3: SERVIDORES / IPS -->
+                <div id="tabServidores" class="section-content hidden">
+                    <div class="welcome-box">
+                        <h3>Servidores Oficiais</h3>
+                        <p>Copie o IP abaixo e adicione aos seus favoritos no Launcher.</p>
+                        <div class="ip-card">
+                            <p style="margin: 0; font-weight: bold; font-size: 13px;">Servidor - BPA Principal</p>
+                            <div class="ip-text">144.217.159.116:7777</div>
+                            <button class="btn-red" style="padding: 6px 12px; font-size: 11px;" onclick="navigator.clipboard.writeText('144.217.159.116:7777'); alert('IP copiado com sucesso!');">Copiar IP</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PERSONAGENS ORIGINAIS DO SA-MP (VISUAIS DO VÍDEO) -->
+                <div class="characters-container">
+                    <img src="https://sampwiki.blast.hk/w/images/thumb/7/70/Skin_0.png/60px-Skin_0.png" class="character-img" alt="Skin 1">
+                    <img src="https://sampwiki.blast.hk/w/images/thumb/2/22/Skin_1.png/60px-Skin_1.png" class="character-img" alt="Skin 2">
+                    <img src="https://sampwiki.blast.hk/w/images/thumb/3/36/Skin_2.png/60px-Skin_2.png" class="character-img" alt="Skin 3">
+                </div>
+
+                <button class="tab-btn" style="background:#222; margin-top:10px; width:100%; padding:10px;" onclick="fazerLogout()">Terminar Sessão</button>
             </div>
-            <button class="tab-btn" style="background:#333; margin-top:10px;" onclick="fazerLogout()">Terminar Sessão</button>
+
+            <footer>
+                © 2026 Brasil Play Alpha. Todos os direitos reservados. HÉCATE.
+            </footer>
         </div>
-
-        <div id="tabDownloads" class="content-section hidden">
-            <h3 style="color: #ff4d4d; margin-top:0;">Downloads Oficiais</h3>
-            <p style="font-size: 13px; color: #ccc;">Baixe o launcher oficial e a data modificada para jogar sem travamentos no seu dispositivo.</p>
-            <div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-top: 15px;">
-                <a href="#" class="btn-red" onclick="alert('A descarregar APK Launcher BPA...')">Baixar APK (Launcher BPA)</a>
-                <a href="#" class="btn-red" onclick="alert('A descarregar Data Modificada...')">Baixar DATA Modificada</a>
-            </div>
-            <button class="tab-btn" style="background:#333; margin-top:25px;" onclick="fazerLogout()">Terminar Sessão</button>
-        </div>
-
-        <div id="tabServidores" class="content-section hidden">
-            <h3 style="color: #ff4d4d; margin-top:0;">Servidores Oficiais</h3>
-            <p style="font-size: 13px; color: #ccc;">Copie o IP abaixo e adicione aos seus favoritos no Launcher.</p>
-            <div class="ip-card">
-                <p style="margin: 0; font-weight: bold; font-size: 14px;">Servidor 1 - RPG Principal</p>
-                <div class="ip-text">144.217.159.116:7777</div>
-                <button class="btn-red" style="padding: 6px 12px; font-size: 12px;" onclick="navigator.clipboard.writeText('144.217.159.116:7777'); alert('IP copiado com sucesso!');">Copiar IP</button>
-            </div>
-            <button class="tab-btn" style="background:#333; margin-top:25px;" onclick="fazerLogout()">Terminar Sessão</button>
-        </div>
-
-        <footer>
-            © 2026 Brasil Play Alpha. Todos os direitos reservados. MECATE.
-        </footer>
     </div>
 
     <script>
@@ -205,7 +275,6 @@
         function entrarNoSite() {
             authScreen.classList.add('hidden');
             siteScreen.classList.remove('hidden');
-            // Tenta ligar a música automaticamente ao entrar
             bgMusic.play().then(() => {
                 audioLigado = true;
                 document.getElementById('soundToggle').innerText = '🔊 Som';
@@ -225,7 +294,7 @@
         }
 
         function switchTab(tabId) {
-            document.querySelectorAll('.content-section').forEach(sec => sec.classList.add('hidden'));
+            document.querySelectorAll('.section-content').forEach(sec => sec.classList.add('hidden'));
             document.getElementById(tabId).classList.remove('hidden');
             document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
             event.target.classList.add('active');
