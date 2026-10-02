@@ -113,9 +113,9 @@
     <!-- ABA 3: CONTA / UCP -->
     <div id="tab-conta" class="tab-pane">
       
-      <!-- TELA DE LOGIN -->
+      <!-- TELA DE LOGIN / REGISTO -->
       <div id="login-box" class="auth-container">
-        <h2>ENTRAR NA UCP</h2>
+        <h2 id="auth-title">ENTRAR NA UCP</h2>
         <form onsubmit="return false;">
           <div class="input-group">
             <label>Nome da Conta (Nick)</label>
@@ -125,15 +125,25 @@
             <label>Palavra-passe</label>
             <input type="password" id="passInput" placeholder="Sua palavra-passe">
           </div>
-          <div class="input-group">
+          <div class="input-group" id="server-group-div">
             <label>Servidor</label>
             <select id="serverSelect">
               <option value="1">Servidor 1</option>
               <option value="2">Servidor 2</option>
             </select>
           </div>
-          <button class="btn-main glow-effect" onclick="tocarSomClique(); realizarLogin();">Aceder Painel</button>
+          
+          <!-- BOTÃO PRINCIPAL DINÂMICO -->
+          <button id="auth-main-btn" class="btn-main glow-effect" onclick="tocarSomClique(); executarAcaoAuth();">Aceder Painel</button>
         </form>
+
+        <!-- BOTÃO DE ALTERNÂNCIA ENTRE LOGIN E CRIAR CONTA -->
+        <div style="text-align: center; margin-top: 12px;">
+          <button id="toggle-auth-mode" onclick="tocarSomClique(); alternarModoAuth()" style="background:none; border:none; color: var(--primary-red); font-size: 0.78rem; font-weight: bold; cursor: pointer; text-decoration: underline;">
+            Não tem conta? Criar nova conta
+          </button>
+        </div>
+
         <div id="mensagem-auth" style="margin-top: 10px; font-size: 0.85rem; text-align: center;"></div>
       </div>
 
@@ -193,12 +203,12 @@
 
       <!-- MODAL / PAINEL INTERNO DE FÓRUM, CHAT E DENÚNCIAS -->
       <div id="modal-forum" class="auth-container hidden" style="margin-top: 0px; border-color: var(--primary-red);">
-        <div class="forum-modal-header">
-          <div class="forum-title-wrapper">
+        <div class="forum-modal-header" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+          <div class="forum-title-wrapper" style="display:flex; align-items:center; gap:6px;">
             <span class="forum-icon-indicator"></span>
-            <h2>CENTRAL DA COMUNIDADE</h2>
+            <h2 style="font-size:0.95rem; margin:0; color:var(--primary-red);">CENTRAL DA COMUNIDADE</h2>
           </div>
-          <button class="forum-close-btn" onclick="tocarSomClique(); fecharPainelForum()">✕</button>
+          <button class="forum-close-btn" onclick="tocarSomClique(); fecharPainelForum()" style="background:none; border:none; color:#fff; font-size:1rem; cursor:pointer;">✕</button>
         </div>
 
         <!-- ABAS DO FÓRUM/CHAT -->
@@ -217,7 +227,7 @@
         <!-- CONTEÚDO: CHAT GLOBAL -->
         <div id="f-tab-chat" class="forum-pane active">
           <div class="chat-box-messages" id="chatMessages">
-            <div class="chat-msg system-msg"><span>[Staff] Admin_Hecate:</span> Sejam bem-vindos ao Brasil Play Alpha!</div>
+            <div class="chat-msg"><span>[Staff] Admin_Hecate:</span> Sejam bem-vindos ao Brasil Play Alpha!</div>
             <div class="chat-msg"><span>[Player] Carlos123:</span> Servidor tá top demais! 🔥</div>
           </div>
           <div class="chat-input-area">
@@ -228,8 +238,8 @@
 
         <!-- CONTEÚDO: DENÚNCIAS -->
         <div id="f-tab-denuncias" class="forum-pane">
-          <div class="denuncia-card-info">
-            <p>Relate infrações, comportamentos tóxicos ou bugs diretamente à nossa equipe de moderação com provas válidas.</p>
+          <div class="denuncia-card-info" style="margin-bottom:8px; font-size:0.75rem; color:var(--text-muted);">
+            <p>Relate infrações, comportamentos tóxicos ou bugs diretamente à nossa moderação.</p>
           </div>
           <div class="input-group">
             <label>Nick do Infrator</label>
@@ -237,7 +247,7 @@
           </div>
           <div class="input-group">
             <label>Motivo e Prova (Link)</label>
-            <input type="text" id="denunciaMotivo" placeholder="Ex: Uso de Bug / DM + Link do YouTube/Imgur">
+            <input type="text" id="denunciaMotivo" placeholder="Ex: Uso de Bug / DM + Link">
           </div>
           <button class="btn-main glow-effect" style="margin-top: 4px;" onclick="tocarSomClique(); enviarDenuncia()">Transmitir Denúncia</button>
         </div>
@@ -245,25 +255,16 @@
         <!-- CONTEÚDO: FÓRUM / TÓPICOS -->
         <div id="f-tab-forum" class="forum-pane">
           <div class="forum-topic-item glow-effect">
-            <div class="topic-badge">FIXO</div>
-            <div class="topic-info">
-              <strong>Regras Gerais do Servidor</strong>
-              <span>Atualizado em Outubro/2026 • Por Staff</span>
-            </div>
+            <strong>Regras Gerais do Servidor</strong>
+            <span>Atualizado em Outubro/2026 • Por Staff</span>
           </div>
           <div class="forum-topic-item glow-effect">
-            <div class="topic-badge recruitment">VAGAS</div>
-            <div class="topic-info">
-              <strong>Recrutamento para Organizações</strong>
-              <span>Vagas abertas para Polícia, SAMU e Máfias.</span>
-            </div>
+            <strong>Recrutamento para Organizações</strong>
+            <span>Vagas abertas para Polícia, SAMU e Máfias.</span>
           </div>
           <div class="forum-topic-item glow-effect">
-            <div class="topic-badge">GUIA</div>
-            <div class="topic-info">
-              <strong>Guia de Instalação e Otimização</strong>
-              <span>Aprenda a rodar o SA-MP a 60 FPS sem travamentos.</span>
-            </div>
+            <strong>Guia de Instalação e Otimização</strong>
+            <span>Aprenda a rodar o SA-MP a 60 FPS sem travamentos.</span>
           </div>
         </div>
 
@@ -307,51 +308,39 @@
   </nav>
 
   <script>
-    /* URL DA API NO RENDER */
-    const URL_DA_API = 'https://ucp-api-bpa.onrender.com/api/login';
+    /* URL BASE DA API NO RENDER */
+    const URL_BASE_API = 'https://ucp-api-bpa.onrender.com/api';
+    let modoRegisto = false;
 
-    /* FUNÇÃO DE NOTIFICAÇÃO PERSONALIZADA (TOAST) NO TEMA */
     function mostrarAviso(mensagem) {
       const toast = document.getElementById('custom-toast');
       toast.innerText = mensagem;
       toast.classList.add('show');
-      
-      setTimeout(() => {
-        toast.classList.remove('show');
-      }, 3000);
+      setTimeout(() => { toast.classList.remove('show'); }, 3000);
     }
 
-    /* GERADOR DE SOM DE CLIQUE EM CÓDIGO (WEB AUDIO API) */
     function tocarSomClique() {
       try {
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
         const osc = audioCtx.createOscillator();
         const gainNode = audioCtx.createGain();
-        
         osc.type = 'sine';
         osc.frequency.setValueAtTime(580, audioCtx.currentTime);
         osc.frequency.exponentialRampToValueAtTime(220, audioCtx.currentTime + 0.08);
-        
         gainNode.gain.setValueAtTime(0.12, audioCtx.currentTime);
         gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.08);
-        
         osc.connect(gainNode);
         gainNode.connect(audioCtx.destination);
-        
         osc.start();
         osc.stop(audioCtx.currentTime + 0.08);
-      } catch(e) {
-        // Ignora se o navegador bloquear autoplay antes de interação
-      }
+      } catch(e) {}
     }
 
     function mudarAba(idAba, elementoBotao) {
       document.querySelectorAll('.tab-pane').forEach(aba => aba.classList.remove('active'));
       document.querySelectorAll('.nav-item').forEach(btn => btn.classList.remove('active'));
-      
       document.getElementById(idAba).classList.add('active');
       if (elementoBotao) elementoBotao.classList.add('active');
-
       document.body.className = '';
       if (idAba === 'tab-downloads') document.body.classList.add('bg-downloads');
       if (idAba === 'tab-comunidade') document.body.classList.add('bg-comunidade');
@@ -378,7 +367,28 @@
       }
     }
 
-    async function realizarLogin() {
+    function alternarModoAuth() {
+      modoRegisto = !modoRegisto;
+      const title = document.getElementById('auth-title');
+      const btn = document.getElementById('auth-main-btn');
+      const toggleBtn = document.getElementById('toggle-auth-mode');
+      const serverGroup = document.getElementById('server-group-div');
+
+      if (modoRegisto) {
+        title.innerText = 'CRIAR NOVA CONTA';
+        btn.innerText = 'Registar Conta';
+        toggleBtn.innerText = 'Já tem conta? Faça login';
+        serverGroup.style.display = 'none';
+      } else {
+        title.innerText = 'ENTRAR NA UCP';
+        btn.innerText = 'Aceder Painel';
+        toggleBtn.innerText = 'Não tem conta? Criar nova conta';
+        serverGroup.style.display = 'block';
+      }
+      document.getElementById('mensagem-auth').innerText = '';
+    }
+
+    async function executarAcaoAuth() {
       const nick = document.getElementById('userInput').value.trim();
       const pass = document.getElementById('passInput').value.trim();
       const server = document.getElementById('serverSelect').value;
@@ -391,10 +401,12 @@
       }
 
       msg.style.color = '#fff';
-      msg.innerText = 'A autenticar...';
+      msg.innerText = modoRegisto ? 'A criar conta...' : 'A autenticar...';
+
+      const endpoint = modoRegisto ? `${URL_BASE_API}/register` : `${URL_BASE_API}/login`;
 
       try {
-        const resposta = await fetch(URL_DA_API, {
+        const resposta = await fetch(endpoint, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ nick, pass, server })
@@ -403,23 +415,27 @@
         const dados = await resposta.json();
 
         if (dados.sucesso) {
-          document.getElementById('login-box').classList.add('hidden');
-          document.getElementById('painel-box').classList.remove('hidden');
-          
-          // Preenche o painel com os dados reais vindos da API
-          document.getElementById('ucp-nick').innerText = dados.usuario.nick || nick;
-          document.getElementById('ucp-id').innerText = dados.usuario.id || 'N/A';
-          document.getElementById('ucp-rg').innerText = dados.usuario.rg || 'N/A';
-          document.getElementById('ucp-dinheiro').innerText = `R$ ${(dados.usuario.dinheiro || 0).toLocaleString()}`;
-          document.getElementById('ucp-banco').innerText = `R$ ${(dados.usuario.banco || 0).toLocaleString()}`;
-          document.getElementById('ucp-level').innerText = dados.usuario.level || '1';
-          document.getElementById('ucp-org').innerText = dados.usuario.organizacao || 'Civil / Nenhum';
-          
-          mostrarAviso('Login efetuado com sucesso!');
+          if (modoRegisto) {
+            mostrarAviso('Conta criada com sucesso! Faça login.');
+            alternarModoAuth(); // Volta para a tela de login
+          } else {
+            document.getElementById('login-box').classList.add('hidden');
+            document.getElementById('painel-box').classList.remove('hidden');
+            
+            document.getElementById('ucp-nick').innerText = dados.usuario.nick || nick;
+            document.getElementById('ucp-id').innerText = dados.usuario.id || 'N/A';
+            document.getElementById('ucp-rg').innerText = dados.usuario.rg || 'N/A';
+            document.getElementById('ucp-dinheiro').innerText = `R$ ${(dados.usuario.dinheiro || 0).toLocaleString()}`;
+            document.getElementById('ucp-banco').innerText = `R$ ${(dados.usuario.banco || 0).toLocaleString()}`;
+            document.getElementById('ucp-level').innerText = dados.usuario.level || '1';
+            document.getElementById('ucp-org').innerText = dados.usuario.organizacao || 'Civil / Nenhum';
+            
+            mostrarAviso('Login efetuado com sucesso!');
+          }
           msg.innerText = '';
         } else {
           msg.style.color = '#ff1a1a';
-          msg.innerText = dados.mensagem || 'Credenciais inválidas.';
+          msg.innerText = dados.mensagem || 'Ocorreu um erro.';
         }
       } catch (erro) {
         console.error(erro);
@@ -450,7 +466,6 @@
     function mudarAbaForum(aba, elementoBotao) {
       document.querySelectorAll('.forum-pane').forEach(p => p.classList.remove('active'));
       document.querySelectorAll('.forum-tab-btn').forEach(b => b.classList.remove('active'));
-      
       document.getElementById('f-tab-' + aba).classList.add('active');
       if(elementoBotao) elementoBotao.classList.add('active');
     }
@@ -460,22 +475,22 @@
       const chatBox = document.getElementById('chatMessages');
       if(!input.value.trim()) return;
 
-      const div = document.createElement('div');
-      div.className = 'chat-msg';
-      div.innerHTML = `<span>[Você] Hécate:</span> ${input.value}`;
-      chatBox.appendChild(div);
+      const msgDiv = document.createElement('div');
+      msgDiv.className = 'chat-msg';
+      msgDiv.innerHTML = `<span>[Você]:</span> ${input.value}`;
+      chatBox.appendChild(msgDiv);
       input.value = '';
       chatBox.scrollTop = chatBox.scrollHeight;
     }
 
     function enviarDenuncia() {
-      const nick = document.getElementById('denunciaNick').value;
-      const motivo = document.getElementById('denunciaMotivo').value;
+      const nick = document.getElementById('denunciaNick').value.trim();
+      const motivo = document.getElementById('denunciaMotivo').value.trim();
       if(!nick || !motivo) {
-        mostrarAviso("Preencha todos os campos da denúncia!");
+        mostrarAviso('Preencha os campos da denúncia!');
         return;
       }
-      mostrarAviso("Denúncia enviada com sucesso para a moderação!");
+      mostrarAviso('Denúncia enviada com sucesso à moderação.');
       document.getElementById('denunciaNick').value = '';
       document.getElementById('denunciaMotivo').value = '';
     }
