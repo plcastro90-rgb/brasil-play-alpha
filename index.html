@@ -31,6 +31,8 @@
       justify-content: center;
       overflow-x: hidden;
       padding-bottom: 90px;
+      border: none !important;
+      outline: none !important;
     }
 
     body::before {
@@ -47,7 +49,18 @@
       pointer-events: none;
     }
 
-    /* CAMADA DE PARTICULAS SVG MAIORES E MAIS DETALHADAS */
+    body.bg-downloads::before {
+      background: linear-gradient(rgba(5, 0, 1, 0.8), rgba(5, 0, 1, 0.9)), url('assets/image_download_background.jpg');
+      background-size: cover;
+      background-position: center;
+    }
+
+    body.bg-comunidade::before {
+      background: linear-gradient(rgba(5, 0, 1, 0.85), rgba(5, 0, 1, 0.92)), url('assets/image_comunidade_background.jpg');
+      background-size: cover;
+      background-position: center;
+    }
+
     .particles-bg {
       position: fixed;
       top: 0;
@@ -85,6 +98,9 @@
       margin: 0 auto;
       position: relative;
       z-index: 1;
+      background: transparent;
+      border: none !important;
+      box-shadow: none !important;
     }
 
     .app-header {
@@ -94,6 +110,12 @@
       padding: 12px 0;
       margin-bottom: 5px;
       width: 100%;
+    }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 6px;
     }
 
     .online-counter-badge {
@@ -107,6 +129,27 @@
       display: flex;
       align-items: center;
       gap: 6px;
+    }
+
+    .btn-music-toggle {
+      background: rgba(139, 0, 0, 0.2);
+      border: 1px solid var(--border-red);
+      color: #fff;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-music-toggle.muted {
+      border-color: #555;
+      color: #777;
+      background: rgba(0, 0, 0, 0.4);
     }
 
     .pulse-dot {
@@ -123,41 +166,12 @@
       100% { opacity: 0.3; transform: scale(0.9); }
     }
 
-    .hero-banner, .server-card, .auth-container, .ucp-profile-card, .bloco-titulo-canal {
-      position: relative;
-      overflow: hidden;
-    }
-
-    .hero-banner::after, .auth-container::after, .bloco-titulo-canal::after {
-      content: "";
-      position: absolute;
-      top: -50%;
-      left: -50%;
-      width: 200%;
-      height: 200%;
-      background: repeating-linear-gradient(
-        45deg,
-        transparent,
-        transparent 15px,
-        rgba(255, 26, 26, 0.04) 15px,
-        rgba(255, 26, 26, 0.04) 30px
-      );
-      animation: moveStripes 20s linear infinite;
-      pointer-events: none;
-    }
-
-    @keyframes moveStripes {
-      0% { transform: translate(0, 0); }
-      100% { transform: translate(50px, 50px); }
-    }
-
     .hero-banner {
       background: linear-gradient(135deg, #1f0303, #0a0101);
-      border: 2px solid var(--dark-red);
+      border: 1px solid var(--dark-red);
       border-radius: 14px;
       padding: 20px 16px;
       text-align: center;
-      box-shadow: 0 0 20px rgba(139, 0, 0, 0.3);
       margin-bottom: 15px;
       width: 100%;
     }
@@ -189,26 +203,10 @@
       font-size: 0.85rem;
       cursor: pointer;
       width: 100%;
-      box-shadow: 0 4px 15px rgba(255,26,26,0.4);
       text-transform: uppercase;
       letter-spacing: 1px;
       position: relative;
-      overflow: hidden;
-    }
-
-    .btn-main::before {
-      content: '';
-      position: absolute;
-      top: 0; left: -100%;
-      width: 100%; height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.25), transparent);
-      animation: buttonShine 3s ease-in-out infinite;
-    }
-
-    @keyframes buttonShine {
-      0% { left: -100%; }
-      20% { left: 100%; }
-      100% { left: 100%; }
+      z-index: 5;
     }
 
     .section-title {
@@ -217,6 +215,54 @@
       color: #fff;
       margin: 15px 0 8px 2px;
       width: 100%;
+    }
+
+    /* ESTILO DOS ANÚNCIOS DA COMUNIDADE (NÃO CLICÁVEIS) */
+    .announcement-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border-red);
+      border-radius: 12px;
+      padding: 14px;
+      margin-bottom: 12px;
+      width: 100%;
+      pointer-events: none; /* Garante que não seja clicável */
+      box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+    }
+
+    .announcement-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+      border-bottom: 1px solid rgba(139,0,0,0.3);
+      padding-bottom: 6px;
+    }
+
+    .announcement-author {
+      font-size: 0.75rem;
+      font-weight: bold;
+      color: var(--primary-red);
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .announcement-date {
+      font-size: 0.65rem;
+      color: var(--text-muted);
+    }
+
+    .announcement-title {
+      font-size: 0.85rem;
+      font-weight: bold;
+      color: #fff;
+      margin-bottom: 6px;
+    }
+
+    .announcement-text {
+      font-size: 0.75rem;
+      color: #ccc;
+      line-height: 1.4;
     }
 
     .server-card {
@@ -274,15 +320,15 @@
       font-size: 0.7rem;
       font-weight: bold;
       cursor: pointer;
-      text-decoration: none;
+      position: relative;
+      z-index: 5;
     }
 
     .auth-container {
       background: var(--card-bg);
-      border: 2px solid var(--dark-red);
+      border: 1px solid var(--dark-red);
       border-radius: 14px;
       padding: 18px;
-      box-shadow: 0 0 25px rgba(255,0,0,0.2);
       width: 100%;
       margin-top: 10px;
     }
@@ -307,7 +353,7 @@
       margin-bottom: 4px;
     }
 
-    .input-group input, .input-group select {
+    .input-group input, .input-group select, .input-group textarea {
       width: 100%;
       padding: 10px;
       background: rgba(5, 0, 1, 0.9);
@@ -315,6 +361,7 @@
       color: #fff;
       border-radius: 8px;
       font-size: 0.85rem;
+      font-family: inherit;
     }
 
     #mensagem-auth {
@@ -416,69 +463,92 @@
       background: rgba(139,0,0,0.2);
     }
 
-    /* ESTILOS DO CANAL DE ANÚNCIOS (DISCORD) */
-    .bloco-titulo-canal {
-      background: linear-gradient(135deg, #1f0303, #0a0101);
-      border: 2px solid var(--dark-red);
-      border-radius: 14px;
-      padding: 16px;
+    .forum-section {
+      background: rgba(8, 1, 2, 0.95);
+      border: 1px solid var(--dark-red);
+      border-radius: 10px;
+      padding: 12px;
       margin-bottom: 12px;
-      text-align: center;
-      box-shadow: 0 0 15px rgba(139, 0, 0, 0.2);
+      width: 100%;
     }
 
-    .bloco-titulo-canal h2 {
-      color: var(--primary-red);
-      font-size: 1rem;
-      font-weight: 900;
-      margin-bottom: 4px;
+    .media-tools {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 10px;
+      flex-wrap: wrap;
     }
 
-    .bloco-titulo-canal p {
-      color: #aaa;
-      font-size: 0.75rem;
+    .btn-media {
+      background: #150303;
+      border: 1px solid var(--border-red);
+      color: #ccc;
+      padding: 6px 10px;
+      border-radius: 6px;
+      font-size: 0.7rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 4px;
     }
 
-    #container-anuncios {
+    .chat-box-container {
+      background: #030001;
+      border: 1px solid var(--border-red);
+      border-radius: 8px;
+      height: 160px;
       display: flex;
       flex-direction: column;
-      gap: 12px;
-      width: 100%;
+      overflow: hidden;
+      margin-top: 8px;
     }
 
-    .anuncio-card {
-      background: var(--card-bg);
-      border: 1px solid var(--border-red);
-      border-radius: 12px;
-      padding: 14px;
-      box-shadow: 0 4px 12px rgba(255, 26, 26, 0.05);
-      width: 100%;
-    }
-
-    .anuncio-cabecalho {
+    .chat-messages {
+      flex: 1;
+      padding: 8px;
+      overflow-y: auto;
+      font-size: 0.75rem;
       display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 8px;
-      font-size: 0.75rem;
+      flex-direction: column;
+      gap: 6px;
     }
 
-    .anuncio-tempo {
-      color: var(--text-muted);
-      font-size: 0.7rem;
+    .chat-msg {
+      background: rgba(255,26,26,0.1);
+      border-left: 2px solid var(--primary-red);
+      padding: 4px 8px;
+      border-radius: 0 4px 4px 0;
     }
 
-    .anuncio-corpo h3 {
-      font-size: 0.85rem;
-      font-weight: 800;
-      margin-bottom: 5px;
+    .chat-msg.admin {
+      background: rgba(0,255,100,0.1);
+      border-left-color: #00ff64;
+    }
+
+    .chat-input-area {
+      display: flex;
+      border-top: 1px solid var(--border-red);
+      background: #080000;
+    }
+
+    .chat-input-area input {
+      flex: 1;
+      background: transparent;
+      border: none;
+      padding: 8px;
       color: #fff;
+      font-size: 0.75rem;
+      outline: none;
     }
 
-    .anuncio-corpo p {
+    .chat-input-area button {
+      background: var(--dark-red);
+      border: none;
+      color: white;
+      padding: 0 12px;
+      font-weight: bold;
       font-size: 0.75rem;
-      color: #ccc;
-      line-height: 1.4;
+      cursor: pointer;
     }
 
     .floating-nav {
@@ -488,13 +558,14 @@
       transform: translateX(-50%);
       width: 100%;
       max-width: 440px;
-      background: rgba(10, 1, 2, 0.95);
+      background: rgba(10, 1, 2, 0.98);
       border-top: 1px solid var(--border-red);
       display: flex;
       justify-content: space-around;
-      padding: 8px 0;
+      padding: 10px 0;
       backdrop-filter: blur(10px);
-      z-index: 1000;
+      z-index: 999999;
+      pointer-events: auto !important;
     }
 
     .nav-item {
@@ -508,19 +579,22 @@
       font-weight: bold;
       cursor: pointer;
       gap: 3px;
+      pointer-events: auto !important;
+      padding: 6px 12px;
     }
 
     .nav-item svg {
-      width: 18px;
-      height: 18px;
+      width: 22px;
+      height: 22px;
       fill: currentColor;
+      pointer-events: none;
     }
 
     .nav-item.active, .nav-item:hover {
       color: var(--primary-red);
     }
 
-    .tab-pane { display: none; width: 100%; }
+    .tab-pane { display: none; width: 100%; position: relative; padding-bottom: 20px; }
     .tab-pane.active { display: block; }
 
     .footer-brand {
@@ -528,6 +602,8 @@
       margin-top: 20px;
       padding-bottom: 10px;
       width: 100%;
+      position: relative;
+      z-index: 2;
     }
     .brand-logo-text {
       font-weight: 900;
@@ -536,28 +612,42 @@
       color: #fff;
     }
     .brand-logo-text span { color: var(--primary-red); }
+
+    .floating-character {
+      display: block;
+      margin: 15px auto 5px auto;
+      max-height: 190px;
+      width: auto;
+      object-fit: contain;
+      pointer-events: none;
+      opacity: 0.95;
+      filter: drop-shadow(0 5px 15px rgba(255, 26, 26, 0.4));
+      position: relative;
+      z-index: 1;
+    }
   </style>
 </head>
 <body>
 
-  <!-- PARTÍCULAS E FLOCOS SVG MAIORES E DETALHADOS AO FUNDO -->
+  <audio id="bgMusic" src="assets/bg-music.mp3" loop autoplay></audio>
+
   <svg class="particles-bg" xmlns="http://www.w3.org/2000/svg">
-    <polygon class="particle-star" points="15,5 18,12 25,15 18,18 15,25 12,18 5,15 12,12" style="transform: scale(0.8); animation-duration: 7s; animation-delay: 0s;" cx="15%" />
-    <polygon class="particle-star" points="15,5 18,12 25,15 18,18 15,25 12,18 5,15 12,12" style="transform: scale(1.2); animation-duration: 11s; animation-delay: 2s;" cx="45%" />
-    <polygon class="particle-star" points="15,5 18,12 25,15 18,18 15,25 12,18 5,15 12,12" style="transform: scale(0.6); animation-duration: 9s; animation-delay: 4s;" cx="80%" />
-    <circle class="particle-circle" cx="20%" cy="0" r="6" style="animation-duration: 8s; animation-delay: 1s;" />
-    <circle class="particle-circle" cx="60%" cy="0" r="8" style="animation-duration: 13s; animation-delay: 3s;" />
-    <circle class="particle-circle" cx="85%" cy="0" r="5" style="animation-duration: 10s; animation-delay: 2.5s;" />
-    <circle class="particle-circle" cx="35%" cy="0" r="7" style="animation-duration: 9s; animation-delay: 0.5s;" />
+    <polygon class="particle-star" points="15,5 18,12 25,15 18,18 15,25 12,18 5,15 12,12" style="transform: scale(0.8); animation-duration: 7s;" cx="15%" />
+    <polygon class="particle-star" points="15,5 18,12 25,15 18,18 15,25 12,18 5,15 12,12" style="transform: scale(1.2); animation-duration: 11s;" cx="45%" />
+    <circle class="particle-circle" cx="20%" cy="0" r="6" style="animation-duration: 8s;" />
+    <circle class="particle-circle" cx="60%" cy="0" r="8" style="animation-duration: 13s;" />
   </svg>
 
   <div class="wrapper">
     
     <header class="app-header">
       <div style="font-weight: 900; letter-spacing: 1px; font-size: 0.9rem;">BRASIL PLAY <span style="color:var(--primary-red)">ALPHA</span></div>
-      <div class="online-counter-badge">
-        <span class="pulse-dot"></span>
-        <span id="total-online">320</span> ONLINE
+      <div class="header-right">
+        <button id="musicToggleBtn" class="btn-music-toggle" onclick="toggleMusica()" title="Ligar/Desligar Música">🎵</button>
+        <div class="online-counter-badge">
+          <span class="pulse-dot"></span>
+          <span id="total-online">320</span> ONLINE
+        </div>
       </div>
     </header>
 
@@ -566,7 +656,7 @@
       <div class="hero-banner">
         <h1>VENHA FAZER PARTE <span>DESTA FAMÍLIA</span></h1>
         <p>Mergulhe no mundo virtual do SA-MP RPG. Adrenalina e diversão sem limites no seu telemóvel.</p>
-        <button class="btn-main" onclick="mudarAba('tab-downloads')">Baixar Agora</button>
+        <button class="btn-main" onclick="mudarAba('tab-downloads', document.querySelectorAll('.nav-item')[1])">Baixar Agora</button>
       </div>
 
       <div class="section-title">Servidores Oficiais</div>
@@ -592,6 +682,8 @@
           <button class="btn-forum" onclick="copiarIP('ip-srv-2')">Copiar IP</button>
         </div>
       </div>
+
+      <img src="assets/image_inicio.png" alt="Início" class="floating-character">
     </div>
 
     <!-- ABA 2: DOWNLOADS -->
@@ -625,7 +717,7 @@
               <option value="2">Servidor 2</option>
             </select>
           </div>
-          <button class="btn-main" onclick="realizarLogin()">Aceder Painel</button>
+          <button class="btn-main" onclick="realizarLogin()">Aceder Site</button>
         </form>
         <div id="mensagem-auth"></div>
       </div>
@@ -668,7 +760,7 @@
         <div class="inventory-grid">
           <div class="inventory-slot item" title="Telemóvel">📱</div>
           <div class="inventory-slot item" title="Rádio">📻</div>
-          <div class="inventory-slot item" title="Colete">🛡️</div>
+          <div class="inventory-slot item" title="Colete">🛡</div>
           <div class="inventory-slot item" title="Arma">🔫</div>
           <div class="inventory-slot"></div>
           <div class="inventory-slot"></div>
@@ -676,22 +768,102 @@
           <div class="inventory-slot"></div>
         </div>
 
+        <button class="btn-main" style="background: linear-gradient(135deg, #8b0000, #b30000); margin-bottom: 8px;" onclick="alternarPainelForum()">Fórum / Denúncias & Chat</button>
+
+        <div id="forum-painel" class="forum-section hidden">
+          <h3 style="color: var(--primary-red); font-size: 0.9rem; margin-bottom: 8px;">Criar Denúncia / Contato</h3>
+          
+          <div class="input-group">
+            <label>Assunto / Título</label>
+            <input type="text" id="denuncia-titulo" placeholder="Ex: Denúncia contra @Player_Exemplo">
+          </div>
+
+          <div class="input-group">
+            <label>Mensagem (Suporte a emojis 😊 e menções @)</label>
+            <textarea id="denuncia-texto" rows="3" placeholder="Descreva o ocorrido..."></textarea>
+          </div>
+
+          <div class="media-tools">
+            <button class="btn-media" onclick="alert('Selecione foto/print da galeria')">📷 Foto</button>
+            <button class="btn-media" onclick="alert('Gravando áudio...')">🎙 Áudio</button>
+            <button class="btn-media" onclick="alert('Selecione vídeo da galeria')">🎥 Vídeo</button>
+            <button class="btn-media" onclick="inserirEmoji('🔥')">🔥 Emoji</button>
+          </div>
+
+          <button class="btn-main" style="padding: 8px; font-size: 0.75rem; margin-bottom: 12px;" onclick="enviarDenuncia()">Enviar Denúncia</button>
+
+          <hr style="border:0; border-top:1px solid var(--border-red); margin: 10px 0;">
+
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+            <span style="font-size: 0.75rem; font-weight: bold; color: #fff;">Chat com a Staff</span>
+            <span id="status-chat-badge" style="font-size: 0.65rem; color: #ff4d4d; background: rgba(255,0,0,0.1); padding: 2px 6px; border-radius: 4px;">Aguardando Admin...</span>
+          </div>
+
+          <div id="chat-container-wrapper" style="opacity: 0.5; pointer-events: none;">
+            <div class="chat-box-container">
+              <div class="chat-messages" id="chat-msgs-list">
+                <div class="chat-msg">Sistema: Sua denúncia foi enviada. Aguarde um Administrador reivindicar.</div>
+              </div>
+              <div class="chat-input-area">
+                <input type="text" id="chat-input-text" placeholder="Digite sua mensagem...">
+                <button onclick="enviarMensagemChat()">Enviar</button>
+              </div>
+            </div>
+          </div>
+          
+          <button class="btn-forum" style="width: 100%; margin-top: 8px; background: #03200a; border-color: #00ff64; color: #00ff64;" onclick="simularStaffReivindicou()">[DEV] Simular Admin Reivindicando</button>
+        </div>
+
         <button class="btn-main" style="background:#330000; border:1px solid var(--dark-red); margin-top: 5px;" onclick="realizarLogout()">Terminar Sessão</button>
       </div>
 
+      <img src="assets/image_conta.png" alt="Conta" class="floating-character">
+
     </div>
 
-    <!-- ABA 4: COMUNIDADE / CANAL DE ANÚNCIOS (DINÂMICO VIA JSON) -->
+    <!-- ABA 4: COMUNIDADE / ANÚNCIOS (NÃO CLICÁVEL) -->
     <div id="tab-loja" class="tab-pane">
-      <div class="bloco-titulo-canal">
-        <h2>Canal de Anúncios</h2>
+      <div class="hero-banner" style="margin-bottom: 12px;">
+        <h2 style="color:var(--primary-red); margin-top:0;">Canal de Anúncios</h2>
         <p>Acompanhe os comunicados oficiais da administração e atualizações do servidor.</p>
       </div>
 
-      <!-- Container onde os anúncios do anuncios.json serão injetados -->
-      <div id="container-anuncios">
-        <p style="text-align: center; color: #888; font-size: 0.8rem; padding: 20px;">A carregar anúncios...</p>
+      <!-- ANÚNCIO 1 -->
+      <div class="announcement-card">
+        <div class="announcement-header">
+          <span class="announcement-author">👑 [Direção] Hécate</span>
+          <span class="announcement-date">Hoje, 12:40</span>
+        </div>
+        <div class="announcement-title">Atualização Geral da DATA e Otimização</div>
+        <div class="announcement-text">
+          A nova versão da nossa DATA otimizada já está disponível na aba de Downloads! Foram corrigidos bugs de crash em aparelhos intermediários e melhorado o desempenho geral.
+        </div>
       </div>
+
+      <!-- ANÚNCIO 2 -->
+      <div class="announcement-card">
+        <div class="announcement-header">
+          <span class="announcement-author">🛡 [Coordenação] Staff BPA</span>
+          <span class="announcement-date">Ontem, 20:15</span>
+        </div>
+        <div class="announcement-title">Abertura de Vagas para a moderação</div>
+        <div class="announcement-text">
+          O formulário para recrutamento de novos ajudantes e moderadores está aberto em nosso servidor oficial. Mantenha seu histórico limpo para participar!
+        </div>
+      </div>
+
+      <!-- ANÚNCIO 3 -->
+      <div class="announcement-card">
+        <div class="announcement-header">
+          <span class="announcement-author">📢 [Sistema] Brasil Play Alpha</span>
+          <span class="announcement-date">28/09/2026</span>
+        </div>
+        <div class="announcement-title">Regras do Servidor Atualizadas</div>
+        <div class="announcement-text">
+          Lembramos a todos os jogadores que o uso de modificações de terceiros não autorizadas resultará em banimento permanente da UCP. Jogue limpo e divirta-se!
+        </div>
+      </div>
+
     </div>
 
     <div class="footer-brand">
@@ -701,6 +873,7 @@
 
   </div>
 
+  <!-- BARRA DE NAVEGAÇÃO INFERIOR FIXA -->
   <nav class="floating-nav">
     <button class="nav-item active" onclick="mudarAba('tab-inicio', this)">
       <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
@@ -708,103 +881,162 @@
     </button>
     <button class="nav-item" onclick="mudarAba('tab-downloads', this)">
       <svg viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
-      Baixar
+      Downloads
     </button>
     <button class="nav-item" onclick="mudarAba('tab-conta', this)">
       <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
-      Conta
+      Site
     </button>
     <button class="nav-item" onclick="mudarAba('tab-loja', this)">
-      <svg viewBox="0 0 24 24"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994.021-.041.001-.09-.041-.106a13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.927 1.793 8.18 1.793 12.061 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.4-4.422-.458-8.944-3.586-13.652a.07.07 0 0 0-.032-.029zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg>
+      <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm-5 14H4v-4h11v4zm0-5H4V9h11v4zm5 5h-4V9h4v9z"/></svg>
       Comunidade
     </button>
   </nav>
 
   <script>
-    // Função para alternar as abas mantendo o seu comportamento original
-    function mudarAba(idTab, elementoBtn) {
-      document.querySelectorAll('.tab-pane').forEach(pane => {
-        pane.classList.remove('active');
-      });
-      document.getElementById(idTab).classList.add('active');
+    let chatLiberado = false;
 
-      document.querySelectorAll('.floating-nav .nav-item').forEach(btn => {
+    document.addEventListener('DOMContentLoaded', () => {
+      const audio = document.getElementById('bgMusic');
+      audio.volume = 0.5;
+      audio.play().catch(() => {
+        document.getElementById('musicToggleBtn').classList.add('muted');
+        document.getElementById('musicToggleBtn').innerText = '🔇';
+      });
+    });
+
+    function toggleMusica() {
+      const audio = document.getElementById('bgMusic');
+      const btn = document.getElementById('musicToggleBtn');
+      if (audio.paused) {
+        audio.play();
+        btn.classList.remove('muted');
+        btn.innerText = '🎵';
+      } else {
+        audio.pause();
+        btn.classList.add('muted');
+        btn.innerText = '🔇';
+      }
+    }
+
+    function mudarAba(tabId, elementoNav) {
+      document.querySelectorAll('.tab-pane').forEach(tab => {
+        tab.classList.remove('active');
+      });
+      const abaAlvo = document.getElementById(tabId);
+      if(abaAlvo) abaAlvo.classList.add('active');
+
+      document.querySelectorAll('.nav-item').forEach(btn => {
         btn.classList.remove('active');
       });
-      if (elementoBtn) {
-        elementoBtn.classList.add('active');
+      if(elementoNav) {
+        elementoNav.classList.add('active');
       }
+
+      document.body.classList.remove('bg-downloads', 'bg-comunidade');
+      if (tabId === 'tab-downloads') {
+        document.body.classList.add('bg-downloads');
+      } else if (tabId === 'tab-loja') {
+        document.body.classList.add('bg-comunidade');
+      }
+      
+      window.scrollTo(0, 0);
     }
 
     function copiarIP(idElemento) {
-      const ip = document.getElementById(idElemento).innerText;
-      navigator.clipboard.writeText(ip).then(() => {
-        alert('IP copiado com sucesso: ' + ip);
+      const ipTexto = document.getElementById(idElemento).innerText;
+      navigator.clipboard.writeText(ipTexto).then(() => {
+        alert('IP copiado: ' + ipTexto);
+      }).catch(err => {
+        console.error('Erro ao copiar', err);
       });
     }
 
-    // Funções fictícias do painel para manter a integridade do seu script
     function realizarLogin() {
-      const nick = document.getElementById('userInput').value;
-      if(!nick) {
-        document.getElementById('mensagem-auth').innerText = "Insira o seu nick!";
-        document.getElementById('mensagem-auth').style.color = "#ff1a1a";
+      const user = document.getElementById('userInput').value.trim();
+      const pass = document.getElementById('passInput').value.trim();
+      const msg = document.getElementById('mensagem-auth');
+
+      if (!user || !pass) {
+        msg.style.color = '#ff4d4d';
+        msg.innerText = 'Preencha todos os campos!';
         return;
       }
-      document.getElementById('login-box').classList.add('hidden');
-      document.getElementById('painel-box').classList.remove('hidden');
-      document.getElementById('ucp-nick').innerText = nick;
+
+      msg.style.color = '#00ff64';
+      msg.innerText = 'Autenticado com sucesso!';
+      
+      setTimeout(() => {
+        document.getElementById('login-box').classList.add('hidden');
+        document.getElementById('painel-box').classList.remove('hidden');
+        document.getElementById('ucp-nick').innerText = user;
+      }, 500);
     }
 
     function realizarLogout() {
-      document.getElementById('painel-box').classList.add('hidden');
       document.getElementById('login-box').classList.remove('hidden');
+      document.getElementById('painel-box').classList.add('hidden');
+      document.getElementById('userInput').value = '';
+      document.getElementById('passInput').value = '';
+      document.getElementById('mensagem-auth').innerText = '';
     }
 
-    // Função para carregar os anúncios dinamicamente do ficheiro anuncios.json em tempo real
-    async function carregarAnunciosDiscord() {
-      const container = document.getElementById('container-anuncios');
-      if (!container) return;
+    function alternarPainelForum() {
+      const painel = document.getElementById('forum-painel');
+      painel.classList.toggle('hidden');
+    }
 
-      try {
-        // Adiciona um timestamp (?t=...) para impedir cache agressiva do GitHub Pages
-        const resposta = await fetch('anuncios.json?t=' + new Date().getTime());
-        
-        if (!resposta.ok) {
-          throw new Error('Não foi possível carregar os dados.');
-        }
+    function inserirEmoji(emoji) {
+      const txt = document.getElementById('denuncia-texto');
+      txt.value += emoji;
+    }
 
-        const anuncios = await resposta.json();
-        container.innerHTML = ''; // Limpa o aviso de carregamento
-
-        anuncios.forEach(anuncio => {
-          const card = document.createElement('div');
-          card.classList.add('anuncio-card');
-
-          card.innerHTML = `
-            <div class="anuncio-cabecalho">
-              <span style="color: ${anuncio.corCargo || '#ff1a1a'}; font-weight: bold;">👑 ${anuncio.cargo}</span>
-              <span class="anuncio-tempo">${anuncio.tempo}</span>
-            </div>
-            <div class="anuncio-corpo">
-              <h3>${anuncio.titulo}</h3>
-              <p>${anuncio.mensagem}</p>
-            </div>
-          `;
-
-          container.appendChild(card);
-        });
-
-      } catch (erro) {
-        console.error("Erro ao puxar os anúncios:", erro);
-        container.innerHTML = '<p style="color: #ff1a1a; text-align: center; font-size: 0.75rem;">Erro ao carregar os anúncios do canal.</p>';
+    function enviarDenuncia() {
+      const titulo = document.getElementById('denuncia-titulo').value.trim();
+      const texto = document.getElementById('denuncia-texto').value.trim();
+      if (!titulo || !texto) {
+        alert('Preencha o título e a descrição da denúncia!');
+        return;
       }
+      alert('Sua denúncia foi registrada com sucesso no sistema!');
+      document.getElementById('denuncia-titulo').value = '';
+      document.getElementById('denuncia-texto').value = '';
     }
 
-    // Executa a leitura dos anúncios assim que a página é aberta
-    document.addEventListener("DOMContentLoaded", () => {
-      carregarAnunciosDiscord();
-    });
+    function simularStaffReivindicou() {
+      chatLiberado = true;
+      const badge = document.getElementById('status-chat-badge');
+      const wrapper = document.getElementById('chat-container-wrapper');
+      const listaMsgs = document.getElementById('chat-msgs-list');
+
+      badge.style.color = '#00ff64';
+      badge.style.background = 'rgba(0,255,100,0.1)';
+      badge.innerText = 'Atendimento Reivindicado por [Admin]';
+
+      wrapper.style.opacity = '1';
+      wrapper.style.pointerEvents = 'auto';
+
+      const novaMsg = document.createElement('div');
+      novaMsg.className = 'chat-msg admin';
+      novaMsg.innerHTML = '<strong>[Admin] Support:</strong> Olá! Reivindiquei sua denúncia. Como posso ajudar?';
+      listaMsgs.appendChild(novaMsg);
+      listaMsgs.scrollTop = listaMsgs.scrollHeight;
+    }
+
+    function enviarMensagemChat() {
+      if (!chatLiberado) return;
+      const input = document.getElementById('chat-input-text');
+      const texto = input.value.trim();
+      if (!texto) return;
+
+      const listaMsgs = document.getElementById('chat-msgs-list');
+      const msgUser = document.createElement('div');
+      msgUser.className = 'chat-msg';
+      msgUser.innerHTML = `<strong>Você:</strong> ${texto}`;
+      listaMsgs.appendChild(msgUser);
+      input.value = '';
+      listaMsgs.scrollTop = listaMsgs.scrollHeight;
+    }
   </script>
 </body>
 </html>
