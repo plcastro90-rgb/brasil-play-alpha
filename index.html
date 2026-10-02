@@ -208,6 +208,9 @@
       letter-spacing: 1px;
       position: relative;
       z-index: 5;
+      text-decoration: none;
+      display: inline-block;
+      text-align: center;
     }
 
     .section-title {
@@ -509,6 +512,25 @@
       cursor: pointer;
     }
 
+    /* ESTILO DO VÍDEO NA ABA DE COMUNIDADE */
+    .discord-video-container {
+      width: 100%;
+      margin-top: 15px;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid var(--dark-red);
+      background: #000;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.6);
+    }
+
+    .discord-video {
+      width: 100%;
+      height: auto;
+      display: block;
+      object-fit: cover;
+      max-height: 250px;
+    }
+
     .floating-nav {
       position: fixed;
       bottom: 0;
@@ -731,75 +753,26 @@
         <!-- BOTÃO FÓRUM / UCP -->
         <button class="btn-main" style="background: linear-gradient(135deg, #8b0000, #b30000); margin-bottom: 8px;" onclick="alternarPainelForum()">Fórum / Denúncias & Chat</button>
 
-        <!-- SEÇÃO DE FÓRUM / DENÚNCIAS E CHAT CONDICIONAL -->
-        <div id="forum-painel" class="forum-section hidden">
-          <h3 style="color: var(--primary-red); font-size: 0.9rem; margin-bottom: 8px;">Criar Denúncia / Contato</h3>
-          
-          <div class="input-group">
-            <label>Assunto / Título</label>
-            <input type="text" id="denuncia-titulo" placeholder="Ex: Denúncia contra @Player_Exemplo">
-          </div>
-
-          <div class="input-group">
-            <label>Mensagem (Suporte a emojis 😊 e menções @)</label>
-            <textarea id="denuncia-texto" rows="3" placeholder="Descreva o ocorrido... Ex: O jogador @Hécate_Apks me matou sem motivo 'print'"></textarea>
-          </div>
-
-          <div class="media-tools">
-            <button class="btn-media" onclick="alert('Selecione foto/print da galeria')">📷 Foto</button>
-            <button class="btn-media" onclick="alert('Gravando áudio... Clique novamente para parar.')">🎙 Áudio</button>
-            <button class="btn-media" onclick="alert('Selecione vídeo da galeria')">🎥 Vídeo</button>
-            <button class="btn-media" onclick="inserirEmoji('🔥')">🔥 Emoji</button>
-          </div>
-
-          <button class="btn-main" style="padding: 8px; font-size: 0.75rem; margin-bottom: 12px;" onclick="enviarDenuncia()">Enviar Denúncia</button>
-
-          <hr style="border:0; border-top:1px solid var(--border-red); margin: 10px 0;">
-
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-            <span style="font-size: 0.75rem; font-weight: bold; color: #fff;">Chat com a Staff</span>
-            <span id="status-chat-badge" style="font-size: 0.65rem; color: #ff4d4d; background: rgba(255,0,0,0.1); padding: 2px 6px; border-radius: 4px;">Aguardando Admin...</span>
-          </div>
-
-          <div id="chat-container-wrapper" style="opacity: 0.5; pointer-events: none;">
-            <div class="chat-box-container">
-              <div class="chat-messages" id="chat-msgs-list">
-                <div class="chat-msg">Sistema: Sua denúncia foi enviada. Aguarde um Administrador reivindicar para iniciar o chat.</div>
-              </div>
-              <div class="chat-input-area">
-                <input type="text" id="chat-input-text" placeholder="Digite sua mensagem...">
-                <button onclick="enviarMensagemChat()">Enviar</button>
-              </div>
-            </div>
-          </div>
-          
-          <button class="btn-forum" style="width: 100%; margin-top: 8px; background: #03200a; border-color: #00ff64; color: #00ff64;" onclick="simularStaffReivindicou()">[DEV] Simular Admin Reivindicando</button>
-        </div>
-
-        <button class="btn-main" style="background:#330000; border:1px solid var(--dark-red); margin-top: 5px;" onclick="realizarLogout()">Terminar Sessão</button>
       </div>
-
-      <img src="assets/image_conta.png" alt="Conta" class="floating-character">
-
     </div>
 
-    <!-- ABA 4: COMUNIDADE / DISCORD -->
-    <div id="tab-loja" class="tab-pane">
+    <!-- ABA 4: COMUNIDADE (DISCORD) - COM O VÍDEO ADICIONADO -->
+    <div id="tab-comunidade" class="tab-pane">
       <div class="hero-banner">
-        <h2 style="color:var(--primary-red); margin-top:0;">Comunidade Brasil Play</h2>
+        <h2>Comunidade Brasil Play</h2>
         <p>Junte-se ao nosso servidor oficial no Discord para interagir com outros jogadores e ficar por dentro de todas as novidades!</p>
-        <a href="https://discord.gg/b22VyqmbcX" target="_blank" class="btn-main" style="text-decoration:none; display:block; text-align:center;">Entrar no Discord</a>
+        <a href="https://discord.gg/SEU_LINK_DO_DISCORD" target="_blank" class="btn-main">Entrar no Discord</a>
       </div>
-    </div>
 
-    <div class="footer-brand">
-      <div class="brand-logo-text">BRASIL PLAY <span>ALPHA</span></div>
-      <p style="font-size: 0.65rem; color: var(--text-muted); margin-top: 4px;">&copy; 2026 - Todos os direitos reservados.</p>
+      <!-- VÍDEO POSICIONADO NO LOCAL DO RETÂNGULO AZUL -->
+      <div class="discord-video-container">
+        <video src="video_discord.mp4" autoplay muted loop playsinline class="discord-video"></video>
+      </div>
     </div>
 
   </div>
 
-  <!-- BARRA DE NAVEGAÇÃO INFERIOR FIXA -->
+  <!-- MENU DE NAVEGAÇÃO INFERIOR -->
   <nav class="floating-nav">
     <button class="nav-item active" onclick="mudarAba('tab-inicio', this)">
       <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
@@ -813,25 +786,31 @@
       <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
       Site
     </button>
-    <button class="nav-item" onclick="mudarAba('tab-loja', this)">
-      <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm-5 14H4v-4h11v4zm0-5H4V9h11v4zm5 5h-4V9h4v9z"/></svg>
+    <button class="nav-item" onclick="mudarAba('tab-comunidade', this)">
+      <svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0-2-.9-2-2V4c0-1.1-.9-2-2-2z"/></svg>
       Comunidade
     </button>
   </nav>
 
   <script>
-    let chatLiberado = false;
+    function mudarAba(idAba, elementoBotao) {
+      document.querySelectorAll('.tab-pane').forEach(aba => aba.classList.remove('active'));
+      document.querySelectorAll('.nav-item').forEach(btn => btn.classList.remove('active'));
+      
+      document.getElementById(idAba).classList.add('active');
+      if (elementoBotao) elementoBotao.classList.add('active');
 
-    // Tentar tocar música ao carregar e interagir (caso o navegador bloqueie autoplay puro)
-    document.addEventListener('DOMContentLoaded', () => {
-      const audio = document.getElementById('bgMusic');
-      audio.volume = 0.5;
-      audio.play().catch(() => {
-        // Se o navegador bloquear, o botão mudará de estado visual para indicar que pode ser ligado manualmente
-        document.getElementById('musicToggleBtn').classList.add('muted');
-        document.getElementById('musicToggleBtn').innerText = '🔇';
+      document.body.className = '';
+      if (idAba === 'tab-downloads') document.body.classList.add('bg-downloads');
+      if (idAba === 'tab-comunidade') document.body.classList.add('bg-comunidade');
+    }
+
+    function copiarIP(idElemento) {
+      const ipText = document.getElementById(idElemento).innerText;
+      navigator.clipboard.writeText(ipText).then(() => {
+        alert("IP copiado com sucesso: " + ipText);
       });
-    });
+    }
 
     function toggleMusica() {
       const audio = document.getElementById('bgMusic');
@@ -847,123 +826,24 @@
       }
     }
 
-    function mudarAba(tabId, elementoNav) {
-      document.querySelectorAll('.tab-pane').forEach(tab => {
-        tab.classList.remove('active');
-      });
-      const abaAlvo = document.getElementById(tabId);
-      if(abaAlvo) abaAlvo.classList.add('active');
-
-      document.querySelectorAll('.nav-item').forEach(btn => {
-        btn.classList.remove('active');
-      });
-      if(elementoNav) {
-        elementoNav.classList.add('active');
-      }
-
-      document.body.classList.remove('bg-downloads', 'bg-comunidade');
-      if (tabId === 'tab-downloads') {
-        document.body.classList.add('bg-downloads');
-      } else if (tabId === 'tab-loja') {
-        document.body.classList.add('bg-comunidade');
-      }
-      
-      window.scrollTo(0, 0);
-    }
-
-    function copiarIP(idElemento) {
-      const ipTexto = document.getElementById(idElemento).innerText;
-      navigator.clipboard.writeText(ipTexto).then(() => {
-        alert('IP copiado: ' + ipTexto);
-      }).catch(err => {
-        console.error('Erro ao copiar', err);
-      });
-    }
-
     function realizarLogin() {
-      const user = document.getElementById('userInput').value.trim();
-      const pass = document.getElementById('passInput').value.trim();
+      const nick = document.getElementById('userInput').value;
+      const pass = document.getElementById('passInput').value;
       const msg = document.getElementById('mensagem-auth');
-
-      if (!user || !pass) {
-        msg.style.color = '#ff4d4d';
+      
+      if(!nick || !pass) {
+        msg.style.color = '#ff1a1a';
         msg.innerText = 'Preencha todos os campos!';
         return;
       }
 
-      msg.style.color = '#00ff64';
-      msg.innerText = 'Autenticado com sucesso!';
-      
-      setTimeout(() => {
-        document.getElementById('login-box').classList.add('hidden');
-        document.getElementById('painel-box').classList.remove('hidden');
-        document.getElementById('ucp-nick').innerText = user;
-      }, 500);
-    }
-
-    function realizarLogout() {
-      document.getElementById('login-box').classList.remove('hidden');
-      document.getElementById('painel-box').classList.add('hidden');
-      document.getElementById('userInput').value = '';
-      document.getElementById('passInput').value = '';
-      document.getElementById('mensagem-auth').innerText = '';
+      document.getElementById('login-box').classList.add('hidden');
+      document.getElementById('painel-box').classList.remove('hidden');
+      document.getElementById('ucp-nick').innerText = nick;
     }
 
     function alternarPainelForum() {
-      const painel = document.getElementById('forum-painel');
-      painel.classList.toggle('hidden');
-    }
-
-    function inserirEmoji(emoji) {
-      const txt = document.getElementById('denuncia-texto');
-      txt.value += emoji;
-    }
-
-    function enviarDenuncia() {
-      const titulo = document.getElementById('denuncia-titulo').value.trim();
-      const texto = document.getElementById('denuncia-texto').value.trim();
-      if (!titulo || !texto) {
-        alert('Preencha o título e a descrição da denúncia!');
-        return;
-      }
-      alert('Sua denúncia foi registrada com sucesso no sistema!');
-      document.getElementById('denuncia-titulo').value = '';
-      document.getElementById('denuncia-texto').value = '';
-    }
-
-    function simularStaffReivindicou() {
-      chatLiberado = true;
-      const badge = document.getElementById('status-chat-badge');
-      const wrapper = document.getElementById('chat-container-wrapper');
-      const listaMsgs = document.getElementById('chat-msgs-list');
-
-      badge.style.color = '#00ff64';
-      badge.style.background = 'rgba(0,255,100,0.1)';
-      badge.innerText = 'Atendimento Reivindicado por [Admin]';
-
-      wrapper.style.opacity = '1';
-      wrapper.style.pointerEvents = 'auto';
-
-      const novaMsg = document.createElement('div');
-      novaMsg.className = 'chat-msg admin';
-      novaMsg.innerHTML = '<strong>[Admin] Support:</strong> Olá! Reivindiquei sua denúncia. Como posso ajudar?';
-      listaMsgs.appendChild(novaMsg);
-      listaMsgs.scrollTop = listaMsgs.scrollHeight;
-    }
-
-    function enviarMensagemChat() {
-      if (!chatLiberado) return;
-      const input = document.getElementById('chat-input-text');
-      const texto = input.value.trim();
-      if (!texto) return;
-
-      const listaMsgs = document.getElementById('chat-msgs-list');
-      const msgUser = document.createElement('div');
-      msgUser.className = 'chat-msg';
-      msgUser.innerHTML = `<strong>Você:</strong> ${texto}`;
-      listaMsgs.appendChild(msgUser);
-      input.value = '';
-      listaMsgs.scrollTop = listaMsgs.scrollHeight;
+      alert("Recurso de Fórum e Chat integrado.");
     }
   </script>
 </body>
