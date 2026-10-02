@@ -5,11 +5,43 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Brasil Play Alpha | UCP & Comunidade</title>
   <link rel="stylesheet" href="style.css">
+  <style>
+    /* ESTILO PARA O TOAST DE NOTIFICAÇÃO PERSONALIZADO */
+    #custom-toast {
+      position: fixed;
+      bottom: 80px;
+      left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background: linear-gradient(135deg, #1a0202, #2b0303);
+      border: 1px solid var(--primary-red, #ff1a1a);
+      color: #fff;
+      padding: 12px 20px;
+      border-radius: 8px;
+      box-shadow: 0 8px 25px rgba(255, 26, 26, 0.3);
+      font-size: 0.85rem;
+      font-family: inherit;
+      z-index: 9999;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      text-align: center;
+      max-width: 90%;
+      pointer-events: none;
+    }
+    #custom-toast.show {
+      opacity: 1;
+      visibility: visible;
+      transform: translateX(-50%) translateY(0);
+    }
+  </style>
 </head>
 <body>
 
   <!-- ELEMENTO DE ÁUDIO EM LOOP (Música de Fundo) -->
   <audio id="bgMusic" src="assets/bg-music.mp3" loop autoplay></audio>
+
+  <!-- NOTIFICAÇÃO PERSONALIZADA (TOAST) -->
+  <div id="custom-toast">Notificação do Sistema</div>
 
   <!-- PARTICULAS ANIMADAS NO FUNDO -->
   <svg class="particles-bg" xmlns="http://www.w3.org/2000/svg">
@@ -239,11 +271,12 @@
 
     </div>
 
-    <!-- ABA 4: COMUNIDADE (DISCORD) - VÍDEO PURO SEM RETÂNGULO -->
+    <!-- ABA 4: COMUNIDADE (DISCORD) - BOTÃO CORRIGIDO COM GLOW-EFFECT -->
     <div id="tab-comunidade" class="tab-pane">
       <div class="hero-banner">
         <h2>Comunidade Brasil Play</h2>
         <p>Junte-se ao nosso servidor oficial no Discord para interagir com outros jogadores e ficar por dentro de todas as novidades!</p>
+        <!-- Adicionada a classe glow-effect aqui para consertar o efeito de luz -->
         <a href="https://discord.gg/SEU_LINK_DO_DISCORD" target="_blank" class="btn-main glow-effect" onclick="tocarSomClique()">Entrar no Discord</a>
       </div>
 
@@ -276,6 +309,17 @@
   </nav>
 
   <script>
+    /* FUNÇÃO DE NOTIFICAÇÃO PERSONALIZADA (TOAST) NO TEMA */
+    function mostrarAviso(mensagem) {
+      const toast = document.getElementById('custom-toast');
+      toast.innerText = mensagem;
+      toast.classList.add('show');
+      
+      setTimeout(() => {
+        toast.classList.remove('show');
+      }, 3000);
+    }
+
     /* GERADOR DE SOM DE CLIQUE EM CÓDIGO (WEB AUDIO API) */
     function tocarSomClique() {
       try {
@@ -315,7 +359,8 @@
     function copiarIP(idElemento) {
       const ipText = document.getElementById(idElemento).innerText;
       navigator.clipboard.writeText(ipText).then(() => {
-        alert("IP copiado com sucesso: " + ipText);
+        // Substituído o alert padrão do navegador pela nossa notificação customizada
+        mostrarAviso("IP copiado com sucesso: " + ipText);
       });
     }
 
@@ -390,10 +435,10 @@
       const nick = document.getElementById('denunciaNick').value;
       const motivo = document.getElementById('denunciaMotivo').value;
       if(!nick || !motivo) {
-        alert("Preencha todos os campos da denúncia!");
+        mostrarAviso("Preencha todos os campos da denúncia!");
         return;
       }
-      alert("Denúncia enviada com sucesso para a moderação!");
+      mostrarAviso("Denúncia enviada com sucesso para a moderação!");
       document.getElementById('denunciaNick').value = '';
       document.getElementById('denunciaMotivo').value = '';
     }
