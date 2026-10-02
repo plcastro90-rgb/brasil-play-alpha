@@ -112,6 +112,12 @@
       width: 100%;
     }
 
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
     .online-counter-badge {
       background: rgba(0, 255, 100, 0.1);
       border: 1px solid #00ff64;
@@ -123,6 +129,28 @@
       display: flex;
       align-items: center;
       gap: 6px;
+    }
+
+    /* BOTÃO DE MÚSICA PEQUENO */
+    .btn-music-toggle {
+      background: rgba(139, 0, 0, 0.2);
+      border: 1px solid var(--border-red);
+      color: #fff;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-music-toggle.muted {
+      border-color: #555;
+      color: #777;
+      background: rgba(0, 0, 0, 0.4);
     }
 
     .pulse-dot {
@@ -388,7 +416,6 @@
       background: rgba(139,0,0,0.2);
     }
 
-    /* ESTILOS DO FÓRUM / DENÚNCIAS E CHAT */
     .forum-section {
       background: rgba(8, 1, 2, 0.95);
       border: 1px solid var(--dark-red);
@@ -560,6 +587,9 @@
 </head>
 <body>
 
+  <!-- ELEMENTO DE ÁUDIO EM LOOP -->
+  <audio id="bgMusic" src="assets/bg-music.mp3" loop autoplay></audio>
+
   <svg class="particles-bg" xmlns="http://www.w3.org/2000/svg">
     <polygon class="particle-star" points="15,5 18,12 25,15 18,18 15,25 12,18 5,15 12,12" style="transform: scale(0.8); animation-duration: 7s;" cx="15%" />
     <polygon class="particle-star" points="15,5 18,12 25,15 18,18 15,25 12,18 5,15 12,12" style="transform: scale(1.2); animation-duration: 11s;" cx="45%" />
@@ -571,9 +601,13 @@
     
     <header class="app-header">
       <div style="font-weight: 900; letter-spacing: 1px; font-size: 0.9rem;">BRASIL PLAY <span style="color:var(--primary-red)">ALPHA</span></div>
-      <div class="online-counter-badge">
-        <span class="pulse-dot"></span>
-        <span id="total-online">320</span> ONLINE
+      <div class="header-right">
+        <!-- BOTÃO DE LIGAR/DESLIGAR MÚSICA -->
+        <button id="musicToggleBtn" class="btn-music-toggle" onclick="toggleMusica()" title="Ligar/Desligar Música">🎵</button>
+        <div class="online-counter-badge">
+          <span class="pulse-dot"></span>
+          <span id="total-online">320</span> ONLINE
+        </div>
       </div>
     </header>
 
@@ -694,7 +728,7 @@
           <div class="inventory-slot"></div>
         </div>
 
-        <!-- BOTÃO FÓRUM / UCP (ADICIONADO AQUI) -->
+        <!-- BOTÃO FÓRUM / UCP -->
         <button class="btn-main" style="background: linear-gradient(135deg, #8b0000, #b30000); margin-bottom: 8px;" onclick="alternarPainelForum()">Fórum / Denúncias & Chat</button>
 
         <!-- SEÇÃO DE FÓRUM / DENÚNCIAS E CHAT CONDICIONAL -->
@@ -711,7 +745,6 @@
             <textarea id="denuncia-texto" rows="3" placeholder="Descreva o ocorrido... Ex: O jogador @Hécate_Apks me matou sem motivo 'print'"></textarea>
           </div>
 
-          <!-- Ferramentas de Mídia -->
           <div class="media-tools">
             <button class="btn-media" onclick="alert('Selecione foto/print da galeria')">📷 Foto</button>
             <button class="btn-media" onclick="alert('Gravando áudio... Clique novamente para parar.')">🎙 Áudio</button>
@@ -723,7 +756,6 @@
 
           <hr style="border:0; border-top:1px solid var(--border-red); margin: 10px 0;">
 
-          <!-- CHAT REAL (CONDICIONAL: SÓ ABRE QUANDO REIVINDICADO) -->
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
             <span style="font-size: 0.75rem; font-weight: bold; color: #fff;">Chat com a Staff</span>
             <span id="status-chat-badge" style="font-size: 0.65rem; color: #ff4d4d; background: rgba(255,0,0,0.1); padding: 2px 6px; border-radius: 4px;">Aguardando Admin...</span>
@@ -741,7 +773,6 @@
             </div>
           </div>
           
-          <!-- BOTÃO SIMULADOR DE STAFF PARA TESTAR O CHAT -->
           <button class="btn-forum" style="width: 100%; margin-top: 8px; background: #03200a; border-color: #00ff64; color: #00ff64;" onclick="simularStaffReivindicou()">[DEV] Simular Admin Reivindicando</button>
         </div>
 
@@ -790,6 +821,31 @@
 
   <script>
     let chatLiberado = false;
+
+    // Tentar tocar música ao carregar e interagir (caso o navegador bloqueie autoplay puro)
+    document.addEventListener('DOMContentLoaded', () => {
+      const audio = document.getElementById('bgMusic');
+      audio.volume = 0.5;
+      audio.play().catch(() => {
+        // Se o navegador bloquear, o botão mudará de estado visual para indicar que pode ser ligado manualmente
+        document.getElementById('musicToggleBtn').classList.add('muted');
+        document.getElementById('musicToggleBtn').innerText = '🔇';
+      });
+    });
+
+    function toggleMusica() {
+      const audio = document.getElementById('bgMusic');
+      const btn = document.getElementById('musicToggleBtn');
+      if (audio.paused) {
+        audio.play();
+        btn.classList.remove('muted');
+        btn.innerText = '🎵';
+      } else {
+        audio.pause();
+        btn.classList.add('muted');
+        btn.innerText = '🔇';
+      }
+    }
 
     function mudarAba(tabId, elementoNav) {
       document.querySelectorAll('.tab-pane').forEach(tab => {
