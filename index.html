@@ -31,9 +31,10 @@
       justify-content: center;
       overflow-x: hidden;
       padding-bottom: 90px;
+      border: none !important;
+      outline: none !important;
     }
 
-    /* CAMADA DE FUNDO DINÂMICA (BACKGROUNDS JPG) */
     body::before {
       content: "";
       position: fixed;
@@ -46,7 +47,6 @@
       background-position: center;
       z-index: -2;
       pointer-events: none;
-      transition: background-image 0.5s ease;
     }
 
     body.bg-downloads::before {
@@ -61,7 +61,6 @@
       background-position: center;
     }
 
-    /* CAMADA DE PARTICULAS SVG */
     .particles-bg {
       position: fixed;
       top: 0;
@@ -100,6 +99,8 @@
       position: relative;
       z-index: 1;
       background: transparent;
+      border: none !important;
+      box-shadow: none !important;
     }
 
     .app-header {
@@ -138,41 +139,12 @@
       100% { opacity: 0.3; transform: scale(0.9); }
     }
 
-    .hero-banner, .server-card, .auth-container, .ucp-profile-card {
-      position: relative;
-      overflow: hidden;
-    }
-
-    .hero-banner::after, .auth-container::after {
-      content: "";
-      position: absolute;
-      top: -50%;
-      left: -50%;
-      width: 200%;
-      height: 200%;
-      background: repeating-linear-gradient(
-        45deg,
-        transparent,
-        transparent 15px,
-        rgba(255, 26, 26, 0.04) 15px,
-        rgba(255, 26, 26, 0.04) 30px
-      );
-      animation: moveStripes 20s linear infinite;
-      pointer-events: none;
-    }
-
-    @keyframes moveStripes {
-      0% { transform: translate(0, 0); }
-      100% { transform: translate(50px, 50px); }
-    }
-
     .hero-banner {
       background: linear-gradient(135deg, #1f0303, #0a0101);
-      border: 2px solid var(--dark-red);
+      border: 1px solid var(--dark-red);
       border-radius: 14px;
       padding: 20px 16px;
       text-align: center;
-      box-shadow: 0 0 20px rgba(139, 0, 0, 0.3);
       margin-bottom: 15px;
       width: 100%;
     }
@@ -183,8 +155,6 @@
       color: #fff;
       margin-bottom: 8px;
       letter-spacing: 1px;
-      position: relative;
-      z-index: 2;
     }
 
     .hero-banner h1 span, .hero-banner h2 span { color: var(--primary-red); }
@@ -194,8 +164,6 @@
       color: #ccc;
       line-height: 1.4;
       margin-bottom: 15px;
-      position: relative;
-      z-index: 2;
     }
 
     .btn-main {
@@ -208,27 +176,10 @@
       font-size: 0.85rem;
       cursor: pointer;
       width: 100%;
-      box-shadow: 0 4px 15px rgba(255,26,26,0.4);
       text-transform: uppercase;
       letter-spacing: 1px;
       position: relative;
-      overflow: hidden;
-      z-index: 3;
-    }
-
-    .btn-main::before {
-      content: '';
-      position: absolute;
-      top: 0; left: -100%;
-      width: 100%; height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.25), transparent);
-      animation: buttonShine 3s ease-in-out infinite;
-    }
-
-    @keyframes buttonShine {
-      0% { left: -100%; }
-      20% { left: 100%; }
-      100% { left: 100%; }
+      z-index: 5;
     }
 
     .section-title {
@@ -249,8 +200,6 @@
       justify-content: space-between;
       align-items: center;
       width: 100%;
-      position: relative;
-      z-index: 2;
     }
 
     .server-info .server-name {
@@ -296,17 +245,15 @@
       font-size: 0.7rem;
       font-weight: bold;
       cursor: pointer;
-      text-decoration: none;
       position: relative;
-      z-index: 3;
+      z-index: 5;
     }
 
     .auth-container {
       background: var(--card-bg);
-      border: 2px solid var(--dark-red);
+      border: 1px solid var(--dark-red);
       border-radius: 14px;
       padding: 18px;
-      box-shadow: 0 0 25px rgba(255,0,0,0.2);
       width: 100%;
       margin-top: 10px;
     }
@@ -317,15 +264,11 @@
       margin-bottom: 12px;
       font-weight: 900;
       font-size: 1.1rem;
-      position: relative;
-      z-index: 2;
     }
 
     .input-group {
       margin-bottom: 12px;
       width: 100%;
-      position: relative;
-      z-index: 3;
     }
 
     .input-group label {
@@ -335,7 +278,7 @@
       margin-bottom: 4px;
     }
 
-    .input-group input, .input-group select {
+    .input-group input, .input-group select, .input-group textarea {
       width: 100%;
       padding: 10px;
       background: rgba(5, 0, 1, 0.9);
@@ -343,6 +286,7 @@
       color: #fff;
       border-radius: 8px;
       font-size: 0.85rem;
+      font-family: inherit;
     }
 
     #mensagem-auth {
@@ -350,8 +294,6 @@
       font-size: 0.75rem;
       font-weight: bold;
       margin-top: 8px;
-      position: relative;
-      z-index: 3;
     }
 
     .ucp-profile-card {
@@ -446,7 +388,100 @@
       background: rgba(139,0,0,0.2);
     }
 
-    /* BARRA DE NAVEGAÇÃO INFERIOR FIXA */
+    /* ESTILOS DO FÓRUM / DENÚNCIAS E CHAT */
+    .forum-section {
+      background: rgba(8, 1, 2, 0.95);
+      border: 1px solid var(--dark-red);
+      border-radius: 10px;
+      padding: 12px;
+      margin-bottom: 12px;
+      width: 100%;
+    }
+
+    .media-tools {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 10px;
+      flex-wrap: wrap;
+    }
+
+    .btn-media {
+      background: #150303;
+      border: 1px solid var(--border-red);
+      color: #ccc;
+      padding: 6px 10px;
+      border-radius: 6px;
+      font-size: 0.7rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .btn-media:hover {
+      border-color: var(--primary-red);
+      color: #fff;
+    }
+
+    .chat-box-container {
+      background: #030001;
+      border: 1px solid var(--border-red);
+      border-radius: 8px;
+      height: 160px;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      margin-top: 8px;
+    }
+
+    .chat-messages {
+      flex: 1;
+      padding: 8px;
+      overflow-y: auto;
+      font-size: 0.75rem;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .chat-msg {
+      background: rgba(255,26,26,0.1);
+      border-left: 2px solid var(--primary-red);
+      padding: 4px 8px;
+      border-radius: 0 4px 4px 0;
+    }
+
+    .chat-msg.admin {
+      background: rgba(0,255,100,0.1);
+      border-left-color: #00ff64;
+    }
+
+    .chat-input-area {
+      display: flex;
+      border-top: 1px solid var(--border-red);
+      background: #080000;
+    }
+
+    .chat-input-area input {
+      flex: 1;
+      background: transparent;
+      border: none;
+      padding: 8px;
+      color: #fff;
+      font-size: 0.75rem;
+      outline: none;
+    }
+
+    .chat-input-area button {
+      background: var(--dark-red);
+      border: none;
+      color: white;
+      padding: 0 12px;
+      font-weight: bold;
+      font-size: 0.75rem;
+      cursor: pointer;
+    }
+
     .floating-nav {
       position: fixed;
       bottom: 0;
@@ -454,13 +489,14 @@
       transform: translateX(-50%);
       width: 100%;
       max-width: 440px;
-      background: rgba(10, 1, 2, 0.95);
+      background: rgba(10, 1, 2, 0.98);
       border-top: 1px solid var(--border-red);
       display: flex;
       justify-content: space-around;
       padding: 10px 0;
       backdrop-filter: blur(10px);
-      z-index: 1000;
+      z-index: 999999;
+      pointer-events: auto !important;
     }
 
     .nav-item {
@@ -474,12 +510,15 @@
       font-weight: bold;
       cursor: pointer;
       gap: 3px;
+      pointer-events: auto !important;
+      padding: 6px 12px;
     }
 
     .nav-item svg {
-      width: 20px;
-      height: 20px;
+      width: 22px;
+      height: 22px;
       fill: currentColor;
+      pointer-events: none;
     }
 
     .nav-item.active, .nav-item:hover {
@@ -505,38 +544,27 @@
     }
     .brand-logo-text span { color: var(--primary-red); }
 
-    /* IMAGEM LEVEMENTE MAIOR NA POSIÇÃO ATUAL SEM BLOQUEAR CLIQUES */
     .floating-character {
       display: block;
       margin: 15px auto 5px auto;
-      max-height: 180px; /* Aumentado ligeiramente conforme solicitado */
+      max-height: 190px;
       width: auto;
       object-fit: contain;
       pointer-events: none;
-      opacity: 0.9;
+      opacity: 0.95;
       filter: drop-shadow(0 5px 15px rgba(255, 26, 26, 0.4));
-      animation: floatAnimation 4s ease-in-out infinite;
       position: relative;
       z-index: 1;
-    }
-
-    @keyframes floatAnimation {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-6px); }
     }
   </style>
 </head>
 <body>
 
-  <!-- PARTÍCULAS E FLOCOS SVG AO FUNDO -->
   <svg class="particles-bg" xmlns="http://www.w3.org/2000/svg">
-    <polygon class="particle-star" points="15,5 18,12 25,15 18,18 15,25 12,18 5,15 12,12" style="transform: scale(0.8); animation-duration: 7s; animation-delay: 0s;" cx="15%" />
-    <polygon class="particle-star" points="15,5 18,12 25,15 18,18 15,25 12,18 5,15 12,12" style="transform: scale(1.2); animation-duration: 11s; animation-delay: 2s;" cx="45%" />
-    <polygon class="particle-star" points="15,5 18,12 25,15 18,18 15,25 12,18 5,15 12,12" style="transform: scale(0.6); animation-duration: 9s; animation-delay: 4s;" cx="80%" />
-    <circle class="particle-circle" cx="20%" cy="0" r="6" style="animation-duration: 8s; animation-delay: 1s;" />
-    <circle class="particle-circle" cx="60%" cy="0" r="8" style="animation-duration: 13s; animation-delay: 3s;" />
-    <circle class="particle-circle" cx="85%" cy="0" r="5" style="animation-duration: 10s; animation-delay: 2.5s;" />
-    <circle class="particle-circle" cx="35%" cy="0" r="7" style="animation-duration: 9s; animation-delay: 0.5s;" />
+    <polygon class="particle-star" points="15,5 18,12 25,15 18,18 15,25 12,18 5,15 12,12" style="transform: scale(0.8); animation-duration: 7s;" cx="15%" />
+    <polygon class="particle-star" points="15,5 18,12 25,15 18,18 15,25 12,18 5,15 12,12" style="transform: scale(1.2); animation-duration: 11s;" cx="45%" />
+    <circle class="particle-circle" cx="20%" cy="0" r="6" style="animation-duration: 8s;" />
+    <circle class="particle-circle" cx="60%" cy="0" r="8" style="animation-duration: 13s;" />
   </svg>
 
   <div class="wrapper">
@@ -666,6 +694,57 @@
           <div class="inventory-slot"></div>
         </div>
 
+        <!-- BOTÃO FÓRUM / UCP (ADICIONADO AQUI) -->
+        <button class="btn-main" style="background: linear-gradient(135deg, #8b0000, #b30000); margin-bottom: 8px;" onclick="alternarPainelForum()">Fórum / Denúncias & Chat</button>
+
+        <!-- SEÇÃO DE FÓRUM / DENÚNCIAS E CHAT CONDICIONAL -->
+        <div id="forum-painel" class="forum-section hidden">
+          <h3 style="color: var(--primary-red); font-size: 0.9rem; margin-bottom: 8px;">Criar Denúncia / Contato</h3>
+          
+          <div class="input-group">
+            <label>Assunto / Título</label>
+            <input type="text" id="denuncia-titulo" placeholder="Ex: Denúncia contra @Player_Exemplo">
+          </div>
+
+          <div class="input-group">
+            <label>Mensagem (Suporte a emojis 😊 e menções @)</label>
+            <textarea id="denuncia-texto" rows="3" placeholder="Descreva o ocorrido... Ex: O jogador @Hécate_Apks me matou sem motivo 'print'"></textarea>
+          </div>
+
+          <!-- Ferramentas de Mídia -->
+          <div class="media-tools">
+            <button class="btn-media" onclick="alert('Selecione foto/print da galeria')">📷 Foto</button>
+            <button class="btn-media" onclick="alert('Gravando áudio... Clique novamente para parar.')">🎙 Áudio</button>
+            <button class="btn-media" onclick="alert('Selecione vídeo da galeria')">🎥 Vídeo</button>
+            <button class="btn-media" onclick="inserirEmoji('🔥')">🔥 Emoji</button>
+          </div>
+
+          <button class="btn-main" style="padding: 8px; font-size: 0.75rem; margin-bottom: 12px;" onclick="enviarDenuncia()">Enviar Denúncia</button>
+
+          <hr style="border:0; border-top:1px solid var(--border-red); margin: 10px 0;">
+
+          <!-- CHAT REAL (CONDICIONAL: SÓ ABRE QUANDO REIVINDICADO) -->
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+            <span style="font-size: 0.75rem; font-weight: bold; color: #fff;">Chat com a Staff</span>
+            <span id="status-chat-badge" style="font-size: 0.65rem; color: #ff4d4d; background: rgba(255,0,0,0.1); padding: 2px 6px; border-radius: 4px;">Aguardando Admin...</span>
+          </div>
+
+          <div id="chat-container-wrapper" style="opacity: 0.5; pointer-events: none;">
+            <div class="chat-box-container">
+              <div class="chat-messages" id="chat-msgs-list">
+                <div class="chat-msg">Sistema: Sua denúncia foi enviada. Aguarde um Administrador reivindicar para iniciar o chat.</div>
+              </div>
+              <div class="chat-input-area">
+                <input type="text" id="chat-input-text" placeholder="Digite sua mensagem...">
+                <button onclick="enviarMensagemChat()">Enviar</button>
+              </div>
+            </div>
+          </div>
+          
+          <!-- BOTÃO SIMULADOR DE STAFF PARA TESTAR O CHAT -->
+          <button class="btn-forum" style="width: 100%; margin-top: 8px; background: #03200a; border-color: #00ff64; color: #00ff64;" onclick="simularStaffReivindicou()">[DEV] Simular Admin Reivindicando</button>
+        </div>
+
         <button class="btn-main" style="background:#330000; border:1px solid var(--dark-red); margin-top: 5px;" onclick="realizarLogout()">Terminar Sessão</button>
       </div>
 
@@ -677,7 +756,7 @@
     <div id="tab-loja" class="tab-pane">
       <div class="hero-banner">
         <h2 style="color:var(--primary-red); margin-top:0;">Comunidade Brasil Play</h2>
-        <p>Junte-se ao nosso servidor oficial no Discord para interagir com outros jogadores, concorrer a sorteios e ficar por dentro de todas as novidades!</p>
+        <p>Junte-se ao nosso servidor oficial no Discord para interagir com outros jogadores e ficar por dentro de todas as novidades!</p>
         <a href="https://discord.gg/b22VyqmbcX" target="_blank" class="btn-main" style="text-decoration:none; display:block; text-align:center;">Entrar no Discord</a>
       </div>
     </div>
@@ -689,7 +768,7 @@
 
   </div>
 
-  <!-- BARRA DE NAVEGAÇÃO INFERIOR FIXA RESTAURADA -->
+  <!-- BARRA DE NAVEGAÇÃO INFERIOR FIXA -->
   <nav class="floating-nav">
     <button class="nav-item active" onclick="mudarAba('tab-inicio', this)">
       <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
@@ -710,11 +789,14 @@
   </nav>
 
   <script>
+    let chatLiberado = false;
+
     function mudarAba(tabId, elementoNav) {
       document.querySelectorAll('.tab-pane').forEach(tab => {
         tab.classList.remove('active');
       });
-      document.getElementById(tabId).classList.add('active');
+      const abaAlvo = document.getElementById(tabId);
+      if(abaAlvo) abaAlvo.classList.add('active');
 
       document.querySelectorAll('.nav-item').forEach(btn => {
         btn.classList.remove('active');
@@ -723,7 +805,6 @@
         elementoNav.classList.add('active');
       }
 
-      // Altera o background dinâmico dependendo da aba selecionada
       document.body.classList.remove('bg-downloads', 'bg-comunidade');
       if (tabId === 'tab-downloads') {
         document.body.classList.add('bg-downloads');
@@ -737,9 +818,9 @@
     function copiarIP(idElemento) {
       const ipTexto = document.getElementById(idElemento).innerText;
       navigator.clipboard.writeText(ipTexto).then(() => {
-        alert('IP copiado com sucesso: ' + ipTexto);
+        alert('IP copiado: ' + ipTexto);
       }).catch(err => {
-        console.error('Erro ao copiar IP: ', err);
+        console.error('Erro ao copiar', err);
       });
     }
 
@@ -761,7 +842,7 @@
         document.getElementById('login-box').classList.add('hidden');
         document.getElementById('painel-box').classList.remove('hidden');
         document.getElementById('ucp-nick').innerText = user;
-      }, 600);
+      }, 500);
     }
 
     function realizarLogout() {
@@ -770,6 +851,63 @@
       document.getElementById('userInput').value = '';
       document.getElementById('passInput').value = '';
       document.getElementById('mensagem-auth').innerText = '';
+    }
+
+    function alternarPainelForum() {
+      const painel = document.getElementById('forum-painel');
+      painel.classList.toggle('hidden');
+    }
+
+    function inserirEmoji(emoji) {
+      const txt = document.getElementById('denuncia-texto');
+      txt.value += emoji;
+    }
+
+    function enviarDenuncia() {
+      const titulo = document.getElementById('denuncia-titulo').value.trim();
+      const texto = document.getElementById('denuncia-texto').value.trim();
+      if (!titulo || !texto) {
+        alert('Preencha o título e a descrição da denúncia!');
+        return;
+      }
+      alert('Sua denúncia foi registrada com sucesso no sistema!');
+      document.getElementById('denuncia-titulo').value = '';
+      document.getElementById('denuncia-texto').value = '';
+    }
+
+    function simularStaffReivindicou() {
+      chatLiberado = true;
+      const badge = document.getElementById('status-chat-badge');
+      const wrapper = document.getElementById('chat-container-wrapper');
+      const listaMsgs = document.getElementById('chat-msgs-list');
+
+      badge.style.color = '#00ff64';
+      badge.style.background = 'rgba(0,255,100,0.1)';
+      badge.innerText = 'Atendimento Reivindicado por [Admin]';
+
+      wrapper.style.opacity = '1';
+      wrapper.style.pointerEvents = 'auto';
+
+      const novaMsg = document.createElement('div');
+      novaMsg.className = 'chat-msg admin';
+      novaMsg.innerHTML = '<strong>[Admin] Support:</strong> Olá! Reivindiquei sua denúncia. Como posso ajudar?';
+      listaMsgs.appendChild(novaMsg);
+      listaMsgs.scrollTop = listaMsgs.scrollHeight;
+    }
+
+    function enviarMensagemChat() {
+      if (!chatLiberado) return;
+      const input = document.getElementById('chat-input-text');
+      const texto = input.value.trim();
+      if (!texto) return;
+
+      const listaMsgs = document.getElementById('chat-msgs-list');
+      const msgUser = document.createElement('div');
+      msgUser.className = 'chat-msg';
+      msgUser.innerHTML = `<strong>Você:</strong> ${texto}`;
+      listaMsgs.appendChild(msgUser);
+      input.value = '';
+      listaMsgs.scrollTop = listaMsgs.scrollHeight;
     }
   </script>
 </body>
