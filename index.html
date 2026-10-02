@@ -161,57 +161,77 @@
 
       <!-- MODAL / PAINEL INTERNO DE FÓRUM, CHAT E DENÚNCIAS -->
       <div id="modal-forum" class="auth-container hidden" style="margin-top: 0px; border-color: var(--primary-red);">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; border-bottom: 1px solid var(--border-color); padding-bottom: 6px;">
-          <h2 style="color:var(--primary-red); font-size: 0.95rem; margin:0;">CENTRAL DA COMUNIDADE</h2>
-          <button onclick="tocarSomClique(); fecharPainelForum()" style="background:none; border:none; color:#fff; font-size:0.9rem; font-weight:bold; cursor:pointer;">✖</button>
+        <div class="forum-modal-header">
+          <div class="forum-title-wrapper">
+            <span class="forum-icon-indicator"></span>
+            <h2>CENTRAL DA COMUNIDADE</h2>
+          </div>
+          <button class="forum-close-btn" onclick="tocarSomClique(); fecharPainelForum()">✕</button>
         </div>
 
         <!-- ABAS DO FÓRUM/CHAT -->
         <div class="forum-tabs">
-          <button class="forum-tab-btn active" onclick="tocarSomClique(); mudarAbaForum('chat')">💬 Chat Global</button>
-          <button class="forum-tab-btn" onclick="tocarSomClique(); mudarAbaForum('denuncias')">🚨 Denúncias</button>
-          <button class="forum-tab-btn" onclick="tocarSomClique(); mudarAbaForum('forum')">📜 Tópicos</button>
+          <button class="forum-tab-btn active" onclick="tocarSomClique(); mudarAbaForum('chat', this)">
+            <i>💬</i> Chat Global
+          </button>
+          <button class="forum-tab-btn" onclick="tocarSomClique(); mudarAbaForum('denuncias', this)">
+            <i>🚨</i> Denúncias
+          </button>
+          <button class="forum-tab-btn" onclick="tocarSomClique(); mudarAbaForum('forum', this)">
+            <i>📜</i> Tópicos
+          </button>
         </div>
 
         <!-- CONTEÚDO: CHAT GLOBAL -->
         <div id="f-tab-chat" class="forum-pane active">
           <div class="chat-box-messages" id="chatMessages">
-            <div class="chat-msg"><span>[Staff] Admin_Hecate:</span> Sejam bem-vindos ao Brasil Play Alpha!</div>
+            <div class="chat-msg system-msg"><span>[Staff] Admin_Hecate:</span> Sejam bem-vindos ao Brasil Play Alpha!</div>
             <div class="chat-msg"><span>[Player] Carlos123:</span> Servidor tá top demais! 🔥</div>
           </div>
           <div class="chat-input-area">
-            <input type="text" id="chatInputText" placeholder="Digite sua mensagem...">
+            <input type="text" id="chatInputText" placeholder="Escreva sua mensagem..." onkeypress="if(event.key === 'Enter') enviarMensagemChat()">
             <button class="glow-effect" onclick="tocarSomClique(); enviarMensagemChat()">Enviar</button>
           </div>
         </div>
 
         <!-- CONTEÚDO: DENÚNCIAS -->
         <div id="f-tab-denuncias" class="forum-pane">
-          <p style="font-size: 0.75rem; color:var(--text-muted); margin-bottom: 8px;">Relate infrações ou bugs diretamente à staff.</p>
-          <div class="input-group">
-            <label>Acusado / Nick</label>
-            <input type="text" id="denunciaNick" placeholder="Nome do infrator">
+          <div class="denuncia-card-info">
+            <p>Relate infrações, comportamentos tóxicos ou bugs diretamente à nossa equipe de moderação com provas válidas.</p>
           </div>
           <div class="input-group">
-            <label>Motivo / Prova (Link)</label>
-            <input type="text" id="denunciaMotivo" placeholder="Ex: DM / Uso de Bug + Link">
+            <label>Nick do Infrator</label>
+            <input type="text" id="denunciaNick" placeholder="Ex: Player_Infrator">
           </div>
-          <button class="btn-main glow-effect" onclick="tocarSomClique(); enviarDenuncia()">Enviar Denúncia</button>
+          <div class="input-group">
+            <label>Motivo e Prova (Link)</label>
+            <input type="text" id="denunciaMotivo" placeholder="Ex: Uso de Bug / DM + Link do YouTube/Imgur">
+          </div>
+          <button class="btn-main glow-effect" style="margin-top: 4px;" onclick="tocarSomClique(); enviarDenuncia()">Transmitir Denúncia</button>
         </div>
 
         <!-- CONTEÚDO: FÓRUM / TÓPICOS -->
         <div id="f-tab-forum" class="forum-pane">
-          <div class="forum-topic-item">
-            <strong>Regras Gerais do Servidor</strong>
-            <span>Atualizado em Outubro/2026 • Staff</span>
+          <div class="forum-topic-item glow-effect">
+            <div class="topic-badge">FIXO</div>
+            <div class="topic-info">
+              <strong>Regras Gerais do Servidor</strong>
+              <span>Atualizado em Outubro/2026 • Por Staff</span>
+            </div>
           </div>
-          <div class="forum-topic-item">
-            <strong>Recrutamento para Organizações</strong>
-            <span>Vagas abertas para Polícia e máfias!</span>
+          <div class="forum-topic-item glow-effect">
+            <div class="topic-badge recruitment">VAGAS</div>
+            <div class="topic-info">
+              <strong>Recrutamento para Organizações</strong>
+              <span>Vagas abertas para Polícia, SAMU e Máfias.</span>
+            </div>
           </div>
-          <div class="forum-topic-item">
-            <strong>Guia de Instalação e Otimização</strong>
-            <span>Como rodar a 60 FPS sem travar.</span>
+          <div class="forum-topic-item glow-effect">
+            <div class="topic-badge">GUIA</div>
+            <div class="topic-info">
+              <strong>Guia de Instalação e Otimização</strong>
+              <span>Aprenda a rodar o SA-MP a 60 FPS sem travamentos.</span>
+            </div>
           </div>
         </div>
 
@@ -345,12 +365,12 @@
       document.getElementById('painel-box').classList.remove('hidden');
     }
 
-    function mudarAbaForum(aba) {
+    function mudarAbaForum(aba, elementoBotao) {
       document.querySelectorAll('.forum-pane').forEach(p => p.classList.remove('active'));
       document.querySelectorAll('.forum-tab-btn').forEach(b => b.classList.remove('active'));
       
       document.getElementById('f-tab-' + aba).classList.add('active');
-      event.currentTarget.classList.add('active');
+      if(elementoBotao) elementoBotao.classList.add('active');
     }
 
     function enviarMensagemChat() {
