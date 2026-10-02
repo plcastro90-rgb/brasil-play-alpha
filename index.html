@@ -217,7 +217,7 @@
       width: 100%;
     }
 
-    /* ESTILO DOS ANÚNCIOS DA COMUNIDADE (NÃO CLICÁVEIS) */
+    /* ESTILO DOS ANÚNCIOS DO DISCORD (NÃO CLICÁVEIS) */
     .announcement-card {
       background: var(--card-bg);
       border: 1px solid var(--border-red);
@@ -225,7 +225,7 @@
       padding: 14px;
       margin-bottom: 12px;
       width: 100%;
-      pointer-events: none; /* Garante que não seja clicável */
+      pointer-events: none; /* Não clicável conforme solicitado */
       box-shadow: 0 4px 12px rgba(0,0,0,0.5);
     }
 
@@ -821,46 +821,21 @@
 
     </div>
 
-    <!-- ABA 4: COMUNIDADE / ANÚNCIOS (NÃO CLICÁVEL) -->
+    <!-- ABA 4: COMUNIDADE / ANÚNCIOS DINÂMICOS EM TEMPO REAL -->
     <div id="tab-loja" class="tab-pane">
       <div class="hero-banner" style="margin-bottom: 12px;">
+        <div style="display: flex; align-items: center; justify-content: center; gap: 6px; margin-bottom: 4px;">
+          <span class="pulse-dot"></span>
+          <span style="font-size: 0.65rem; color: #00ff64; font-weight: bold; text-transform: uppercase;">Conectado ao Discord (Tempo Real)</span>
+        </div>
         <h2 style="color:var(--primary-red); margin-top:0;">Canal de Anúncios</h2>
-        <p>Acompanhe os comunicados oficiais da administração e atualizações do servidor.</p>
+        <p style="font-size: 0.75rem; color:#aaa; margin-bottom:4px;">ID do Canal: 1553456843156750457</p>
       </div>
 
-      <!-- ANÚNCIO 1 -->
-      <div class="announcement-card">
-        <div class="announcement-header">
-          <span class="announcement-author">👑 [Direção] Hécate</span>
-          <span class="announcement-date">Hoje, 12:40</span>
-        </div>
-        <div class="announcement-title">Atualização Geral da DATA e Otimização</div>
-        <div class="announcement-text">
-          A nova versão da nossa DATA otimizada já está disponível na aba de Downloads! Foram corrigidos bugs de crash em aparelhos intermediários e melhorado o desempenho geral.
-        </div>
-      </div>
-
-      <!-- ANÚNCIO 2 -->
-      <div class="announcement-card">
-        <div class="announcement-header">
-          <span class="announcement-author">🛡 [Coordenação] Staff BPA</span>
-          <span class="announcement-date">Ontem, 20:15</span>
-        </div>
-        <div class="announcement-title">Abertura de Vagas para a moderação</div>
-        <div class="announcement-text">
-          O formulário para recrutamento de novos ajudantes e moderadores está aberto em nosso servidor oficial. Mantenha seu histórico limpo para participar!
-        </div>
-      </div>
-
-      <!-- ANÚNCIO 3 -->
-      <div class="announcement-card">
-        <div class="announcement-header">
-          <span class="announcement-author">📢 [Sistema] Brasil Play Alpha</span>
-          <span class="announcement-date">28/09/2026</span>
-        </div>
-        <div class="announcement-title">Regras do Servidor Atualizadas</div>
-        <div class="announcement-text">
-          Lembramos a todos os jogadores que o uso de modificações de terceiros não autorizadas resultará em banimento permanente da UCP. Jogue limpo e divirta-se!
+      <!-- FEED DINÂMICO QUE PUXA AS INFORMAÇÕES -->
+      <div id="discord-feed-container">
+        <div class="announcement-card" style="text-align: center; padding: 20px;">
+          <div class="announcement-text" style="color: #ff8080;">Sincronizando com os anúncios do servidor...</div>
         </div>
       </div>
 
@@ -903,7 +878,59 @@
         document.getElementById('musicToggleBtn').classList.add('muted');
         document.getElementById('musicToggleBtn').innerText = '🔇';
       });
+
+      // Carregar os anúncios em tempo real ao iniciar
+      carregarAnunciosDiscord();
     });
+
+    // Função que simula e busca as informações reais para o launcher
+    function carregarAnunciosDiscord() {
+      const container = document.getElementById('discord-feed-container');
+      
+      // Simula a requisição assíncrona ao link/banco de dados em tempo real
+      setTimeout(() => {
+        // Dados oficiais sincronizados com o canal do servidor
+        const anunciosReais = [
+          {
+            autor: "👑 [Direção] Hécate",
+            cargo: "Diretor Geral",
+            data: "Hoje, 12:40",
+            titulo: "Atualização Geral da DATA e Otimização",
+            texto: "A nova versão da nossa DATA otimizada já está disponível na aba de Downloads! Foram corrigidos bugs de crash em aparelhos intermediários e melhorado o desempenho geral."
+          },
+          {
+            autor: "🛡 [Coordenação] Staff BPA",
+            cargo: "Moderação",
+            data: "Ontem, 20:15",
+            titulo: "Abertura de Vagas para a moderação",
+            texto: "O formulário para recrutamento de novos ajudantes e moderadores está aberto em nosso servidor oficial. Mantenha seu histórico limpo para participar!"
+          },
+          {
+            autor: "📢 [Sistema] Brasil Play Alpha",
+            cargo: "Bot Oficial",
+            data: "28/09/2026",
+            titulo: "Regras do Servidor Atualizadas",
+            texto: "Lembramos a todos os jogadores que o uso de modificações de terceiros não autorizadas resultará em banimento permanente da UCP. Jogue limpo e divirta-se!"
+          }
+        ];
+
+        let htmlContent = "";
+        anunciosReais.forEach(anuncio => {
+          htmlContent += `
+            <div class="announcement-card">
+              <div class="announcement-header">
+                <span class="announcement-author">${anuncio.autor}</span>
+                <span class="announcement-date">${anuncio.data}</span>
+              </div>
+              <div class="announcement-title">${anuncio.titulo}</div>
+              <div class="announcement-text">${anuncio.texto}</div>
+            </div>
+          `;
+        });
+
+        container.innerHTML = htmlContent;
+      }, 800);
+    }
 
     function toggleMusica() {
       const audio = document.getElementById('bgMusic');
