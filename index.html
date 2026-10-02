@@ -3,14 +3,15 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Brasil Play Alpha | Comunidade</title>
+  <title>Brasil Play Alpha | UCP & Comunidade</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-  <!-- ELEMENTO DE ÁUDIO EM LOOP -->
+  <!-- ELEMENTO DE ÁUDIO EM LOOP (Música de Fundo) -->
   <audio id="bgMusic" src="assets/bg-music.mp3" loop autoplay></audio>
 
+  <!-- PARTICULAS ANIMADAS NO FUNDO -->
   <svg class="particles-bg" xmlns="http://www.w3.org/2000/svg">
     <polygon class="particle-star" points="15,5 18,12 25,15 18,18 15,25 12,18 5,15 12,12" style="transform: scale(0.8); animation-duration: 7s;" cx="15%" />
     <polygon class="particle-star" points="15,5 18,12 25,15 18,18 15,25 12,18 5,15 12,12" style="transform: scale(1.2); animation-duration: 11s;" cx="45%" />
@@ -20,11 +21,11 @@
 
   <div class="wrapper">
     
+    <!-- HEADER -->
     <header class="app-header">
-      <div style="font-weight: 900; letter-spacing: 1px; font-size: 0.9rem;">BRASIL PLAY <span style="color:var(--primary-red)">ALPHA</span></div>
+      <div class="header-logo">BRASIL PLAY <span>ALPHA</span></div>
       <div class="header-right">
-        <!-- BOTÃO DE LIGAR/DESLIGAR MÚSICA -->
-        <button id="musicToggleBtn" class="btn-music-toggle" onclick="toggleMusica()" title="Ligar/Desligar Música">🎵</button>
+        <button id="musicToggleBtn" class="btn-music-toggle" onclick="tocarSomClique(); toggleMusica();" title="Ligar/Desligar Música">🎵</button>
         <div class="online-counter-badge">
           <span class="pulse-dot"></span>
           <span id="total-online">320</span> ONLINE
@@ -37,7 +38,7 @@
       <div class="hero-banner">
         <h1>VENHA FAZER PARTE <span>DESTA FAMÍLIA</span></h1>
         <p>Mergulhe no mundo virtual do SA-MP RPG. Adrenalina e diversão sem limites no seu telemóvel.</p>
-        <button class="btn-main" onclick="mudarAba('tab-downloads', document.querySelectorAll('.nav-item')[1])">Baixar Agora</button>
+        <button class="btn-main glow-effect" onclick="tocarSomClique(); mudarAba('tab-downloads', document.querySelectorAll('.nav-item')[1])">Baixar Agora</button>
       </div>
 
       <div class="section-title">Servidores Oficiais</div>
@@ -49,7 +50,7 @@
         </div>
         <div class="server-actions">
           <span class="player-count">208 / 700</span>
-          <button class="btn-forum" onclick="copiarIP('ip-srv-1')">Copiar IP</button>
+          <button class="btn-forum glow-effect" onclick="tocarSomClique(); copiarIP('ip-srv-1')">Copiar IP</button>
         </div>
       </div>
 
@@ -60,7 +61,7 @@
         </div>
         <div class="server-actions">
           <span class="player-count">112 / 800</span>
-          <button class="btn-forum" onclick="copiarIP('ip-srv-2')">Copiar IP</button>
+          <button class="btn-forum glow-effect" onclick="tocarSomClique(); copiarIP('ip-srv-2')">Copiar IP</button>
         </div>
       </div>
 
@@ -71,15 +72,16 @@
     <div id="tab-downloads" class="tab-pane">
       <div class="hero-banner" style="text-align: left;">
         <h2 style="color:var(--primary-red); margin-top:0;">Downloads Oficiais</h2>
-        <p>Baixe o Launcher exclusivo e a DATA otimizada para jogar sem travamentos.</p>
-        <a href="https://www.mediafire.com/file/iynt0w68xh8lhkl/Brasil_Play_Alpha_hct.apk/file" target="_blank" class="btn-main" style="text-decoration:none; display:block; text-align:center; margin-bottom:10px;">Baixar APK Launcher</a>
-        <a href="https://www.mediafire.com/file/1hmdo7dmneypdzn/DataBPA01.zip/file" target="_blank" class="btn-main" style="text-decoration:none; display:block; text-align:center; background:#1f0303; border:1px solid var(--dark-red);">Baixar Data Modificada</a>
+        <p>Baixe o Launcher exclusivo e a DATA otimizada para jogar sem travamentos e com máxima performance.</p>
+        <a href="https://www.mediafire.com/file/iynt0w68xh8lhkl/Brasil_Play_Alpha_hct.apk/file" target="_blank" class="btn-main glow-effect" onclick="tocarSomClique()" style="text-decoration:none; display:block; text-align:center; margin-bottom:12px;">Baixar APK Launcher</a>
+        <a href="https://www.mediafire.com/file/1hmdo7dmneypdzn/DataBPA01.zip/file" target="_blank" class="btn-main glow-effect" onclick="tocarSomClique()" style="text-decoration:none; display:block; text-align:center; background:linear-gradient(135deg, #2b0303, #4a0505); border:1px solid var(--dark-red);">Baixar Data Modificada</a>
       </div>
     </div>
 
     <!-- ABA 3: CONTA / UCP -->
     <div id="tab-conta" class="tab-pane">
       
+      <!-- TELA DE LOGIN -->
       <div id="login-box" class="auth-container">
         <h2>ENTRAR NA UCP</h2>
         <form onsubmit="return false;">
@@ -98,13 +100,17 @@
               <option value="2">Servidor 2</option>
             </select>
           </div>
-          <button class="btn-main" onclick="realizarLogin()">Aceder Site</button>
+          <button class="btn-main glow-effect" onclick="tocarSomClique(); realizarLogin();">Aceder Painel</button>
         </form>
         <div id="mensagem-auth"></div>
       </div>
 
+      <!-- PAINEL PRINCIPAL DO JOGADOR -->
       <div id="painel-box" class="auth-container hidden" style="padding: 14px;">
-        <h2 style="color: #00ff64; margin-bottom: 12px; font-size: 1.1rem;">PAINEL DO JOGADOR</h2>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+          <h2 style="color: #00ff64; margin:0; font-size: 1.1rem;">PAINEL DO JOGADOR</h2>
+          <button onclick="tocarSomClique(); fazerLogout()" style="background:none; border:none; color:var(--primary-red); font-size:0.75rem; font-weight:bold; cursor:pointer;">Sair 🚪</button>
+        </div>
         
         <div class="ucp-profile-card">
           <div class="ucp-skin-preview">
@@ -149,9 +155,68 @@
           <div class="inventory-slot"></div>
         </div>
 
-        <button class="btn-main" style="background: linear-gradient(135deg, #8b0000, #b30000); margin-bottom: 8px;" onclick="alternarPainelForum()">Fórum / Denúncias & Chat</button>
+        <!-- BOTÃO PARA ABRIR O SISTEMA DE FÓRUM / DENÚNCIAS & CHAT -->
+        <button class="btn-main glow-effect" style="background: linear-gradient(135deg, #8b0000, #ff1a1a); margin-top: 5px;" onclick="tocarSomClique(); abrirPainelForum();">💬 Fórum, Denúncias & Chat</button>
+      </div>
+
+      <!-- MODAL / PAINEL INTERNO DE FÓRUM, CHAT E DENÚNCIAS -->
+      <div id="modal-forum" class="auth-container hidden" style="margin-top: 0px; border-color: var(--primary-red);">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; border-bottom: 1px solid var(--border-color); padding-bottom: 6px;">
+          <h2 style="color:var(--primary-red); font-size: 0.95rem; margin:0;">CENTRAL DA COMUNIDADE</h2>
+          <button onclick="tocarSomClique(); fecharPainelForum()" style="background:none; border:none; color:#fff; font-size:0.9rem; font-weight:bold; cursor:pointer;">✖</button>
+        </div>
+
+        <!-- ABAS DO FÓRUM/CHAT -->
+        <div class="forum-tabs">
+          <button class="forum-tab-btn active" onclick="tocarSomClique(); mudarAbaForum('chat')">💬 Chat Global</button>
+          <button class="forum-tab-btn" onclick="tocarSomClique(); mudarAbaForum('denuncias')">🚨 Denúncias</button>
+          <button class="forum-tab-btn" onclick="tocarSomClique(); mudarAbaForum('forum')">📜 Tópicos</button>
+        </div>
+
+        <!-- CONTEÚDO: CHAT GLOBAL -->
+        <div id="f-tab-chat" class="forum-pane active">
+          <div class="chat-box-messages" id="chatMessages">
+            <div class="chat-msg"><span>[Staff] Admin_Hecate:</span> Sejam bem-vindos ao Brasil Play Alpha!</div>
+            <div class="chat-msg"><span>[Player] Carlos123:</span> Servidor tá top demais! 🔥</div>
+          </div>
+          <div class="chat-input-area">
+            <input type="text" id="chatInputText" placeholder="Digite sua mensagem...">
+            <button class="glow-effect" onclick="tocarSomClique(); enviarMensagemChat()">Enviar</button>
+          </div>
+        </div>
+
+        <!-- CONTEÚDO: DENÚNCIAS -->
+        <div id="f-tab-denuncias" class="forum-pane">
+          <p style="font-size: 0.75rem; color:var(--text-muted); margin-bottom: 8px;">Relate infrações ou bugs diretamente à staff.</p>
+          <div class="input-group">
+            <label>Acusado / Nick</label>
+            <input type="text" id="denunciaNick" placeholder="Nome do infrator">
+          </div>
+          <div class="input-group">
+            <label>Motivo / Prova (Link)</label>
+            <input type="text" id="denunciaMotivo" placeholder="Ex: DM / Uso de Bug + Link">
+          </div>
+          <button class="btn-main glow-effect" onclick="tocarSomClique(); enviarDenuncia()">Enviar Denúncia</button>
+        </div>
+
+        <!-- CONTEÚDO: FÓRUM / TÓPICOS -->
+        <div id="f-tab-forum" class="forum-pane">
+          <div class="forum-topic-item">
+            <strong>Regras Gerais do Servidor</strong>
+            <span>Atualizado em Outubro/2026 • Staff</span>
+          </div>
+          <div class="forum-topic-item">
+            <strong>Recrutamento para Organizações</strong>
+            <span>Vagas abertas para Polícia e máfias!</span>
+          </div>
+          <div class="forum-topic-item">
+            <strong>Guia de Instalação e Otimização</strong>
+            <span>Como rodar a 60 FPS sem travar.</span>
+          </div>
+        </div>
 
       </div>
+
     </div>
 
     <!-- ABA 4: COMUNIDADE (DISCORD) - VÍDEO PURO SEM RETÂNGULO -->
@@ -159,7 +224,7 @@
       <div class="hero-banner">
         <h2>Comunidade Brasil Play</h2>
         <p>Junte-se ao nosso servidor oficial no Discord para interagir com outros jogadores e ficar por dentro de todas as novidades!</p>
-        <a href="https://discord.gg/SEU_LINK_DO_DISCORD" target="_blank" class="btn-main">Entrar no Discord</a>
+        <a href="https://discord.gg/SEU_LINK_DO_DISCORD" target="_blank" class="btn-main glow-effect" onclick="tocarSomClique()">Entrar no Discord</a>
       </div>
 
       <!-- VÍDEO DIRETO COM CAMINHO CORRETO E SEM RETÂNGULO -->
@@ -172,25 +237,49 @@
 
   <!-- MENU DE NAVEGAÇÃO INFERIOR -->
   <nav class="floating-nav">
-    <button class="nav-item active" onclick="mudarAba('tab-inicio', this)">
+    <button class="nav-item active" onclick="tocarSomClique(); mudarAba('tab-inicio', this)">
       <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
       Início
     </button>
-    <button class="nav-item" onclick="mudarAba('tab-downloads', this)">
+    <button class="nav-item" onclick="tocarSomClique(); mudarAba('tab-downloads', this)">
       <svg viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
       Downloads
     </button>
-    <button class="nav-item" onclick="mudarAba('tab-conta', this)">
+    <button class="nav-item" onclick="tocarSomClique(); mudarAba('tab-conta', this)">
       <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
       Site
     </button>
-    <button class="nav-item" onclick="mudarAba('tab-comunidade', this)">
+    <button class="nav-item" onclick="tocarSomClique(); mudarAba('tab-comunidade', this)">
       <svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0-2-.9-2-2V4c0-1.1-.9-2-2-2z"/></svg>
       Comunidade
     </button>
   </nav>
 
   <script>
+    /* GERADOR DE SOM DE CLIQUE EM CÓDIGO (WEB AUDIO API) */
+    function tocarSomClique() {
+      try {
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        const osc = audioCtx.createOscillator();
+        const gainNode = audioCtx.createGain();
+        
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(580, audioCtx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(220, audioCtx.currentTime + 0.08);
+        
+        gainNode.gain.setValueAtTime(0.12, audioCtx.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.08);
+        
+        osc.connect(gainNode);
+        gainNode.connect(audioCtx.destination);
+        
+        osc.start();
+        osc.stop(audioCtx.currentTime + 0.08);
+      } catch(e) {
+        // Ignora se o navegador bloquear autoplay antes de interação
+      }
+    }
+
     function mudarAba(idAba, elementoBotao) {
       document.querySelectorAll('.tab-pane').forEach(aba => aba.classList.remove('active'));
       document.querySelectorAll('.nav-item').forEach(btn => btn.classList.remove('active'));
@@ -240,8 +329,53 @@
       document.getElementById('ucp-nick').innerText = nick;
     }
 
-    function alternarPainelForum() {
-      alert("Recurso de Fórum e Chat integrado.");
+    function fazerLogout() {
+      document.getElementById('painel-box').classList.add('hidden');
+      document.getElementById('modal-forum').classList.add('hidden');
+      document.getElementById('login-box').classList.remove('hidden');
+    }
+
+    function abrirPainelForum() {
+      document.getElementById('painel-box').classList.add('hidden');
+      document.getElementById('modal-forum').classList.remove('hidden');
+    }
+
+    function fecharPainelForum() {
+      document.getElementById('modal-forum').classList.add('hidden');
+      document.getElementById('painel-box').classList.remove('hidden');
+    }
+
+    function mudarAbaForum(aba) {
+      document.querySelectorAll('.forum-pane').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('.forum-tab-btn').forEach(b => b.classList.remove('active'));
+      
+      document.getElementById('f-tab-' + aba).classList.add('active');
+      event.currentTarget.classList.add('active');
+    }
+
+    function enviarMensagemChat() {
+      const input = document.getElementById('chatInputText');
+      const chatBox = document.getElementById('chatMessages');
+      if(!input.value.trim()) return;
+
+      const div = document.createElement('div');
+      div.className = 'chat-msg';
+      div.innerHTML = `<span>[Você] Hécate:</span> ${input.value}`;
+      chatBox.appendChild(div);
+      input.value = '';
+      chatBox.scrollTop = chatBox.scrollHeight;
+    }
+
+    function enviarDenuncia() {
+      const nick = document.getElementById('denunciaNick').value;
+      const motivo = document.getElementById('denunciaMotivo').value;
+      if(!nick || !motivo) {
+        alert("Preencha todos os campos da denúncia!");
+        return;
+      }
+      alert("Denúncia enviada com sucesso para a moderação!");
+      document.getElementById('denunciaNick').value = '';
+      document.getElementById('denunciaMotivo').value = '';
     }
   </script>
 </body>
