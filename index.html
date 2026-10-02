@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Brasil Play Alpha | Portal UCP</title>
+  <title>Brasil Play Alpha | Comunidade</title>
   <style>
     :root {
       --bg-color: #050001;
@@ -33,7 +33,6 @@
       padding-bottom: 90px;
     }
 
-    /* FUNDO COM TEXTURA E ESCURO */
     body::before {
       content: "";
       position: fixed;
@@ -41,14 +40,14 @@
       left: 0;
       width: 100vw;
       height: 100vh;
-      background: linear-gradient(rgba(5, 0, 1, 0.85), rgba(5, 0, 1, 0.92)), url('assets/background-login.jpg');
+      background: linear-gradient(rgba(5, 0, 1, 0.8), rgba(5, 0, 1, 0.9)), url('assets/background-login.jpg');
       background-size: cover;
       background-position: center;
       z-index: -2;
       pointer-events: none;
     }
 
-    /* CAMADA DE SVG COM PARTÍCULAS / FLOCOS FLUTUANTES */
+    /* CAMADA DE PARTICULAS SVG MAIORES E MAIS DETALHADAS */
     .particles-bg {
       position: fixed;
       top: 0;
@@ -59,16 +58,22 @@
       pointer-events: none;
     }
 
-    .particle {
-      fill: rgba(255, 26, 26, 0.35);
+    .particle-star {
+      fill: rgba(255, 26, 26, 0.6);
+      filter: drop-shadow(0 0 6px rgba(255, 26, 26, 0.8));
+      animation: floatParticle linear infinite;
+    }
+
+    .particle-circle {
+      fill: rgba(255, 80, 80, 0.45);
       animation: floatParticle linear infinite;
     }
 
     @keyframes floatParticle {
-      0% { transform: translateY(105vh) translateX(0); opacity: 0; }
-      20% { opacity: 0.8; }
-      80% { opacity: 0.8; }
-      100% { transform: translateY(-10vh) translateX(30px); opacity: 0; }
+      0% { transform: translateY(105vh) translateX(0) scale(0.8); opacity: 0; }
+      15% { opacity: 0.9; }
+      85% { opacity: 0.9; }
+      100% { transform: translateY(-10vh) translateX(40px) scale(1.2); opacity: 0; }
     }
 
     .hidden { display: none !important; }
@@ -118,13 +123,11 @@
       100% { opacity: 0.3; transform: scale(0.9); }
     }
 
-    /* EFEITO DE LISTRAS COM MOVIMENTO NAS BANNERS / CAIXAS */
     .hero-banner, .server-card, .auth-container, .ucp-profile-card {
       position: relative;
       overflow: hidden;
     }
 
-    /* Listras diagonais animadas de fundo */
     .hero-banner::after, .auth-container::after {
       content: "";
       position: absolute;
@@ -136,8 +139,8 @@
         45deg,
         transparent,
         transparent 15px,
-        rgba(255, 26, 26, 0.03) 15px,
-        rgba(255, 26, 26, 0.03) 30px
+        rgba(255, 26, 26, 0.04) 15px,
+        rgba(255, 26, 26, 0.04) 30px
       );
       animation: moveStripes 20s linear infinite;
       pointer-events: none;
@@ -193,13 +196,12 @@
       overflow: hidden;
     }
 
-    /* Brilho dinâmico passando pelo botão */
     .btn-main::before {
       content: '';
       position: absolute;
       top: 0; left: -100%;
       width: 100%; height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.25), transparent);
       animation: buttonShine 3s ease-in-out infinite;
     }
 
@@ -322,7 +324,6 @@
       margin-top: 8px;
     }
 
-    /* PAINEL UCP / JOGADOR */
     .ucp-profile-card {
       background: linear-gradient(135deg, #150202, #080000);
       border: 1px solid var(--dark-red);
@@ -415,7 +416,6 @@
       background: rgba(139,0,0,0.2);
     }
 
-    /* BARRA INFERIOR FLUTUANTE */
     .floating-nav {
       position: fixed;
       bottom: 0;
@@ -475,13 +475,18 @@
 </head>
 <body>
 
-  <!-- ELEMENTO SVG DE PARTÍCULAS / FLOCOS FLUTUANTES AO FUNDO -->
+  <!-- PARTÍCULAS E FLOCOS SVG MAIORES E DETALHADOS AO FUNDO -->
   <svg class="particles-bg" xmlns="http://www.w3.org/2000/svg">
-    <circle class="particle" cx="10%" cy="0" r="3" style="animation-duration: 8s; animation-delay: 0s;" />
-    <circle class="particle" cx="30%" cy="0" r="2" style="animation-duration: 12s; animation-delay: 2s;" />
-    <circle class="particle" cx="50%" cy="0" r="4" style="animation-duration: 10s; animation-delay: 1s;" />
-    <circle class="particle" cx="70%" cy="0" r="2.5" style="animation-duration: 14s; animation-delay: 4s;" />
-    <circle class="particle" cx="90%" cy="0" r="3.5" style="animation-duration: 9s; animation-delay: 3s;" />
+    <!-- Estrelas/Partículas Geométricas de Destaque -->
+    <polygon class="particle-star" points="15,5 18,12 25,15 18,18 15,25 12,18 5,15 12,12" style="transform: scale(0.8); animation-duration: 7s; animation-delay: 0s;" cx="15%" />
+    <polygon class="particle-star" points="15,5 18,12 25,15 18,18 15,25 12,18 5,15 12,12" style="transform: scale(1.2); animation-duration: 11s; animation-delay: 2s;" cx="45%" />
+    <polygon class="particle-star" points="15,5 18,12 25,15 18,18 15,25 12,18 5,15 12,12" style="transform: scale(0.6); animation-duration: 9s; animation-delay: 4s;" cx="80%" />
+    
+    <!-- Círculos maiores detalhados -->
+    <circle class="particle-circle" cx="20%" cy="0" r="6" style="animation-duration: 8s; animation-delay: 1s;" />
+    <circle class="particle-circle" cx="60%" cy="0" r="8" style="animation-duration: 13s; animation-delay: 3s;" />
+    <circle class="particle-circle" cx="85%" cy="0" r="5" style="animation-duration: 10s; animation-delay: 2.5s;" />
+    <circle class="particle-circle" cx="35%" cy="0" r="7" style="animation-duration: 9s; animation-delay: 0.5s;" />
   </svg>
 
   <div class="wrapper">
@@ -614,12 +619,12 @@
 
     </div>
 
-    <!-- ABA 4: LOJA -->
+    <!-- ABA 4: COMUNIDADE / DISCORD -->
     <div id="tab-loja" class="tab-pane">
       <div class="hero-banner">
-        <h2 style="color:var(--primary-red); margin-top:0;">Loja Brasil Play Alpha</h2>
-        <p>Adquira VIPs, Coins e vantagens exclusivas.</p>
-        <a href="https://discord.gg/b22VyqmbcX" target="_blank" class="btn-main" style="text-decoration:none; display:block; text-align:center;">Comprar via Discord</a>
+        <h2 style="color:var(--primary-red); margin-top:0;">Comunidade Brasil Play</h2>
+        <p>Junte-se ao nosso servidor oficial no Discord para interagir com outros jogadores, concorrer a sorteios e ficar por dentro de todas as novidades!</p>
+        <a href="https://discord.gg/b22VyqmbcX" target="_blank" class="btn-main" style="text-decoration:none; display:block; text-align:center;">Entrar no Discord</a>
       </div>
     </div>
 
@@ -644,8 +649,8 @@
       Conta
     </button>
     <button class="nav-item" onclick="mudarAba('tab-loja', this)">
-      <svg viewBox="0 0 24 24"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.60 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
-      Comprar
+      <svg viewBox="0 0 24 24"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994.021-.041.001-.09-.041-.106a13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.927 1.793 8.18 1.793 12.061 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.028zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg>
+      Comunidade
     </button>
   </nav>
 
