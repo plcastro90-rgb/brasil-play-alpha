@@ -56,7 +56,7 @@
     }
 
     body.bg-comunidade::before {
-      background: linear-gradient(rgba(5, 0, 1, 0.85), rgba(5, 0, 1, 0.92)), url('assets/image_comunidade_background.jpg');
+      background: linear-gradient(rgba(5, 0, 1, 0.8), rgba(5, 0, 1, 0.9)), url('assets/image_comunidade_background.jpg');
       background-size: cover;
       background-position: center;
     }
@@ -131,6 +131,7 @@
       gap: 6px;
     }
 
+    /* BOTÃO DE MÚSICA PEQUENO */
     .btn-music-toggle {
       background: rgba(139, 0, 0, 0.2);
       border: 1px solid var(--border-red);
@@ -215,54 +216,6 @@
       color: #fff;
       margin: 15px 0 8px 2px;
       width: 100%;
-    }
-
-    /* ESTILO DOS ANÚNCIOS DO DISCORD (NÃO CLICÁVEIS) */
-    .announcement-card {
-      background: var(--card-bg);
-      border: 1px solid var(--border-red);
-      border-radius: 12px;
-      padding: 14px;
-      margin-bottom: 12px;
-      width: 100%;
-      pointer-events: none; /* Não clicável conforme solicitado */
-      box-shadow: 0 4px 12px rgba(0,0,0,0.5);
-    }
-
-    .announcement-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 8px;
-      border-bottom: 1px solid rgba(139,0,0,0.3);
-      padding-bottom: 6px;
-    }
-
-    .announcement-author {
-      font-size: 0.75rem;
-      font-weight: bold;
-      color: var(--primary-red);
-      display: flex;
-      align-items: center;
-      gap: 5px;
-    }
-
-    .announcement-date {
-      font-size: 0.65rem;
-      color: var(--text-muted);
-    }
-
-    .announcement-title {
-      font-size: 0.85rem;
-      font-weight: bold;
-      color: #fff;
-      margin-bottom: 6px;
-    }
-
-    .announcement-text {
-      font-size: 0.75rem;
-      color: #ccc;
-      line-height: 1.4;
     }
 
     .server-card {
@@ -492,6 +445,11 @@
       gap: 4px;
     }
 
+    .btn-media:hover {
+      border-color: var(--primary-red);
+      color: #fff;
+    }
+
     .chat-box-container {
       background: #030001;
       border: 1px solid var(--border-red);
@@ -629,6 +587,7 @@
 </head>
 <body>
 
+  <!-- ELEMENTO DE ÁUDIO EM LOOP -->
   <audio id="bgMusic" src="assets/bg-music.mp3" loop autoplay></audio>
 
   <svg class="particles-bg" xmlns="http://www.w3.org/2000/svg">
@@ -643,6 +602,7 @@
     <header class="app-header">
       <div style="font-weight: 900; letter-spacing: 1px; font-size: 0.9rem;">BRASIL PLAY <span style="color:var(--primary-red)">ALPHA</span></div>
       <div class="header-right">
+        <!-- BOTÃO DE LIGAR/DESLIGAR MÚSICA -->
         <button id="musicToggleBtn" class="btn-music-toggle" onclick="toggleMusica()" title="Ligar/Desligar Música">🎵</button>
         <div class="online-counter-badge">
           <span class="pulse-dot"></span>
@@ -768,8 +728,10 @@
           <div class="inventory-slot"></div>
         </div>
 
+        <!-- BOTÃO FÓRUM / UCP -->
         <button class="btn-main" style="background: linear-gradient(135deg, #8b0000, #b30000); margin-bottom: 8px;" onclick="alternarPainelForum()">Fórum / Denúncias & Chat</button>
 
+        <!-- SEÇÃO DE FÓRUM / DENÚNCIAS E CHAT CONDICIONAL -->
         <div id="forum-painel" class="forum-section hidden">
           <h3 style="color: var(--primary-red); font-size: 0.9rem; margin-bottom: 8px;">Criar Denúncia / Contato</h3>
           
@@ -780,12 +742,12 @@
 
           <div class="input-group">
             <label>Mensagem (Suporte a emojis 😊 e menções @)</label>
-            <textarea id="denuncia-texto" rows="3" placeholder="Descreva o ocorrido..."></textarea>
+            <textarea id="denuncia-texto" rows="3" placeholder="Descreva o ocorrido... Ex: O jogador @Hécate_Apks me matou sem motivo 'print'"></textarea>
           </div>
 
           <div class="media-tools">
             <button class="btn-media" onclick="alert('Selecione foto/print da galeria')">📷 Foto</button>
-            <button class="btn-media" onclick="alert('Gravando áudio...')">🎙 Áudio</button>
+            <button class="btn-media" onclick="alert('Gravando áudio... Clique novamente para parar.')">🎙 Áudio</button>
             <button class="btn-media" onclick="alert('Selecione vídeo da galeria')">🎥 Vídeo</button>
             <button class="btn-media" onclick="inserirEmoji('🔥')">🔥 Emoji</button>
           </div>
@@ -802,7 +764,7 @@
           <div id="chat-container-wrapper" style="opacity: 0.5; pointer-events: none;">
             <div class="chat-box-container">
               <div class="chat-messages" id="chat-msgs-list">
-                <div class="chat-msg">Sistema: Sua denúncia foi enviada. Aguarde um Administrador reivindicar.</div>
+                <div class="chat-msg">Sistema: Sua denúncia foi enviada. Aguarde um Administrador reivindicar para iniciar o chat.</div>
               </div>
               <div class="chat-input-area">
                 <input type="text" id="chat-input-text" placeholder="Digite sua mensagem...">
@@ -821,24 +783,13 @@
 
     </div>
 
-    <!-- ABA 4: COMUNIDADE / ANÚNCIOS DINÂMICOS EM TEMPO REAL -->
+    <!-- ABA 4: COMUNIDADE / DISCORD -->
     <div id="tab-loja" class="tab-pane">
-      <div class="hero-banner" style="margin-bottom: 12px;">
-        <div style="display: flex; align-items: center; justify-content: center; gap: 6px; margin-bottom: 4px;">
-          <span class="pulse-dot"></span>
-          <span style="font-size: 0.65rem; color: #00ff64; font-weight: bold; text-transform: uppercase;">Conectado ao Discord (Tempo Real)</span>
-        </div>
-        <h2 style="color:var(--primary-red); margin-top:0;">Canal de Anúncios</h2>
-        <p style="font-size: 0.75rem; color:#aaa; margin-bottom:4px;">ID do Canal: 1553456843156750457</p>
+      <div class="hero-banner">
+        <h2 style="color:var(--primary-red); margin-top:0;">Comunidade Brasil Play</h2>
+        <p>Junte-se ao nosso servidor oficial no Discord para interagir com outros jogadores e ficar por dentro de todas as novidades!</p>
+        <a href="https://discord.gg/b22VyqmbcX" target="_blank" class="btn-main" style="text-decoration:none; display:block; text-align:center;">Entrar no Discord</a>
       </div>
-
-      <!-- FEED DINÂMICO QUE PUXA AS INFORMAÇÕES -->
-      <div id="discord-feed-container">
-        <div class="announcement-card" style="text-align: center; padding: 20px;">
-          <div class="announcement-text" style="color: #ff8080;">Sincronizando com os anúncios do servidor...</div>
-        </div>
-      </div>
-
     </div>
 
     <div class="footer-brand">
@@ -871,66 +822,16 @@
   <script>
     let chatLiberado = false;
 
+    // Tentar tocar música ao carregar e interagir (caso o navegador bloqueie autoplay puro)
     document.addEventListener('DOMContentLoaded', () => {
       const audio = document.getElementById('bgMusic');
       audio.volume = 0.5;
       audio.play().catch(() => {
+        // Se o navegador bloquear, o botão mudará de estado visual para indicar que pode ser ligado manualmente
         document.getElementById('musicToggleBtn').classList.add('muted');
         document.getElementById('musicToggleBtn').innerText = '🔇';
       });
-
-      // Carregar os anúncios em tempo real ao iniciar
-      carregarAnunciosDiscord();
     });
-
-    // Função que simula e busca as informações reais para o launcher
-    function carregarAnunciosDiscord() {
-      const container = document.getElementById('discord-feed-container');
-      
-      // Simula a requisição assíncrona ao link/banco de dados em tempo real
-      setTimeout(() => {
-        // Dados oficiais sincronizados com o canal do servidor
-        const anunciosReais = [
-          {
-            autor: "👑 [Direção] Hécate",
-            cargo: "Diretor Geral",
-            data: "Hoje, 12:40",
-            titulo: "Atualização Geral da DATA e Otimização",
-            texto: "A nova versão da nossa DATA otimizada já está disponível na aba de Downloads! Foram corrigidos bugs de crash em aparelhos intermediários e melhorado o desempenho geral."
-          },
-          {
-            autor: "🛡 [Coordenação] Staff BPA",
-            cargo: "Moderação",
-            data: "Ontem, 20:15",
-            titulo: "Abertura de Vagas para a moderação",
-            texto: "O formulário para recrutamento de novos ajudantes e moderadores está aberto em nosso servidor oficial. Mantenha seu histórico limpo para participar!"
-          },
-          {
-            autor: "📢 [Sistema] Brasil Play Alpha",
-            cargo: "Bot Oficial",
-            data: "28/09/2026",
-            titulo: "Regras do Servidor Atualizadas",
-            texto: "Lembramos a todos os jogadores que o uso de modificações de terceiros não autorizadas resultará em banimento permanente da UCP. Jogue limpo e divirta-se!"
-          }
-        ];
-
-        let htmlContent = "";
-        anunciosReais.forEach(anuncio => {
-          htmlContent += `
-            <div class="announcement-card">
-              <div class="announcement-header">
-                <span class="announcement-author">${anuncio.autor}</span>
-                <span class="announcement-date">${anuncio.data}</span>
-              </div>
-              <div class="announcement-title">${anuncio.titulo}</div>
-              <div class="announcement-text">${anuncio.texto}</div>
-            </div>
-          `;
-        });
-
-        container.innerHTML = htmlContent;
-      }, 800);
-    }
 
     function toggleMusica() {
       const audio = document.getElementById('bgMusic');
