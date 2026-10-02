@@ -1,0 +1,16 @@
+[
+  {
+    "cargo": "[Direção] Hécate",
+    "corCargo": "#ff3333",
+    "tempo": "Hoje, 12:40",
+    "titulo": "Atualização Geral da DATA e Otimização",
+    "mensagem": "A nova versão da nossa DATA otimizada já está disponível na aba de Downloads! Foram corrigidos bugs de crash em aparelhos intermediários e melhorado o desempenho geral."
+  },
+  {
+    "cargo": "[Coordenação] Staff BPA",
+    "corCargo": "#3388ff",
+    "tempo": "Ontem, 20:15",
+    "titulo": "Abertura de Vagas para a moderação",
+    "mensagem": "O formulário para recrutamento de novos ajudantes e moderadores está aberto em nosso servidor oficial. Mantenha seu histórico limpo para participar!"
+  }
+]
