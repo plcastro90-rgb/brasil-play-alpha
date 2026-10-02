@@ -99,6 +99,11 @@
       margin: 0 auto;
       position: relative;
       z-index: 1;
+      /* CONTORNO VERMELHO NA PEGADA DO SITE */
+      border: 2px solid var(--primary-red);
+      border-radius: 16px;
+      box-shadow: 0 0 25px rgba(255, 26, 26, 0.35);
+      background: rgba(5, 0, 1, 0.7);
     }
 
     .app-header {
@@ -497,24 +502,24 @@
     }
     .brand-logo-text span { color: var(--primary-red); }
 
-    /* CORREÇÃO DO BUG DE CLIQUE: POINTER-EVENTS NONE E DIMENSÕES SEGURAS */
+    /* IMAGENS FLUTUANTES FORA DO LAYOUT, EM BAIXO, LOGO ACIMA DOS BOTÕES DAS ABAS */
     .floating-character {
-      position: absolute;
-      right: 5px;
-      bottom: 0;
-      max-height: 140px;
+      position: fixed;
+      bottom: 60px; /* Posicionado acima da barra de navegação */
+      right: 15px;
+      max-height: 130px;
       width: auto;
       object-fit: contain;
-      z-index: 1;
-      pointer-events: none; /* Crucial para os cliques passarem direto para os botões */
-      opacity: 0.75;
-      filter: drop-shadow(0 5px 15px rgba(255, 26, 26, 0.25));
+      z-index: 999; /* Fica acima do conteúdo, mas abaixo da barra de navegação */
+      pointer-events: none; /* Garante que os cliques passem direto */
+      opacity: 0.85;
+      filter: drop-shadow(0 5px 15px rgba(255, 26, 26, 0.4));
       animation: floatAnimation 4s ease-in-out infinite;
     }
 
     @keyframes floatAnimation {
       0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-6px); }
+      50% { transform: translateY(-8px); }
     }
   </style>
 </head>
@@ -544,7 +549,6 @@
     <!-- ABA 1: INÍCIO -->
     <div id="tab-inicio" class="tab-pane active">
       <div class="hero-banner">
-        <img src="assets/image_inicio.png" alt="Início" class="floating-character">
         <h1>VENHA FAZER PARTE <span>DESTA FAMÍLIA</span></h1>
         <p>Mergulhe no mundo virtual do SA-MP RPG. Adrenalina e diversão sem limites no seu telemóvel.</p>
         <button class="btn-main" onclick="mudarAba('tab-downloads', document.querySelectorAll('.nav-item')[1])">Baixar Agora</button>
@@ -589,7 +593,6 @@
     <div id="tab-conta" class="tab-pane">
       
       <div id="login-box" class="auth-container">
-        <img src="assets/image_conta.png" alt="Conta" class="floating-character">
         <h2>ENTRAR NA UCP</h2>
         <form onsubmit="return false;">
           <div class="input-group">
@@ -607,7 +610,7 @@
               <option value="2">Servidor 2</option>
             </select>
           </div>
-          <button class="btn-main" onclick="realizarLogin()">Aceder Painel</button>
+          <button class="btn-main" onclick="realizarLogin()">Aceder Site</button>
         </form>
         <div id="mensagem-auth"></div>
       </div>
@@ -650,7 +653,7 @@
         <div class="inventory-grid">
           <div class="inventory-slot item" title="Telemóvel">📱</div>
           <div class="inventory-slot item" title="Rádio">📻</div>
-          <div class="inventory-slot item" title="Colete">🛡️️</div>
+          <div class="inventory-slot item" title="Colete">🛡</div>
           <div class="inventory-slot item" title="Arma">🔫</div>
           <div class="inventory-slot"></div>
           <div class="inventory-slot"></div>
@@ -677,4 +680,10 @@
       <p style="font-size: 0.65rem; color: var(--text-muted); margin-top: 4px;">&copy; 2026 - Todos os direitos reservados.</p>
     </div>
 
-  </
+  </div>
+
+  <!-- IMAGENS FLUTUANTES FORA DO LAYOUT (Alternam conforme a aba ativa ou exibidas de forma fixa) -->
+  <img src="assets/image_inicio.png" alt="Personagem Flutuante" class="floating-character" id="floating-img">
+
+</body>
+</html>
