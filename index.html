@@ -7,7 +7,7 @@
   <style>
     :root {
       --bg-color: #050001;
-      --card-bg: rgba(14, 2, 2, 0.95);
+      --card-bg: rgba(14, 2, 2, 0.92);
       --primary-red: #ff1a1a;
       --dark-red: #8b0000;
       --border-red: #520e0e;
@@ -17,21 +17,23 @@
 
     *, *::before, *::after {
       box-sizing: border-box;
+      margin: 0;
+      padding: 0;
     }
 
     body {
       background-color: var(--bg-color);
       color: var(--text-light);
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      margin: 0;
-      padding: 0;
-      padding-bottom: 90px;
+      width: 100vw;
+      min-height: 100vh;
       display: flex;
       justify-content: center;
-      min-height: 100vh;
       overflow-x: hidden;
+      padding-bottom: 90px;
     }
 
+    /* FUNDO COM TEXTURA E ESCURO */
     body::before {
       content: "";
       position: fixed;
@@ -39,28 +41,54 @@
       left: 0;
       width: 100vw;
       height: 100vh;
-      background: linear-gradient(rgba(5, 0, 1, 0.9), rgba(5, 0, 1, 0.95)), url('assets/background-login.jpg');
+      background: linear-gradient(rgba(5, 0, 1, 0.85), rgba(5, 0, 1, 0.92)), url('assets/background-login.jpg');
       background-size: cover;
       background-position: center;
+      z-index: -2;
+      pointer-events: none;
+    }
+
+    /* CAMADA DE SVG COM PARTÍCULAS / FLOCOS FLUTUANTES */
+    .particles-bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
       z-index: -1;
       pointer-events: none;
+    }
+
+    .particle {
+      fill: rgba(255, 26, 26, 0.35);
+      animation: floatParticle linear infinite;
+    }
+
+    @keyframes floatParticle {
+      0% { transform: translateY(105vh) translateX(0); opacity: 0; }
+      20% { opacity: 0.8; }
+      80% { opacity: 0.8; }
+      100% { transform: translateY(-10vh) translateX(30px); opacity: 0; }
     }
 
     .hidden { display: none !important; }
 
     .wrapper {
       width: 100%;
-      max-width: 480px;
-      padding: 12px;
+      max-width: 440px;
+      padding: 10px 16px;
       margin: 0 auto;
+      position: relative;
+      z-index: 1;
     }
 
     .app-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 10px 0;
-      margin-bottom: 10px;
+      padding: 12px 0;
+      margin-bottom: 5px;
+      width: 100%;
     }
 
     .online-counter-badge {
@@ -90,26 +118,56 @@
       100% { opacity: 0.3; transform: scale(0.9); }
     }
 
+    /* EFEITO DE LISTRAS COM MOVIMENTO NAS BANNERS / CAIXAS */
+    .hero-banner, .server-card, .auth-container, .ucp-profile-card {
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Listras diagonais animadas de fundo */
+    .hero-banner::after, .auth-container::after {
+      content: "";
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: repeating-linear-gradient(
+        45deg,
+        transparent,
+        transparent 15px,
+        rgba(255, 26, 26, 0.03) 15px,
+        rgba(255, 26, 26, 0.03) 30px
+      );
+      animation: moveStripes 20s linear infinite;
+      pointer-events: none;
+    }
+
+    @keyframes moveStripes {
+      0% { transform: translate(0, 0); }
+      100% { transform: translate(50px, 50px); }
+    }
+
     .hero-banner {
       background: linear-gradient(135deg, #1f0303, #0a0101);
       border: 2px solid var(--dark-red);
       border-radius: 14px;
-      padding: 20px 15px;
+      padding: 20px 16px;
       text-align: center;
       box-shadow: 0 0 20px rgba(139, 0, 0, 0.3);
       margin-bottom: 15px;
       width: 100%;
     }
 
-    .hero-banner h1 {
-      font-size: 1.3rem;
+    .hero-banner h1, .hero-banner h2 {
+      font-size: 1.2rem;
       font-weight: 900;
       color: #fff;
-      margin: 0 0 8px 0;
+      margin-bottom: 8px;
       letter-spacing: 1px;
     }
 
-    .hero-banner h1 span { color: var(--primary-red); }
+    .hero-banner h1 span, .hero-banner h2 span { color: var(--primary-red); }
 
     .hero-banner p {
       font-size: 0.8rem;
@@ -131,20 +189,39 @@
       box-shadow: 0 4px 15px rgba(255,26,26,0.4);
       text-transform: uppercase;
       letter-spacing: 1px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Brilho dinâmico passando pelo botão */
+    .btn-main::before {
+      content: '';
+      position: absolute;
+      top: 0; left: -100%;
+      width: 100%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      animation: buttonShine 3s ease-in-out infinite;
+    }
+
+    @keyframes buttonShine {
+      0% { left: -100%; }
+      20% { left: 100%; }
+      100% { left: 100%; }
     }
 
     .section-title {
-      font-size: 0.95rem;
+      font-size: 0.9rem;
       font-weight: 800;
       color: #fff;
-      margin: 15px 0 10px 2px;
+      margin: 15px 0 8px 2px;
+      width: 100%;
     }
 
     .server-card {
       background: var(--card-bg);
       border: 1px solid var(--border-red);
       border-radius: 12px;
-      padding: 12px 15px;
+      padding: 12px 14px;
       margin-bottom: 10px;
       display: flex;
       justify-content: space-between;
@@ -153,7 +230,7 @@
     }
 
     .server-info .server-name {
-      font-size: 0.85rem;
+      font-size: 0.8rem;
       font-weight: bold;
       color: #fff;
       display: block;
@@ -202,7 +279,7 @@
       background: var(--card-bg);
       border: 2px solid var(--dark-red);
       border-radius: 14px;
-      padding: 20px;
+      padding: 18px;
       box-shadow: 0 0 25px rgba(255,0,0,0.2);
       width: 100%;
       margin-top: 10px;
@@ -211,13 +288,14 @@
     .auth-container h2 {
       text-align: center;
       color: var(--primary-red);
-      margin-top: 0;
+      margin-bottom: 12px;
       font-weight: 900;
-      font-size: 1.2rem;
+      font-size: 1.1rem;
     }
 
     .input-group {
       margin-bottom: 12px;
+      width: 100%;
     }
 
     .input-group label {
@@ -244,42 +322,43 @@
       margin-top: 8px;
     }
 
-    /* ESTILOS ESPECÍFICOS DO PAINEL DO JOGADOR (UCP) */
+    /* PAINEL UCP / JOGADOR */
     .ucp-profile-card {
       background: linear-gradient(135deg, #150202, #080000);
       border: 1px solid var(--dark-red);
       border-radius: 10px;
-      padding: 15px;
-      margin-bottom: 15px;
+      padding: 12px;
+      margin-bottom: 12px;
       display: flex;
       align-items: center;
-      gap: 15px;
+      gap: 12px;
+      width: 100%;
     }
 
     .ucp-skin-preview {
-      width: 60px;
-      height: 80px;
+      width: 55px;
+      height: 75px;
       background: rgba(0,0,0,0.4);
       border: 1px solid var(--border-red);
       border-radius: 6px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 0.65rem;
+      font-size: 0.6rem;
       color: var(--text-muted);
       text-align: center;
       flex-shrink: 0;
     }
 
     .ucp-details h3 {
-      margin: 0 0 4px 0;
-      font-size: 1rem;
+      margin: 0 0 3px 0;
+      font-size: 0.95rem;
       color: #fff;
     }
 
     .ucp-details p {
       margin: 2px 0;
-      font-size: 0.75rem;
+      font-size: 0.73rem;
       color: #aaa;
     }
 
@@ -287,25 +366,26 @@
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 8px;
-      margin-bottom: 15px;
+      margin-bottom: 12px;
+      width: 100%;
     }
 
     .ucp-info-box {
       background: rgba(5, 0, 1, 0.8);
       border: 1px solid var(--border-red);
-      padding: 10px;
+      padding: 8px 10px;
       border-radius: 8px;
     }
 
     .ucp-info-box span {
       display: block;
-      font-size: 0.65rem;
+      font-size: 0.62rem;
       color: var(--text-muted);
       text-transform: uppercase;
     }
 
     .ucp-info-box strong {
-      font-size: 0.9rem;
+      font-size: 0.85rem;
       color: #fff;
     }
 
@@ -313,7 +393,8 @@
       display: grid;
       grid-template-columns: repeat(4, 1fr);
       gap: 6px;
-      margin-bottom: 15px;
+      margin-bottom: 12px;
+      width: 100%;
     }
 
     .inventory-slot {
@@ -324,9 +405,8 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 0.65rem;
+      font-size: 0.7rem;
       color: #666;
-      position: relative;
     }
 
     .inventory-slot.item {
@@ -335,14 +415,14 @@
       background: rgba(139,0,0,0.2);
     }
 
-    /* BARRA FLUTUANTE INFERIOR */
+    /* BARRA INFERIOR FLUTUANTE */
     .floating-nav {
       position: fixed;
       bottom: 0;
       left: 50%;
       transform: translateX(-50%);
       width: 100%;
-      max-width: 480px;
+      max-width: 440px;
       background: rgba(10, 1, 2, 0.95);
       border-top: 1px solid var(--border-red);
       display: flex;
@@ -375,13 +455,14 @@
       color: var(--primary-red);
     }
 
-    .tab-pane { display: none; }
+    .tab-pane { display: none; width: 100%; }
     .tab-pane.active { display: block; }
 
     .footer-brand {
       text-align: center;
-      margin-top: 25px;
-      padding-bottom: 15px;
+      margin-top: 20px;
+      padding-bottom: 10px;
+      width: 100%;
     }
     .brand-logo-text {
       font-weight: 900;
@@ -393,6 +474,15 @@
   </style>
 </head>
 <body>
+
+  <!-- ELEMENTO SVG DE PARTÍCULAS / FLOCOS FLUTUANTES AO FUNDO -->
+  <svg class="particles-bg" xmlns="http://www.w3.org/2000/svg">
+    <circle class="particle" cx="10%" cy="0" r="3" style="animation-duration: 8s; animation-delay: 0s;" />
+    <circle class="particle" cx="30%" cy="0" r="2" style="animation-duration: 12s; animation-delay: 2s;" />
+    <circle class="particle" cx="50%" cy="0" r="4" style="animation-duration: 10s; animation-delay: 1s;" />
+    <circle class="particle" cx="70%" cy="0" r="2.5" style="animation-duration: 14s; animation-delay: 4s;" />
+    <circle class="particle" cx="90%" cy="0" r="3.5" style="animation-duration: 9s; animation-delay: 3s;" />
+  </svg>
 
   <div class="wrapper">
     
@@ -440,17 +530,16 @@
     <!-- ABA 2: DOWNLOADS -->
     <div id="tab-downloads" class="tab-pane">
       <div class="hero-banner" style="text-align: left;">
-        <h2 style="color:var(--primary-red); margin-top:0; font-size: 1.1rem;">Downloads Oficiais</h2>
+        <h2 style="color:var(--primary-red); margin-top:0;">Downloads Oficiais</h2>
         <p>Baixe o Launcher exclusivo e a DATA otimizada para jogar sem travamentos.</p>
         <a href="https://www.mediafire.com/file/iynt0w68xh8lhkl/Brasil_Play_Alpha_hct.apk/file" target="_blank" class="btn-main" style="text-decoration:none; display:block; text-align:center; margin-bottom:10px;">Baixar APK Launcher</a>
         <a href="https://www.mediafire.com/file/1hmdo7dmneypdzn/DataBPA01.zip/file" target="_blank" class="btn-main" style="text-decoration:none; display:block; text-align:center; background:#1f0303; border:1px solid var(--dark-red);">Baixar Data Modificada</a>
       </div>
     </div>
 
-    <!-- ABA 3: CONTA / UCP AVANÇADA -->
+    <!-- ABA 3: CONTA / UCP -->
     <div id="tab-conta" class="tab-pane">
       
-      <!-- Ecrã de Login -->
       <div id="login-box" class="auth-container">
         <h2>ENTRAR NA UCP</h2>
         <form onsubmit="return false;">
@@ -474,11 +563,9 @@
         <div id="mensagem-auth"></div>
       </div>
 
-      <!-- Painel Completo do Jogador (UCP com Skin, RG, ID, Nick e Itens) -->
-      <div id="painel-box" class="auth-container hidden" style="padding: 15px;">
+      <div id="painel-box" class="auth-container hidden" style="padding: 14px;">
         <h2 style="color: #00ff64; margin-bottom: 12px; font-size: 1.1rem;">PAINEL DO JOGADOR</h2>
         
-        <!-- Cartão de Identidade / Skin -->
         <div class="ucp-profile-card">
           <div class="ucp-skin-preview">
             <span>Skin<br>#299</span>
@@ -487,11 +574,10 @@
             <h3 id="ucp-nick">Hécate</h3>
             <p>🆔 ID: <span id="ucp-id" style="color:#fff">1492</span></p>
             <p>📄 RG: <span id="ucp-rg" style="color:#fff">89210</span></p>
-            <p style="color: #00ff64; font-weight: bold; margin-top:4px;">⭐ VIP Ativo</p>
+            <p style="color: #00ff64; font-weight: bold; margin-top:3px;">⭐ VIP Ativo</p>
           </div>
         </div>
 
-        <!-- Informações Financeiras e de Jogo -->
         <div class="ucp-grid-info">
           <div class="ucp-info-box">
             <span>Dinheiro (Mão)</span>
@@ -511,13 +597,12 @@
           </div>
         </div>
 
-        <!-- Inventário e Itens -->
         <div class="section-title" style="margin-top: 10px; font-size: 0.85rem;">Inventário e Itens</div>
         <div class="inventory-grid">
           <div class="inventory-slot item" title="Telemóvel">📱</div>
           <div class="inventory-slot item" title="Rádio">📻</div>
-          <div class="inventory-slot item" title="Colete Tático">🛡️</div>
-          <div class="inventory-slot item" title="M4 / Armas">🔫</div>
+          <div class="inventory-slot item" title="Colete">🛡️</div>
+          <div class="inventory-slot item" title="Arma">🔫</div>
           <div class="inventory-slot"></div>
           <div class="inventory-slot"></div>
           <div class="inventory-slot"></div>
@@ -532,7 +617,7 @@
     <!-- ABA 4: LOJA -->
     <div id="tab-loja" class="tab-pane">
       <div class="hero-banner">
-        <h2 style="color:var(--primary-red); margin-top:0; font-size: 1.1rem;">Loja Brasil Play Alpha</h2>
+        <h2 style="color:var(--primary-red); margin-top:0;">Loja Brasil Play Alpha</h2>
         <p>Adquira VIPs, Coins e vantagens exclusivas.</p>
         <a href="https://discord.gg/b22VyqmbcX" target="_blank" class="btn-main" style="text-decoration:none; display:block; text-align:center;">Comprar via Discord</a>
       </div>
@@ -545,7 +630,6 @@
 
   </div>
 
-  <!-- BARRA FLUTUANTE INFERIOR -->
   <nav class="floating-nav">
     <button class="nav-item active" onclick="mudarAba('tab-inicio', this)">
       <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
@@ -569,7 +653,6 @@
     function mudarAba(tabId, element) {
       document.querySelectorAll('.tab-pane').forEach(pane => pane.classList.remove('active'));
       document.getElementById(tabId).classList.add('active');
-      
       if (element) {
         document.querySelectorAll('.nav-item').forEach(btn => btn.classList.remove('active'));
         element.classList.add('active');
