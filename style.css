@@ -24,6 +24,8 @@ body {
   justify-content: center;
   overflow-x: hidden;
   padding-bottom: 90px;
+  border: none !important;
+  outline: none !important;
 }
 
 body::before {
@@ -38,6 +40,19 @@ body::before {
   background-position: center;
   z-index: -2;
   pointer-events: none;
+}
+
+/* FUNDOS DINÂMICOS PARA AS ABAS */
+body.bg-downloads::before {
+  background: linear-gradient(rgba(5, 0, 1, 0.8), rgba(5, 0, 1, 0.9)), url('assets/image_download_background.jpg');
+  background-size: cover;
+  background-position: center;
+}
+
+body.bg-comunidade::before {
+  background: linear-gradient(rgba(5, 0, 1, 0.8), rgba(5, 0, 1, 0.9)), url('assets/image_comunidade_background.jpg');
+  background-size: cover;
+  background-position: center;
 }
 
 /* CAMADA DE PARTICULAS SVG MAIORES E MAIS DETALHADAS */
@@ -89,6 +104,12 @@ body::before {
   width: 100%;
 }
 
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
 .online-counter-badge {
   background: rgba(0, 255, 100, 0.1);
   border: 1px solid #00ff64;
@@ -100,6 +121,28 @@ body::before {
   display: flex;
   align-items: center;
   gap: 6px;
+}
+
+/* BOTÃO DE MÚSICA PEQUENO */
+.btn-music-toggle {
+  background: rgba(139, 0, 0, 0.2);
+  border: 1px solid var(--border-red);
+  color: #fff;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-music-toggle.muted {
+  border-color: #555;
+  color: #777;
+  background: rgba(0, 0, 0, 0.4);
 }
 
 .pulse-dot {
@@ -188,6 +231,9 @@ body::before {
   position: relative;
   overflow: hidden;
   z-index: 2;
+  text-decoration: none;
+  display: inline-block;
+  text-align: center;
 }
 
 .btn-main::before {
@@ -412,6 +458,25 @@ body::before {
   background: rgba(139,0,0,0.2);
 }
 
+/* ESTILOS PARA O VÍDEO DO DISCORD (COMUNIDADE) */
+.discord-video-container {
+  width: 100%;
+  margin-top: 15px;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid var(--dark-red);
+  background: #000;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.6);
+}
+
+.discord-video {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
+  max-height: 250px;
+}
+
 .floating-nav {
   position: fixed;
   bottom: 0;
@@ -426,6 +491,7 @@ body::before {
   padding: 8px 0;
   backdrop-filter: blur(10px);
   z-index: 1000;
+  pointer-events: auto !important;
 }
 
 .nav-item {
@@ -439,12 +505,14 @@ body::before {
   font-weight: bold;
   cursor: pointer;
   gap: 3px;
+  pointer-events: auto !important;
 }
 
 .nav-item svg {
   width: 18px;
   height: 18px;
   fill: currentColor;
+  pointer-events: none;
 }
 
 .nav-item.active, .nav-item:hover {
@@ -470,19 +538,16 @@ body::before {
 
 /* EFEITO FLOATING PARA AS IMAGENS DO REPOSITÓRIO */
 .floating-character {
-  position: absolute;
-  right: -10px;
-  bottom: 0;
-  max-height: 280px;
+  display: block;
+  margin: 15px auto 5px auto;
+  max-height: 190px;
   width: auto;
   object-fit: contain;
-  z-index: 0;
   pointer-events: none;
-  opacity: 0.85;
-  mask-image: linear-gradient(to top, rgba(0,0,0,1) 60%, rgba(0,0,0,0) 100%);
-  -webkit-mask-image: linear-gradient(to top, rgba(0,0,0,1) 60%, rgba(0,0,0,0) 100%);
-  filter: drop-shadow(0 10px 20px rgba(255, 26, 26, 0.25));
-  animation: floatAnimation 4s ease-in-out infinite;
+  opacity: 0.95;
+  filter: drop-shadow(0 5px 15px rgba(255, 26, 26, 0.4));
+  position: relative;
+  z-index: 1;
 }
 
 @keyframes floatAnimation {
