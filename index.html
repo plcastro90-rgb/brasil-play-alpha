@@ -33,7 +33,7 @@
       padding-bottom: 90px;
     }
 
-    /* CAMADA DE FUNDO DINÂMICA (BACKGROUNDS JPG) */
+    /* CAMADA DE FUNDO DINÂMICA (BACKGROUNDS JPG - PAPEL DE PAREDE DAS ABAS) */
     body::before {
       content: "";
       position: fixed;
@@ -99,7 +99,6 @@
       margin: 0 auto;
       position: relative;
       z-index: 1;
-      /* CONTORNO VERMELHO NA PEGADA DO SITE */
       border: 2px solid var(--primary-red);
       border-radius: 16px;
       box-shadow: 0 0 25px rgba(255, 26, 26, 0.35);
@@ -253,6 +252,8 @@
       justify-content: space-between;
       align-items: center;
       width: 100%;
+      position: relative;
+      z-index: 2;
     }
 
     .server-info .server-name {
@@ -299,6 +300,8 @@
       font-weight: bold;
       cursor: pointer;
       text-decoration: none;
+      position: relative;
+      z-index: 3;
     }
 
     .auth-container {
@@ -493,6 +496,8 @@
       margin-top: 20px;
       padding-bottom: 10px;
       width: 100%;
+      position: relative;
+      z-index: 2;
     }
     .brand-logo-text {
       font-weight: 900;
@@ -502,24 +507,24 @@
     }
     .brand-logo-text span { color: var(--primary-red); }
 
-    /* IMAGENS FLUTUANTES FORA DO LAYOUT, EM BAIXO, LOGO ACIMA DOS BOTÕES DAS ABAS */
+    /* POSICIONAMENTO CORRIGIDO PARA A ÁREA INDICADA SEM BLOQUEAR CLIQUES */
     .floating-character {
-      position: fixed;
-      bottom: 60px; /* Posicionado acima da barra de navegação */
-      right: 15px;
-      max-height: 130px;
+      display: block;
+      margin: 15px auto 5px auto;
+      max-height: 140px;
       width: auto;
       object-fit: contain;
-      z-index: 999; /* Fica acima do conteúdo, mas abaixo da barra de navegação */
-      pointer-events: none; /* Garante que os cliques passem direto */
+      pointer-events: none; /* Crucial para os cliques passarem direto para qualquer elemento abaixo */
       opacity: 0.85;
-      filter: drop-shadow(0 5px 15px rgba(255, 26, 26, 0.4));
+      filter: drop-shadow(0 5px 15px rgba(255, 26, 26, 0.35));
       animation: floatAnimation 4s ease-in-out infinite;
+      position: relative;
+      z-index: 1;
     }
 
     @keyframes floatAnimation {
       0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-8px); }
+      50% { transform: translateY(-6px); }
     }
   </style>
 </head>
@@ -577,6 +582,9 @@
           <button class="btn-forum" onclick="copiarIP('ip-srv-2')">Copiar IP</button>
         </div>
       </div>
+
+      <!-- IMAGEM POSICIONADA NA ÁREA INDICADA (ABAIXO DOS SERVIDORES) -->
+      <img src="assets/image_inicio.png" alt="Início" class="floating-character">
     </div>
 
     <!-- ABA 2: DOWNLOADS -->
@@ -664,26 +672,13 @@
         <button class="btn-main" style="background:#330000; border:1px solid var(--dark-red); margin-top: 5px;" onclick="realizarLogout()">Terminar Sessão</button>
       </div>
 
+      <!-- IMAGEM POSICIONADA NA ÁREA INDICADA (NA ABA DE CONTA) -->
+      <img src="assets/image_conta.png" alt="Conta" class="floating-character">
+
     </div>
 
     <!-- ABA 4: COMUNIDADE / DISCORD -->
     <div id="tab-loja" class="tab-pane">
       <div class="hero-banner">
         <h2 style="color:var(--primary-red); margin-top:0;">Comunidade Brasil Play</h2>
-        <p>Junte-se ao nosso servidor oficial no Discord para interagir com outros jogadores, concorrer a sorteios e ficar por dentro de todas as novidades!</p>
-        <a href="https://discord.gg/b22VyqmbcX" target="_blank" class="btn-main" style="text-decoration:none; display:block; text-align:center;">Entrar no Discord</a>
-      </div>
-    </div>
-
-    <div class="footer-brand">
-      <div class="brand-logo-text">BRASIL PLAY <span>ALPHA</span></div>
-      <p style="font-size: 0.65rem; color: var(--text-muted); margin-top: 4px;">&copy; 2026 - Todos os direitos reservados.</p>
-    </div>
-
-  </div>
-
-  <!-- IMAGENS FLUTUANTES FORA DO LAYOUT (Alternam conforme a aba ativa ou exibidas de forma fixa) -->
-  <img src="assets/image_inicio.png" alt="Personagem Flutuante" class="floating-character" id="floating-img">
-
-</body>
-</html>
+        <p>Junte-se ao nosso servidor oficial no Discord para interagir com outros jogadores, concorrer a 
