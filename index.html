@@ -405,19 +405,24 @@
 
       const endpoint = modoRegisto ? `${URL_BASE_API}/register` : `${URL_BASE_API}/login`;
 
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 35000);
+
       try {
         const resposta = await fetch(endpoint, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ nick, pass, server })
+          body: JSON.stringify({ nick, pass, server }),
+          signal: controller.signal
         });
 
+        clearTimeout(timeoutId);
         const dados = await resposta.json();
 
         if (dados.sucesso) {
           if (modoRegisto) {
             mostrarAviso('Conta criada com sucesso! Faça login.');
-            alternarModoAuth(); // Volta para a tela de login
+            alternarModoAuth();
           } else {
             document.getElementById('login-box').classList.add('hidden');
             document.getElementById('painel-box').classList.remove('hidden');
@@ -440,17 +445,20 @@
       } catch (erro) {
         console.error(erro);
         msg.style.color = '#ff1a1a';
-        msg.innerText = 'Erro ao conectar ao servidor.';
+        if (erro.name === 'AbortError') {
+          msg.innerText = 'O servidor demorou muito a responder. Tente novamente.';
+        } else {
+          msg.innerText = 'Erro ao conectar à API do Render.';
+        }
       }
     }
 
     function fazerLogout() {
       document.getElementById('painel-box').classList.add('hidden');
-      document.getElementById('modal-forum').classList.add('hidden');
       document.getElementById('login-box').classList.remove('hidden');
       document.getElementById('userInput').value = '';
       document.getElementById('passInput').value = '';
-      document.getElementById('mensagem-auth').innerText = '';
+      mostrarAviso('Sessão encerrada.');
     }
 
     function abrirPainelForum() {
@@ -463,36 +471,40 @@
       document.getElementById('painel-box').classList.remove('hidden');
     }
 
-    function mudarAbaForum(aba, elementoBotao) {
+    function mudarAbaForum(nomeAba, elementoBtn) {
       document.querySelectorAll('.forum-pane').forEach(p => p.classList.remove('active'));
       document.querySelectorAll('.forum-tab-btn').forEach(b => b.classList.remove('active'));
-      document.getElementById('f-tab-' + aba).classList.add('active');
-      if(elementoBotao) elementoBotao.classList.add('active');
+      document.getElementById('f-tab-' + nomeAba).classList.add('active');
+      if (elementoBtn) elementoBtn.classList.add('active');
     }
 
     function enviarMensagemChat() {
       const input = document.getElementById('chatInputText');
-      const chatBox = document.getElementById('chatMessages');
-      if(!input.value.trim()) return;
+      const texto = input.value.trim();
+      if(!texto) return;
 
-      const msgDiv = document.createElement('div');
-      msgDiv.className = 'chat-msg';
-      msgDiv.innerHTML = `<span>[Você]:</span> ${input.value}`;
-      chatBox.appendChild(msgDiv);
-      input.value = '';
+      const chatBox = document.getElementById('chatMessages');
+      const novaMsg = document.createElement('div');
+      novaMsg.className = 'chat-msg';
+      novaMsg.innerHTML = `<span>[Player] Hécate:</span> ${texto}`;
+      chatBox.appendChild(novaMsg);
       chatBox.scrollTop = chatBox.scrollHeight;
+      input.value = '';
     }
 
     function enviarDenuncia() {
       const nick = document.getElementById('denunciaNick').value.trim();
       const motivo = document.getElementById('denunciaMotivo').value.trim();
+
       if(!nick || !motivo) {
-        mostrarAviso('Preencha os campos da denúncia!');
+        mostrarAviso('Preencha o nick e o motivo da denúncia!');
         return;
       }
-      mostrarAviso('Denúncia enviada com sucesso à moderação.');
+
+      mostrarAviso('Denúncia enviada à moderação com sucesso!');
       document.getElementById('denunciaNick').value = '';
       document.getElementById('denunciaMotivo').value = '';
+      fecharPainelForum();
     }
   </script>
 </body>
