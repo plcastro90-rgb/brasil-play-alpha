@@ -3,268 +3,432 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Brasil Play Alpha | UCP & Comunidade</title>
+  <title>Brasil Play Alpha | Comunidade</title>
   <style>
     :root {
+      --bg-color: #050001;
+      --card-bg: rgba(14, 2, 2, 0.92);
       --primary-red: #ff1a1a;
-      --bg-dark: #0b0b0b;
-      --card-bg: rgba(18, 18, 18, 0.95);
-      --text-main: #ffffff;
-      --text-muted: #aaaaaa;
-      --success: #00ff64;
+      --dark-red: #8b0000;
+      --border-red: #520e0e;
+      --text-light: #e0e0e0;
+      --text-muted: #888;
     }
 
-    * {
+    *, *::before, *::after {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
 
     body {
-      background-color: var(--bg-dark);
-      color: var(--text-main);
-      padding-bottom: 70px;
+      background-color: var(--bg-color);
+      color: var(--text-light);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      width: 100vw;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      overflow-x: hidden;
+      padding-bottom: 90px;
     }
 
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: linear-gradient(rgba(5, 0, 1, 0.8), rgba(5, 0, 1, 0.9)), url('assets/background-login.jpg');
+      background-size: cover;
+      background-position: center;
+      z-index: -2;
+      pointer-events: none;
+    }
+
+    /* CAMADA DE PARTICULAS SVG MAIORES E MAIS DETALHADAS */
+    .particles-bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: -1;
+      pointer-events: none;
+    }
+
+    .particle-star {
+      fill: rgba(255, 26, 26, 0.6);
+      filter: drop-shadow(0 0 6px rgba(255, 26, 26, 0.8));
+      animation: floatParticle linear infinite;
+    }
+
+    .particle-circle {
+      fill: rgba(255, 80, 80, 0.45);
+      animation: floatParticle linear infinite;
+    }
+
+    @keyframes floatParticle {
+      0% { transform: translateY(105vh) translateX(0) scale(0.8); opacity: 0; }
+      15% { opacity: 0.9; }
+      85% { opacity: 0.9; }
+      100% { transform: translateY(-10vh) translateX(40px) scale(1.2); opacity: 0; }
+    }
+
+    .hidden { display: none !important; }
+
     .wrapper {
-      max-width: 600px;
+      width: 100%;
+      max-width: 440px;
+      padding: 10px 16px;
       margin: 0 auto;
-      padding: 12px;
+      position: relative;
+      z-index: 1;
     }
 
     .app-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      background: var(--card-bg);
-      padding: 12px 16px;
-      border-bottom: 2px solid var(--primary-red);
-      border-radius: 8px;
-      margin-bottom: 15px;
-    }
-
-    .header-logo {
-      font-weight: 900;
-      font-size: 1.1rem;
-      letter-spacing: 1px;
-    }
-
-    .header-logo span {
-      color: var(--primary-red);
-    }
-
-    .header-right {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .btn-music-toggle {
-      background: none;
-      border: 1px solid #333;
-      color: #fff;
-      padding: 6px 10px;
-      border-radius: 6px;
-      cursor: pointer;
+      padding: 12px 0;
+      margin-bottom: 5px;
+      width: 100%;
     }
 
     .online-counter-badge {
-      font-size: 0.75rem;
       background: rgba(0, 255, 100, 0.1);
-      border: 1px solid var(--success);
-      color: var(--success);
-      padding: 4px 8px;
+      border: 1px solid #00ff64;
+      color: #00ff64;
+      padding: 4px 10px;
       border-radius: 20px;
+      font-weight: bold;
+      font-size: 0.75rem;
       display: flex;
       align-items: center;
-      gap: 5px;
+      gap: 6px;
     }
 
     .pulse-dot {
       width: 6px;
       height: 6px;
-      background: var(--success);
+      background-color: #00ff64;
       border-radius: 50%;
-      box-shadow: 0 0 6px var(--success);
+      animation: pulse 1.5s infinite;
     }
 
-    /* Sistema de Abas */
-    .tab-pane {
-      display: none;
+    @keyframes pulse {
+      0% { opacity: 0.3; transform: scale(0.9); }
+      50% { opacity: 1; transform: scale(1.2); }
+      100% { opacity: 0.3; transform: scale(0.9); }
     }
 
-    .tab-pane.active {
-      display: block;
+    .hero-banner, .server-card, .auth-container, .ucp-profile-card {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-banner::after, .auth-container::after {
+      content: "";
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: repeating-linear-gradient(
+        45deg,
+        transparent,
+        transparent 15px,
+        rgba(255, 26, 26, 0.04) 15px,
+        rgba(255, 26, 26, 0.04) 30px
+      );
+      animation: moveStripes 20s linear infinite;
+      pointer-events: none;
+    }
+
+    @keyframes moveStripes {
+      0% { transform: translate(0, 0); }
+      100% { transform: translate(50px, 50px); }
     }
 
     .hero-banner {
-      background: linear-gradient(135deg, #1a0202, #2b0303);
-      border: 1px solid rgba(255, 26, 26, 0.3);
-      padding: 20px;
-      border-radius: 12px;
-      margin-bottom: 15px;
+      background: linear-gradient(135deg, #1f0303, #0a0101);
+      border: 2px solid var(--dark-red);
+      border-radius: 14px;
+      padding: 20px 16px;
       text-align: center;
+      box-shadow: 0 0 20px rgba(139, 0, 0, 0.3);
+      margin-bottom: 15px;
+      width: 100%;
     }
 
-    .hero-banner h1 {
-      font-size: 1.3rem;
+    .hero-banner h1, .hero-banner h2 {
+      font-size: 1.2rem;
+      font-weight: 900;
+      color: #fff;
       margin-bottom: 8px;
+      letter-spacing: 1px;
     }
 
-    .hero-banner h1 span {
-      color: var(--primary-red);
-    }
+    .hero-banner h1 span, .hero-banner h2 span { color: var(--primary-red); }
 
     .hero-banner p {
-      font-size: 0.85rem;
-      color: var(--text-muted);
+      font-size: 0.8rem;
+      color: #ccc;
+      line-height: 1.4;
       margin-bottom: 15px;
+    }
+
+    .btn-main {
+      background: linear-gradient(135deg, #b30000, #ff1a1a);
+      color: white;
+      border: none;
+      padding: 12px;
+      border-radius: 8px;
+      font-weight: bold;
+      font-size: 0.85rem;
+      cursor: pointer;
+      width: 100%;
+      box-shadow: 0 4px 15px rgba(255,26,26,0.4);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn-main::before {
+      content: '';
+      position: absolute;
+      top: 0; left: -100%;
+      width: 100%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.25), transparent);
+      animation: buttonShine 3s ease-in-out infinite;
+    }
+
+    @keyframes buttonShine {
+      0% { left: -100%; }
+      20% { left: 100%; }
+      100% { left: 100%; }
     }
 
     .section-title {
-      font-size: 0.95rem;
-      font-weight: bold;
-      margin: 15px 0 10px 0;
-      border-left: 3px solid var(--primary-red);
-      padding-left: 8px;
+      font-size: 0.9rem;
+      font-weight: 800;
+      color: #fff;
+      margin: 15px 0 8px 2px;
+      width: 100%;
     }
 
     .server-card {
       background: var(--card-bg);
-      border: 1px solid #222;
-      padding: 12px;
-      border-radius: 8px;
+      border: 1px solid var(--border-red);
+      border-radius: 12px;
+      padding: 12px 14px;
+      margin-bottom: 10px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 10px;
+      width: 100%;
     }
 
-    .server-info {
-      display: flex;
-      flex-direction: column;
-      gap: 3px;
-    }
-
-    .server-name {
-      font-size: 0.85rem;
+    .server-info .server-name {
+      font-size: 0.8rem;
       font-weight: bold;
+      color: #fff;
+      display: block;
+      margin-bottom: 4px;
     }
 
-    .server-ip {
+    .server-info .server-ip {
+      font-family: monospace;
       font-size: 0.75rem;
-      color: var(--text-muted);
+      color: #ff8080;
+      background: rgba(139,0,0,0.2);
+      padding: 2px 6px;
+      border-radius: 4px;
+      display: inline-block;
     }
 
     .server-actions {
       display: flex;
       flex-direction: column;
+      gap: 6px;
       align-items: flex-end;
-      gap: 5px;
     }
 
     .player-count {
-      font-size: 0.75rem;
-      color: var(--success);
-    }
-
-    .btn-main, .btn-forum {
-      background: var(--primary-red);
-      color: #fff;
-      border: none;
-      padding: 10px 16px;
-      font-size: 0.85rem;
+      font-size: 0.7rem;
+      color: #00ff64;
       font-weight: bold;
+      background: rgba(0,255,100,0.08);
+      padding: 2px 6px;
       border-radius: 6px;
-      cursor: pointer;
-      width: 100%;
-      text-align: center;
     }
 
     .btn-forum {
-      padding: 6px 12px;
-      font-size: 0.75rem;
-      width: auto;
+      background: #150303;
+      border: 1px solid var(--dark-red);
+      color: #fff;
+      padding: 5px 10px;
+      border-radius: 6px;
+      font-size: 0.7rem;
+      font-weight: bold;
+      cursor: pointer;
+      text-decoration: none;
     }
 
     .auth-container {
       background: var(--card-bg);
-      border: 1px solid #222;
-      padding: 16px;
-      border-radius: 12px;
-      margin-bottom: 15px;
+      border: 2px solid var(--dark-red);
+      border-radius: 14px;
+      padding: 18px;
+      box-shadow: 0 0 25px rgba(255,0,0,0.2);
+      width: 100%;
+      margin-top: 10px;
     }
 
     .auth-container h2 {
-      font-size: 1.1rem;
-      margin-bottom: 5px;
       text-align: center;
+      color: var(--primary-red);
+      margin-bottom: 12px;
+      font-weight: 900;
+      font-size: 1.1rem;
     }
 
     .input-group {
       margin-bottom: 12px;
+      width: 100%;
     }
 
     .input-group label {
       display: block;
       font-size: 0.75rem;
-      color: var(--text-muted);
+      color: #aaa;
       margin-bottom: 4px;
     }
 
     .input-group input, .input-group select {
       width: 100%;
-      background: #111;
-      border: 1px solid #333;
-      color: #fff;
       padding: 10px;
-      border-radius: 6px;
+      background: rgba(5, 0, 1, 0.9);
+      border: 1px solid var(--border-red);
+      color: #fff;
+      border-radius: 8px;
       font-size: 0.85rem;
     }
 
-    .hidden {
-      display: none !important;
+    #mensagem-auth {
+      text-align: center;
+      font-size: 0.75rem;
+      font-weight: bold;
+      margin-top: 8px;
     }
 
     .ucp-profile-card {
-      background: #151515;
+      background: linear-gradient(135deg, #150202, #080000);
+      border: 1px solid var(--dark-red);
+      border-radius: 10px;
       padding: 12px;
-      border-radius: 8px;
-      border: 1px solid #333;
       margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      width: 100%;
+    }
+
+    .ucp-skin-preview {
+      width: 55px;
+      height: 75px;
+      background: rgba(0,0,0,0.4);
+      border: 1px solid var(--border-red);
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.6rem;
+      color: var(--text-muted);
+      text-align: center;
+      flex-shrink: 0;
+    }
+
+    .ucp-details h3 {
+      margin: 0 0 3px 0;
+      font-size: 0.95rem;
+      color: #fff;
+    }
+
+    .ucp-details p {
+      margin: 2px 0;
+      font-size: 0.73rem;
+      color: #aaa;
     }
 
     .ucp-grid-info {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 8px;
+      margin-bottom: 12px;
+      width: 100%;
     }
 
     .ucp-info-box {
-      background: #151515;
-      padding: 10px;
-      border-radius: 6px;
-      border: 1px solid #222;
-      font-size: 0.75rem;
+      background: rgba(5, 0, 1, 0.8);
+      border: 1px solid var(--border-red);
+      padding: 8px 10px;
+      border-radius: 8px;
+    }
+
+    .ucp-info-box span {
+      display: block;
+      font-size: 0.62rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
     }
 
     .ucp-info-box strong {
-      display: block;
-      font-size: 0.95rem;
-      margin-top: 2px;
+      font-size: 0.85rem;
+      color: #fff;
+    }
+
+    .inventory-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 6px;
+      margin-bottom: 12px;
+      width: 100%;
+    }
+
+    .inventory-slot {
+      background: rgba(0,0,0,0.6);
+      border: 1px solid var(--border-red);
+      border-radius: 6px;
+      aspect-ratio: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.7rem;
+      color: #666;
+    }
+
+    .inventory-slot.item {
+      border-color: var(--primary-red);
+      color: #fff;
+      background: rgba(139,0,0,0.2);
     }
 
     .floating-nav {
       position: fixed;
       bottom: 0;
-      left: 0;
+      left: 50%;
+      transform: translateX(-50%);
       width: 100%;
-      background: #111;
-      border-top: 1px solid #222;
+      max-width: 440px;
+      background: rgba(10, 1, 2, 0.95);
+      border-top: 1px solid var(--border-red);
       display: flex;
       justify-content: space-around;
       padding: 8px 0;
+      backdrop-filter: blur(10px);
       z-index: 1000;
     }
 
@@ -272,58 +436,66 @@
       background: none;
       border: none;
       color: var(--text-muted);
-      font-size: 0.75rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      font-size: 0.6rem;
       font-weight: bold;
       cursor: pointer;
-      padding: 6px 12px;
-      border-radius: 6px;
+      gap: 3px;
     }
 
-    .nav-item.active {
-      color: #fff;
-      background: rgba(255, 26, 26, 0.2);
-      border-bottom: 2px solid var(--primary-red);
+    .nav-item svg {
+      width: 18px;
+      height: 18px;
+      fill: currentColor;
     }
 
-    #custom-toast {
-      position: fixed;
-      bottom: 70px;
-      left: 50%;
-      transform: translateX(-50%) translateY(20px);
-      background: linear-gradient(135deg, #1a0202, #2b0303);
-      border: 1px solid var(--primary-red);
-      color: #fff;
-      padding: 10px 16px;
-      border-radius: 8px;
-      font-size: 0.8rem;
-      z-index: 9999;
-      opacity: 0;
-      visibility: hidden;
-      transition: all 0.3s ease;
+    .nav-item.active, .nav-item:hover {
+      color: var(--primary-red);
+    }
+
+    .tab-pane { display: none; width: 100%; }
+    .tab-pane.active { display: block; }
+
+    .footer-brand {
       text-align: center;
-      pointer-events: none;
+      margin-top: 20px;
+      padding-bottom: 10px;
+      width: 100%;
     }
-    #custom-toast.show {
-      opacity: 1;
-      visibility: visible;
-      transform: translateX(-50%) translateY(0);
+    .brand-logo-text {
+      font-weight: 900;
+      font-size: 1.1rem;
+      letter-spacing: 2px;
+      color: #fff;
     }
+    .brand-logo-text span { color: var(--primary-red); }
   </style>
 </head>
 <body>
 
-  <audio id="bgMusic" src="assets/bg-music.mp3" loop autoplay></audio>
-  <div id="custom-toast">Notificação do Sistema</div>
+  <!-- PARTÍCULAS E FLOCOS SVG MAIORES E DETALHADOS AO FUNDO -->
+  <svg class="particles-bg" xmlns="http://www.w3.org/2000/svg">
+    <!-- Estrelas/Partículas Geométricas de Destaque -->
+    <polygon class="particle-star" points="15,5 18,12 25,15 18,18 15,25 12,18 5,15 12,12" style="transform: scale(0.8); animation-duration: 7s; animation-delay: 0s;" cx="15%" />
+    <polygon class="particle-star" points="15,5 18,12 25,15 18,18 15,25 12,18 5,15 12,12" style="transform: scale(1.2); animation-duration: 11s; animation-delay: 2s;" cx="45%" />
+    <polygon class="particle-star" points="15,5 18,12 25,15 18,18 15,25 12,18 5,15 12,12" style="transform: scale(0.6); animation-duration: 9s; animation-delay: 4s;" cx="80%" />
+    
+    <!-- Círculos maiores detalhados -->
+    <circle class="particle-circle" cx="20%" cy="0" r="6" style="animation-duration: 8s; animation-delay: 1s;" />
+    <circle class="particle-circle" cx="60%" cy="0" r="8" style="animation-duration: 13s; animation-delay: 3s;" />
+    <circle class="particle-circle" cx="85%" cy="0" r="5" style="animation-duration: 10s; animation-delay: 2.5s;" />
+    <circle class="particle-circle" cx="35%" cy="0" r="7" style="animation-duration: 9s; animation-delay: 0.5s;" />
+  </svg>
 
   <div class="wrapper">
+    
     <header class="app-header">
-      <div class="header-logo">BRASIL PLAY <span>ALPHA</span></div>
-      <div class="header-right">
-        <button id="musicToggleBtn" class="btn-music-toggle" onclick="tocarSomClique(); toggleMusica();" title="Ligar/Desligar Música">🎵</button>
-        <div class="online-counter-badge">
-          <span class="pulse-dot"></span>
-          <span id="total-online">320</span> ONLINE
-        </div>
+      <div style="font-weight: 900; letter-spacing: 1px; font-size: 0.9rem;">BRASIL PLAY <span style="color:var(--primary-red)">ALPHA</span></div>
+      <div class="online-counter-badge">
+        <span class="pulse-dot"></span>
+        <span id="total-online">320</span> ONLINE
       </div>
     </header>
 
@@ -332,7 +504,7 @@
       <div class="hero-banner">
         <h1>VENHA FAZER PARTE <span>DESTA FAMÍLIA</span></h1>
         <p>Mergulhe no mundo virtual do SA-MP RPG. Adrenalina e diversão sem limites no seu telemóvel.</p>
-        <button class="btn-main" onclick="tocarSomClique(); mudarAba('tab-downloads', document.querySelectorAll('.nav-item')[1])">Baixar Agora</button>
+        <button class="btn-main" onclick="mudarAba('tab-downloads')">Baixar Agora</button>
       </div>
 
       <div class="section-title">Servidores Oficiais</div>
@@ -344,7 +516,7 @@
         </div>
         <div class="server-actions">
           <span class="player-count">208 / 700</span>
-          <button class="btn-forum" onclick="tocarSomClique(); copiarIP('ip-srv-1')">Copiar IP</button>
+          <button class="btn-forum" onclick="copiarIP('ip-srv-1')">Copiar IP</button>
         </div>
       </div>
 
@@ -355,7 +527,7 @@
         </div>
         <div class="server-actions">
           <span class="player-count">112 / 800</span>
-          <button class="btn-forum" onclick="tocarSomClique(); copiarIP('ip-srv-2')">Copiar IP</button>
+          <button class="btn-forum" onclick="copiarIP('ip-srv-2')">Copiar IP</button>
         </div>
       </div>
     </div>
@@ -365,24 +537,24 @@
       <div class="hero-banner" style="text-align: left;">
         <h2 style="color:var(--primary-red); margin-top:0;">Downloads Oficiais</h2>
         <p>Baixe o Launcher exclusivo e a DATA otimizada para jogar sem travamentos.</p>
-        <a href="https://www.mediafire.com/file/iynt0w68xh8lhkl/Brasil_Play_Alpha_hct.apk/file" target="_blank" class="btn-main" style="text-decoration:none; display:block; text-align:center; margin-bottom:12px;">Baixar APK Launcher</a>
-        <a href="https://www.mediafire.com/file/1hmdo7dmneypdzn/DataBPA01.zip/file" target="_blank" class="btn-main" style="text-decoration:none; display:block; text-align:center;">Baixar Data Modificada</a>
+        <a href="https://www.mediafire.com/file/iynt0w68xh8lhkl/Brasil_Play_Alpha_hct.apk/file" target="_blank" class="btn-main" style="text-decoration:none; display:block; text-align:center; margin-bottom:10px;">Baixar APK Launcher</a>
+        <a href="https://www.mediafire.com/file/1hmdo7dmneypdzn/DataBPA01.zip/file" target="_blank" class="btn-main" style="text-decoration:none; display:block; text-align:center; background:#1f0303; border:1px solid var(--dark-red);">Baixar Data Modificada</a>
       </div>
     </div>
 
     <!-- ABA 3: CONTA / UCP -->
     <div id="tab-conta" class="tab-pane">
+      
       <div id="login-box" class="auth-container">
         <h2>ENTRAR NA UCP</h2>
-        <p style="font-size: 0.78rem; color: #aaa; margin-bottom: 12px; text-align: center;">Use os mesmos dados de login criados no servidor de SA-MP.</p>
         <form onsubmit="return false;">
           <div class="input-group">
             <label>Nome da Conta (Nick)</label>
-            <input type="text" id="userInput" placeholder="Ex: Nicolas_samp">
+            <input type="text" id="userInput" placeholder="Ex: Hecate_Player">
           </div>
           <div class="input-group">
             <label>Palavra-passe</label>
-            <input type="password" id="passInput" placeholder="Sua senha do jogo">
+            <input type="password" id="passInput" placeholder="Sua palavra-passe">
           </div>
           <div class="input-group">
             <label>Servidor</label>
@@ -391,174 +563,90 @@
               <option value="2">Servidor 2</option>
             </select>
           </div>
-          <button class="btn-main" onclick="tocarSomClique(); executarLogin();">Aceder Painel</button>
+          <button class="btn-main" onclick="realizarLogin()">Aceder Painel</button>
         </form>
-        <div id="mensagem-auth" style="margin-top: 10px; font-size: 0.85rem; text-align: center;"></div>
+        <div id="mensagem-auth"></div>
       </div>
 
-      <!-- PAINEL PRINCIPAL DO JOGADOR -->
       <div id="painel-box" class="auth-container hidden" style="padding: 14px;">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-          <h2 style="color: var(--success); margin:0; font-size: 1.1rem;">PAINEL DO JOGADOR</h2>
-          <button onclick="tocarSomClique(); fazerLogout()" style="background:none; border:none; color:var(--primary-red); font-size:0.75rem; font-weight:bold; cursor:pointer;">Sair 🚪</button>
-        </div>
+        <h2 style="color: #00ff64; margin-bottom: 12px; font-size: 1.1rem;">PAINEL DO JOGADOR</h2>
         
         <div class="ucp-profile-card">
+          <div class="ucp-skin-preview">
+            <span>Skin<br>#299</span>
+          </div>
           <div class="ucp-details">
             <h3 id="ucp-nick">Hécate</h3>
-            <p style="font-size:0.75rem; color:#aaa;">🆔 ID: <span id="ucp-id" style="color:#fff">1</span> | 📄 RG: <span id="ucp-rg" style="color:#fff">0</span></p>
-            <p style="color: var(--success); font-weight: bold; font-size:0.75rem; margin-top:3px;">⭐ Conta Verificada no Jogo</p>
+            <p>🆔 ID: <span id="ucp-id" style="color:#fff">1492</span></p>
+            <p>📄 RG: <span id="ucp-rg" style="color:#fff">89210</span></p>
+            <p style="color: #00ff64; font-weight: bold; margin-top:3px;">⭐ VIP Ativo</p>
           </div>
         </div>
 
         <div class="ucp-grid-info">
           <div class="ucp-info-box">
             <span>Dinheiro (Mão)</span>
-            <strong id="ucp-dinheiro" style="color: var(--success);">R$ 0</strong>
+            <strong id="ucp-dinheiro" style="color: #00ff64;">R$ 1.500.000</strong>
           </div>
           <div class="ucp-info-box">
             <span>Banco</span>
-            <strong id="ucp-banco" style="color: #64b5f6;">R$ 0</strong>
+            <strong id="ucp-banco" style="color: #64b5f6;">R$ 15.420.000</strong>
           </div>
           <div class="ucp-info-box">
             <span>Nível (Level)</span>
-            <strong id="ucp-level">1</strong>
+            <strong id="ucp-level">45</strong>
           </div>
           <div class="ucp-info-box">
             <span>Organização</span>
-            <strong id="ucp-org" style="font-size:0.75rem;">Civil</strong>
+            <strong id="ucp-org" style="font-size:0.75rem;">Civil / Nenhum</strong>
           </div>
         </div>
+
+        <div class="section-title" style="margin-top: 10px; font-size: 0.85rem;">Inventário e Itens</div>
+        <div class="inventory-grid">
+          <div class="inventory-slot item" title="Telemóvel">📱</div>
+          <div class="inventory-slot item" title="Rádio">📻</div>
+          <div class="inventory-slot item" title="Colete">🛡️</div>
+          <div class="inventory-slot item" title="Arma">🔫</div>
+          <div class="inventory-slot"></div>
+          <div class="inventory-slot"></div>
+          <div class="inventory-slot"></div>
+          <div class="inventory-slot"></div>
+        </div>
+
+        <button class="btn-main" style="background:#330000; border:1px solid var(--dark-red); margin-top: 5px;" onclick="realizarLogout()">Terminar Sessão</button>
+      </div>
+
+    </div>
+
+    <!-- ABA 4: COMUNIDADE / DISCORD -->
+    <div id="tab-loja" class="tab-pane">
+      <div class="hero-banner">
+        <h2 style="color:var(--primary-red); margin-top:0;">Comunidade Brasil Play</h2>
+        <p>Junte-se ao nosso servidor oficial no Discord para interagir com outros jogadores, concorrer a sorteios e ficar por dentro de todas as novidades!</p>
+        <a href="https://discord.gg/b22VyqmbcX" target="_blank" class="btn-main" style="text-decoration:none; display:block; text-align:center;">Entrar no Discord</a>
       </div>
     </div>
 
-    <!-- ABA 4: COMUNIDADE -->
-    <div id="tab-comunidade" class="tab-pane">
-      <div class="hero-banner">
-        <h2>Comunidade Brasil Play</h2>
-        <p>Junte-se ao nosso servidor oficial no Discord!</p>
-        <a href="https://discord.gg/SEU_LINK_DO_DISCORD" target="_blank" class="btn-main" style="text-decoration:none; display:block; text-align:center;" onclick="tocarSomClique()">Entrar no Discord</a>
-      </div>
+    <div class="footer-brand">
+      <div class="brand-logo-text">BRASIL PLAY <span>ALPHA</span></div>
+      <p style="font-size: 0.65rem; color: var(--text-muted); margin-top: 4px;">&copy; 2026 - Todos os direitos reservados.</p>
     </div>
+
   </div>
 
   <nav class="floating-nav">
-    <button class="nav-item active" onclick="tocarSomClique(); mudarAba('tab-inicio', this)">Início</button>
-    <button class="nav-item" onclick="tocarSomClique(); mudarAba('tab-downloads', this)">Downloads</button>
-    <button class="nav-item" onclick="tocarSomClique(); mudarAba('tab-conta', this)">Site</button>
-    <button class="nav-item" onclick="tocarSomClique(); mudarAba('tab-comunidade', this)">Comunidade</button>
-  </nav>
-
-  <script>
-    const URL_BASE_API = 'https://ucp-api-bpa.onrender.com/api';
-
-    function mostrarAviso(mensagem) {
-      const toast = document.getElementById('custom-toast');
-      toast.innerText = mensagem;
-      toast.classList.add('show');
-      setTimeout(() => { toast.classList.remove('show'); }, 3000);
-    }
-
-    function tocarSomClique() {
-      try {
-        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        const osc = audioCtx.createOscillator();
-        const gainNode = audioCtx.createGain();
-        osc.type = 'sine';
-        osc.frequency.setValueAtTime(580, audioCtx.currentTime);
-        osc.frequency.exponentialRampToValueAtTime(220, audioCtx.currentTime + 0.08);
-        gainNode.gain.setValueAtTime(0.12, audioCtx.currentTime);
-        gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.08);
-        osc.connect(gainNode);
-        gainNode.connect(audioCtx.destination);
-        osc.start();
-        osc.stop(audioCtx.currentTime + 0.08);
-      } catch(e) {}
-    }
-
-    function mudarAba(idAba, elementoBotao) {
-      document.querySelectorAll('.tab-pane').forEach(aba => aba.classList.remove('active'));
-      document.querySelectorAll('.nav-item').forEach(btn => btn.classList.remove('active'));
-      document.getElementById(idAba).classList.add('active');
-      if (elementoBotao) elementoBotao.classList.add('active');
-    }
-
-    function copiarIP(idElemento) {
-      const ipText = document.getElementById(idElemento).innerText;
-      navigator.clipboard.writeText(ipText).then(() => {
-        mostrarAviso("IP copiado com sucesso: " + ipText);
-      });
-    }
-
-    function toggleMusica() {
-      const audio = document.getElementById('bgMusic');
-      const btn = document.getElementById('musicToggleBtn');
-      if (audio.paused) {
-        audio.play();
-        btn.innerText = '🎵';
-      } else {
-        audio.pause();
-        btn.innerText = '🔇';
-      }
-    }
-
-    async function executarLogin() {
-      const nick = document.getElementById('userInput').value.trim();
-      const senha = document.getElementById('passInput').value.trim();
-      const servidor = document.getElementById('serverSelect').value;
-      const msg = document.getElementById('mensagem-auth');
-      
-      if (!nick || !senha) {
-        msg.style.color = '#ff1a1a';
-        msg.innerText = 'Insira o seu nick e a palavra-passe do jogo!';
-        return;
-      }
-
-      msg.style.color = '#fff';
-      msg.innerText = 'A validar dados no servidor...';
-
-      try {
-        const resposta = await fetch(URL_BASE_API + '/login', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ nick, pass: senha, servidor })
-        });
-
-        const resultado = await resposta.json();
-
-        if (!resultado.sucesso) {
-          throw new Error(resultado.mensagem || 'Conta não encontrada ou dados incorretos.');
-        }
-
-        mostrarAviso('Login efetuado com sucesso!');
-        document.getElementById('login-box').classList.add('hidden');
-        document.getElementById('painel-box').classList.remove('hidden');
-
-        if (resultado.usuario) {
-          document.getElementById('ucp-nick').innerText = resultado.usuario.nick || nick;
-          document.getElementById('ucp-id').innerText = resultado.usuario.id || '1';
-          document.getElementById('ucp-rg').innerText = resultado.usuario.rg || '0';
-          document.getElementById('ucp-dinheiro').innerText = 'R$ ' + (resultado.usuario.dinheiro || 0).toLocaleString();
-          document.getElementById('ucp-banco').innerText = 'R$ ' + (resultado.usuario.banco || 0).toLocaleString();
-          document.getElementById('ucp-level').innerText = resultado.usuario.level || '1';
-          document.getElementById('ucp-org').innerText = resultado.usuario.organizacao || 'Civil';
-        }
-
-      } catch (erro) {
-        msg.style.color = '#ff1a1a';
-        msg.innerText = erro.message;
-        mostrarAviso(erro.message);
-      }
-    }
-
-    function fazerLogout() {
-      document.getElementById('painel-box').classList.add('hidden');
-      document.getElementById('login-box').classList.remove('hidden');
-      document.getElementById('userInput').value = '';
-      document.getElementById('passInput').value = '';
-      document.getElementById('mensagem-auth').innerText = '';
-      mostrarAviso('Sessão encerrada.');
-    }
-  </script>
-</body>
-</html>
+    <button class="nav-item active" onclick="mudarAba('tab-inicio', this)">
+      <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+      Início
+    </button>
+    <button class="nav-item" onclick="mudarAba('tab-downloads', this)">
+      <svg viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
+      Baixar
+    </button>
+    <button class="nav-item" onclick="mudarAba('tab-conta', this)">
+      <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+      Conta
+    </button>
+    <button class="nav-item" onclick="mudarAba('tab-loja', this)">
+      <svg viewBox="0 0 24 24"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994.021-.041.001-.09-.041-.106a13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.927 1.793 8.18 1.793 12.061 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.
