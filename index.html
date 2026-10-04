@@ -15,7 +15,7 @@
   <div id="start-overlay">
     <div class="overlay-content">
       <h1>BRASIL PLAY <span class="highlight">ALPHA</span></h1>
-      <p>Toque para ativar os efeitos visuais e o som imersivo</p>
+      <p>Toque para entrar no portal e ativar o som</p>
       <button id="btn-start" class="btn-primary">ENTRAR NO PORTAL</button>
     </div>
   </div>
@@ -23,105 +23,182 @@
   <audio id="bg-music" src="assets/bg-music.mp3" loop></audio>
 
   <div class="container">
-    <header class="glass-panel">
-      <div class="logo">BPA <span class="highlight">RPG</span></div>
-      <nav>
-        <button class="nav-btn active" data-tab="tab-wel">Início</button>
-        <button class="nav-btn" data-tab="tab-down">Downloads</button>
-        <button class="nav-btn" data-tab="tab-ips">Servidores</button>
-        <button class="nav-btn" data-tab="tab-ucp">UCP</button>
-      </nav>
-      <button id="btn-mute" class="btn-secondary">🔊 Som</button>
+    <header class="glass-panel top-header">
+      <div class="logo">BRASIL PLAY <span class="highlight">ALPHA</span></div>
+      <div class="header-right">
+        <button id="btn-mute" class="btn-audio-icon" title="Ativar/Desativar Som">🎵</button>
+        <div class="online-badge">🟢 <span id="online-count">320</span> ONLINE</div>
+      </div>
     </header>
 
-    <main>
+    <main class="main-content">
       <!-- Aba 1: Início -->
       <section id="tab-wel" class="tab-content active">
-        <div class="card glass-panel hero-card">
-          <img src="assets/image_inicio.png" alt="Início" class="section-banner">
-          <h2>Seja Bem-Vindo ao Brasil Play Alpha!</h2>
-          <p>Viva a melhor experiência de RPG no Android com otimização extrema, sistemas exclusivos e uma comunidade ativa.</p>
-          
-          <div class="video-container" style="margin-top: 15px;">
-            <video src="assets/video_discord.mp4" controls autoplay muted loop playsinline class="responsive-video"></video>
+        <div class="card glass-panel">
+          <div class="welcome-box">
+            <h2>VENHA FAZER PARTE <span class="highlight">DESTA FAMÍLIA</span></h2>
+            <p>Mergulhe no mundo virtual do SA-MP RPG. Adrenalina e diversão sem limites no seu telemóvel.</p>
+            <button class="btn-primary glow-btn" onclick="mudarParaAba('tab-down')">Baixar Agora</button>
           </div>
-          <a href="https://discord.gg/SEU_LINK" target="_blank" class="btn-primary glow-btn" style="margin-top:15px; display:inline-block;">Comunidade Discord</a>
+        </div>
+
+        <div class="card glass-panel" style="margin-top: 15px;">
+          <h3 class="section-title">SERVIDORES OFICIAIS</h3>
+          
+          <div class="server-item-box">
+            <div class="server-info">
+              <span class="server-title">Brasil Play Alpha #1 [Android/PC]</span>
+              <span class="server-ip" id="ip-1">144.217.113.116:7777</span>
+            </div>
+            <div class="server-action">
+              <span class="server-players">208 / 700</span>
+              <button class="btn-copy" onclick="copiarIP('ip-1')">Copiar IP</button>
+            </div>
+          </div>
+
+          <div class="server-item-box" style="margin-top: 10px;">
+            <div class="server-info">
+              <span class="server-title">Brasil Play Alpha #2 [NOVAGM]</span>
+              <span class="server-ip" id="ip-2">144.217.113.116:7778</span>
+            </div>
+            <div class="server-action">
+              <span class="server-players">112 / 800</span>
+              <button class="btn-copy" onclick="copiarIP('ip-2')">Copiar IP</button>
+            </div>
+          </div>
         </div>
       </section>
 
       <!-- Aba 2: Downloads -->
       <section id="tab-down" class="tab-content">
         <div class="card glass-panel">
-          <h2>Downloads Oficiais</h2>
-          <p>Baixe os arquivos essenciais para garantir o funcionamento correto do jogo sem erros de texturas.</p>
+          <h2>DOWNLOADS OFICIAIS</h2>
+          <p class="sub-text">Baixe o Launcher exclusivo e a DATA otimizada para jogar sem travamentos.</p>
           <div class="download-links">
-            <a href="https://www.mediafire.com/file/iynt0w68xh8lhkl/Brasil_Play_Alpha_hct.apk/file" target="_blank" class="btn-download glow-btn">📱 Baixar APK Launcher (v1.0)</a>
-            <a href="https://www.mediafire.com/file/1hmdo7dmneypdzn/DataBPA01.zip/file" target="_blank" class="btn-download glow-btn">📂 Baixar DATA Modificada</a>
+            <a href="https://www.mediafire.com/file/iynt0w68xh8lhkl/Brasil_Play_Alpha_hct.apk/file" target="_blank" class="btn-download glow-btn">Baixar APK Launcher</a>
+            <a href="https://www.mediafire.com/file/1hmdo7dmneypdzn/DataBPA01.zip/file" target="_blank" class="btn-download glow-btn">Baixar Data Modificada</a>
           </div>
         </div>
       </section>
 
-      <!-- Aba 3: Servidores -->
-      <section id="tab-ips" class="tab-content">
-        <div class="card glass-panel">
-          <h2>Servidores Oficiais</h2>
-          <p>Copie o endereço IP e adicione diretamente aos favoritos do seu launcher.</p>
-          <div class="ip-box">
-            <div class="ip-info">
-              <span class="server-name">Brasil Play Alpha #1 [RPG]</span>
-              <span class="server-ip" id="ip-servidor-1">144.217.113.116:7777</span>
-            </div>
-            <button class="btn-copy" onclick="copiarIP('ip-servidor-1')">Copiar IP</button>
-          </div>
-        </div>
-      </section>
-
-      <!-- Aba 4: UCP -->
+      <!-- Aba 3: Site / UCP -->
       <section id="tab-ucp" class="tab-content">
-        <div class="card glass-panel ucp-bg" id="login-box" style="background-image: url('assets/background-login.jpg'); background-size: cover; background-position: center;">
-          <div class="overlay-login">
-            <img src="assets/image_conta.png" alt="Conta" class="section-banner-small">
-            <h2>PAINEL UCP</h2>
-            <p style="color:#aaa; font-size:0.85rem; margin-bottom:15px;">Consulte os dados da sua conta e estatísticas in-game.</p>
-            
-            <div class="input-group">
-              <label>Nome (Nick)</label>
-              <input type="text" id="userInput" placeholder="Ex: Hécate">
-            </div>
-            
-            <div class="input-group">
-              <label>Palavra-passe</label>
-              <input type="password" id="passInput" placeholder="Sua senha">
-            </div>
+        <!-- Caixa de Login UCP -->
+        <div class="card glass-panel ucp-card" id="login-box">
+          <h2 class="ucp-title">ENTRAR NA UCP</h2>
+          
+          <div class="input-group">
+            <label>Nome da Conta (Nick)</label>
+            <input type="text" id="userInput" placeholder="Ex: Hecate_Player">
+          </div>
+          
+          <div class="input-group">
+            <label>Palavra-passe</label>
+            <input type="password" id="passInput" placeholder="Sua palavra-passe">
+          </div>
 
-            <button class="btn-primary glow-btn" onclick="executarLogin()" style="width:100%; margin-top: 10px;">Aceder Conta</button>
-            <div id="mensagem-auth" style="margin-top: 10px; font-size: 0.85rem; text-align: center;"></div>
+          <div class="input-group">
+            <label>Servidor</label>
+            <select id="serverSelect" class="select-box">
+              <option value="1">Servidor 1</option>
+              <option value="2">Servidor 2</option>
+            </select>
+          </div>
+
+          <button class="btn-primary glow-btn" onclick="executarLogin()" style="width:100%; margin-top: 5px;">Aceder Painel</button>
+          <div id="mensagem-auth" style="margin-top: 10px; font-size: 0.85rem; text-align: center;"></div>
+          
+          <div class="ucp-footer-links">
+            <a href="#" onclick="alert('Funcionalidade de registo no servidor in-game.')">Não tem conta? Criar nova conta</a>
           </div>
         </div>
 
-        <!-- Painel do Jogador -->
+        <!-- Painel do Jogador Logado -->
         <div class="card glass-panel hidden" id="painel-box">
-          <div class="panel-header">
+          <div class="panel-top-bar">
             <h2>PAINEL DO JOGADOR</h2>
             <button onclick="fazerLogout()" class="btn-logout">Sair 🚪</button>
           </div>
-          <div class="stats-grid">
-            <div class="stat-item"><strong>Nick:</strong> <span id="ucp-nick">-</span></div>
-            <div class="stat-item"><strong>ID:</strong> <span id="ucp-id">-</span></div>
-            <div class="stat-item"><strong>RG:</strong> <span id="ucp-rg">-</span></div>
-            <div class="stat-item"><strong>Dinheiro:</strong> <span id="ucp-dinheiro" class="money">-</span></div>
-            <div class="stat-item"><strong>Banco:</strong> <span id="ucp-banco" class="bank">-</span></div>
-            <div class="stat-item"><strong>Nível:</strong> <span id="ucp-level">-</span></div>
-            <div class="stat-item"><strong>Organização:</strong> <span id="ucp-org">-</span></div>
+
+          <div class="player-profile-card">
+            <div class="skin-box">
+              <span class="skin-tag">Skin<br>#299</span>
+            </div>
+            <div class="player-basic-info">
+              <h3 id="ucp-nick">Hecate_player</h3>
+              <p>ID: <span id="ucp-id">3492</span></p>
+              <p>RG: <span id="ucp-rg">89120</span></p>
+              <p class="vip-status">⭐ VIP Active</p>
+            </div>
+          </div>
+
+          <div class="stats-row">
+            <div class="stat-box">
+              <span class="stat-label">Dinheiro (Mão)</span>
+              <span class="stat-val money" id="ucp-dinheiro">R$ 1.500.000</span>
+            </div>
+            <div class="stat-box">
+              <span class="stat-label">Banco</span>
+              <span class="stat-val bank" id="ucp-banco">R$ 15.420.000</span>
+            </div>
+          </div>
+
+          <div class="stats-row" style="margin-top: 8px;">
+            <div class="stat-box">
+              <span class="stat-label">Nível (Level)</span>
+              <span class="stat-val" id="ucp-level">65</span>
+            </div>
+            <div class="stat-box">
+              <span class="stat-label">Organização</span>
+              <span class="stat-val" id="ucp-org">Civil / Nenhum</span>
+            </div>
+          </div>
+
+          <div class="inventory-section" style="margin-top: 15px;">
+            <h4 style="font-size: 0.9rem; color: #ff3355; margin-bottom: 8px;">INVENTÁRIO E ITENS</h4>
+            <div class="inventory-slots">
+              <div class="inv-slot">📦</div>
+              <div class="inv-slot">🔫</div>
+              <div class="inv-slot">💊</div>
+              <div class="inv-slot">📻</div>
+            </div>
           </div>
         </div>
       </section>
-    </main>
 
-    <footer>
-      <p>&copy; 2026 Brasil Play Alpha - Todos os direitos reservados.</p>
-    </footer>
+      <!-- Aba 4: Comunidade -->
+      <section id="tab-comm" class="tab-content">
+        <div class="card glass-panel">
+          <h2>COMUNIDADE BRASIL PLAY</h2>
+          <p>Junte-se ao nosso servidor oficial no Discord para interagir com outros jogadores e ficar por dentro de todas as novidades!</p>
+          <div class="video-container" style="margin-top: 15px;">
+            <video src="assets/video_discord.mp4" controls autoplay muted loop playsinline class="responsive-video"></video>
+          </div>
+          <a href="https://discord.gg/SEU_LINK" target="_blank" class="btn-primary glow-btn" style="margin-top:15px; display:inline-block; width:100%; text-align:center;">Entrar no Discord</a>
+        </div>
+      </section>
+    </main>
   </div>
+
+  <!-- Menu de Navegação Inferior Fixo -->
+  <nav class="bottom-nav">
+    <button class="bottom-btn active" data-tab="tab-wel">
+      <span class="b-icon">🏠</span>
+      <span class="b-label">Início</span>
+    </button>
+    <button class="bottom-btn" data-tab="tab-down">
+      <span class="b-icon">📥</span>
+      <span class="b-label">Downloads</span>
+    </button>
+    <button class="bottom-btn" data-tab="tab-ucp">
+      <span class="b-icon">👤</span>
+      <span class="b-label">Site</span>
+    </button>
+    <button class="bottom-btn" data-tab="tab-comm">
+      <span class="b-icon">💬</span>
+      <span class="b-label">Comunidade</span>
+    </button>
+  </nav>
 
   <script src="script.js"></script>
 </body>
