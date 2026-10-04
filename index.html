@@ -4,30 +4,303 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Brasil Play Alpha | UCP & Comunidade</title>
-  <link rel="stylesheet" href="style.css">
   <style>
+    :root {
+      --primary-red: #ff1a1a;
+      --bg-dark: #0b0b0b;
+      --card-bg: rgba(18, 18, 18, 0.95);
+      --text-main: #ffffff;
+      --text-muted: #aaaaaa;
+      --success: #00ff64;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      padding-bottom: 70px;
+    }
+
+    .wrapper {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 12px;
+    }
+
+    .app-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--card-bg);
+      padding: 12px 16px;
+      border-bottom: 2px solid var(--primary-red);
+      border-radius: 8px;
+      margin-bottom: 15px;
+    }
+
+    .header-logo {
+      font-weight: 900;
+      font-size: 1.1rem;
+      letter-spacing: 1px;
+    }
+
+    .header-logo span {
+      color: var(--primary-red);
+    }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .btn-music-toggle {
+      background: none;
+      border: 1px solid #333;
+      color: #fff;
+      padding: 6px 10px;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .online-counter-badge {
+      font-size: 0.75rem;
+      background: rgba(0, 255, 100, 0.1);
+      border: 1px solid var(--success);
+      color: var(--success);
+      padding: 4px 8px;
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .pulse-dot {
+      width: 6px;
+      height: 6px;
+      background: var(--success);
+      border-radius: 50%;
+      box-shadow: 0 0 6px var(--success);
+    }
+
+    /* Sistema de Abas */
+    .tab-pane {
+      display: none;
+    }
+
+    .tab-pane.active {
+      display: block;
+    }
+
+    .hero-banner {
+      background: linear-gradient(135deg, #1a0202, #2b0303);
+      border: 1px solid rgba(255, 26, 26, 0.3);
+      padding: 20px;
+      border-radius: 12px;
+      margin-bottom: 15px;
+      text-align: center;
+    }
+
+    .hero-banner h1 {
+      font-size: 1.3rem;
+      margin-bottom: 8px;
+    }
+
+    .hero-banner h1 span {
+      color: var(--primary-red);
+    }
+
+    .hero-banner p {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-bottom: 15px;
+    }
+
+    .section-title {
+      font-size: 0.95rem;
+      font-weight: bold;
+      margin: 15px 0 10px 0;
+      border-left: 3px solid var(--primary-red);
+      padding-left: 8px;
+    }
+
+    .server-card {
+      background: var(--card-bg);
+      border: 1px solid #222;
+      padding: 12px;
+      border-radius: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .server-info {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+
+    .server-name {
+      font-size: 0.85rem;
+      font-weight: bold;
+    }
+
+    .server-ip {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    .server-actions {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 5px;
+    }
+
+    .player-count {
+      font-size: 0.75rem;
+      color: var(--success);
+    }
+
+    .btn-main, .btn-forum {
+      background: var(--primary-red);
+      color: #fff;
+      border: none;
+      padding: 10px 16px;
+      font-size: 0.85rem;
+      font-weight: bold;
+      border-radius: 6px;
+      cursor: pointer;
+      width: 100%;
+      text-align: center;
+    }
+
+    .btn-forum {
+      padding: 6px 12px;
+      font-size: 0.75rem;
+      width: auto;
+    }
+
+    .auth-container {
+      background: var(--card-bg);
+      border: 1px solid #222;
+      padding: 16px;
+      border-radius: 12px;
+      margin-bottom: 15px;
+    }
+
+    .auth-container h2 {
+      font-size: 1.1rem;
+      margin-bottom: 5px;
+      text-align: center;
+    }
+
+    .input-group {
+      margin-bottom: 12px;
+    }
+
+    .input-group label {
+      display: block;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+    }
+
+    .input-group input, .input-group select {
+      width: 100%;
+      background: #111;
+      border: 1px solid #333;
+      color: #fff;
+      padding: 10px;
+      border-radius: 6px;
+      font-size: 0.85rem;
+    }
+
     .hidden {
       display: none !important;
     }
+
+    .ucp-profile-card {
+      background: #151515;
+      padding: 12px;
+      border-radius: 8px;
+      border: 1px solid #333;
+      margin-bottom: 12px;
+    }
+
+    .ucp-grid-info {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    .ucp-info-box {
+      background: #151515;
+      padding: 10px;
+      border-radius: 6px;
+      border: 1px solid #222;
+      font-size: 0.75rem;
+    }
+
+    .ucp-info-box strong {
+      display: block;
+      font-size: 0.95rem;
+      margin-top: 2px;
+    }
+
+    .floating-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background: #111;
+      border-top: 1px solid #222;
+      display: flex;
+      justify-content: space-around;
+      padding: 8px 0;
+      z-index: 1000;
+    }
+
+    .nav-item {
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      font-size: 0.75rem;
+      font-weight: bold;
+      cursor: pointer;
+      padding: 6px 12px;
+      border-radius: 6px;
+    }
+
+    .nav-item.active {
+      color: #fff;
+      background: rgba(255, 26, 26, 0.2);
+      border-bottom: 2px solid var(--primary-red);
+    }
+
     #custom-toast {
       position: fixed;
-      bottom: 80px;
+      bottom: 70px;
       left: 50%;
       transform: translateX(-50%) translateY(20px);
       background: linear-gradient(135deg, #1a0202, #2b0303);
-      border: 1px solid var(--primary-red, #ff1a1a);
+      border: 1px solid var(--primary-red);
       color: #fff;
-      padding: 12px 20px;
+      padding: 10px 16px;
       border-radius: 8px;
-      box-shadow: 0 8px 25px rgba(255, 26, 26, 0.3);
-      font-size: 0.85rem;
-      font-family: inherit;
+      font-size: 0.8rem;
       z-index: 9999;
       opacity: 0;
       visibility: hidden;
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      transition: all 0.3s ease;
       text-align: center;
-      max-width: 90%;
       pointer-events: none;
     }
     #custom-toast.show {
@@ -59,7 +332,7 @@
       <div class="hero-banner">
         <h1>VENHA FAZER PARTE <span>DESTA FAMÍLIA</span></h1>
         <p>Mergulhe no mundo virtual do SA-MP RPG. Adrenalina e diversão sem limites no seu telemóvel.</p>
-        <button class="btn-main glow-effect" onclick="tocarSomClique(); mudarAba('tab-downloads', document.querySelectorAll('.nav-item')[1])">Baixar Agora</button>
+        <button class="btn-main" onclick="tocarSomClique(); mudarAba('tab-downloads', document.querySelectorAll('.nav-item')[1])">Baixar Agora</button>
       </div>
 
       <div class="section-title">Servidores Oficiais</div>
@@ -71,7 +344,7 @@
         </div>
         <div class="server-actions">
           <span class="player-count">208 / 700</span>
-          <button class="btn-forum glow-effect" onclick="tocarSomClique(); copiarIP('ip-srv-1')">Copiar IP</button>
+          <button class="btn-forum" onclick="tocarSomClique(); copiarIP('ip-srv-1')">Copiar IP</button>
         </div>
       </div>
 
@@ -82,7 +355,7 @@
         </div>
         <div class="server-actions">
           <span class="player-count">112 / 800</span>
-          <button class="btn-forum glow-effect" onclick="tocarSomClique(); copiarIP('ip-srv-2')">Copiar IP</button>
+          <button class="btn-forum" onclick="tocarSomClique(); copiarIP('ip-srv-2')">Copiar IP</button>
         </div>
       </div>
     </div>
@@ -92,15 +365,15 @@
       <div class="hero-banner" style="text-align: left;">
         <h2 style="color:var(--primary-red); margin-top:0;">Downloads Oficiais</h2>
         <p>Baixe o Launcher exclusivo e a DATA otimizada para jogar sem travamentos.</p>
-        <a href="https://www.mediafire.com/file/iynt0w68xh8lhkl/Brasil_Play_Alpha_hct.apk/file" target="_blank" class="btn-main glow-effect" style="text-decoration:none; display:block; text-align:center; margin-bottom:12px;">Baixar APK Launcher</a>
-        <a href="https://www.mediafire.com/file/1hmdo7dmneypdzn/DataBPA01.zip/file" target="_blank" class="btn-main glow-effect" style="text-decoration:none; display:block; text-align:center;">Baixar Data Modificada</a>
+        <a href="https://www.mediafire.com/file/iynt0w68xh8lhkl/Brasil_Play_Alpha_hct.apk/file" target="_blank" class="btn-main" style="text-decoration:none; display:block; text-align:center; margin-bottom:12px;">Baixar APK Launcher</a>
+        <a href="https://www.mediafire.com/file/1hmdo7dmneypdzn/DataBPA01.zip/file" target="_blank" class="btn-main" style="text-decoration:none; display:block; text-align:center;">Baixar Data Modificada</a>
       </div>
     </div>
 
     <!-- ABA 3: CONTA / UCP -->
     <div id="tab-conta" class="tab-pane">
       <div id="login-box" class="auth-container">
-        <h2 id="auth-title">ENTRAR NA UCP</h2>
+        <h2>ENTRAR NA UCP</h2>
         <p style="font-size: 0.78rem; color: #aaa; margin-bottom: 12px; text-align: center;">Use os mesmos dados de login criados no servidor de SA-MP.</p>
         <form onsubmit="return false;">
           <div class="input-group">
@@ -118,7 +391,7 @@
               <option value="2">Servidor 2</option>
             </select>
           </div>
-          <button id="auth-main-btn" class="btn-main glow-effect" onclick="tocarSomClique(); executarLogin();">Aceder Painel</button>
+          <button class="btn-main" onclick="tocarSomClique(); executarLogin();">Aceder Painel</button>
         </form>
         <div id="mensagem-auth" style="margin-top: 10px; font-size: 0.85rem; text-align: center;"></div>
       </div>
@@ -126,23 +399,22 @@
       <!-- PAINEL PRINCIPAL DO JOGADOR -->
       <div id="painel-box" class="auth-container hidden" style="padding: 14px;">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-          <h2 style="color: #00ff64; margin:0; font-size: 1.1rem;">PAINEL DO JOGADOR</h2>
+          <h2 style="color: var(--success); margin:0; font-size: 1.1rem;">PAINEL DO JOGADOR</h2>
           <button onclick="tocarSomClique(); fazerLogout()" style="background:none; border:none; color:var(--primary-red); font-size:0.75rem; font-weight:bold; cursor:pointer;">Sair 🚪</button>
         </div>
         
         <div class="ucp-profile-card">
           <div class="ucp-details">
             <h3 id="ucp-nick">Hécate</h3>
-            <p>🆔 ID: <span id="ucp-id" style="color:#fff">1</span></p>
-            <p>📄 RG: <span id="ucp-rg" style="color:#fff">0</span></p>
-            <p style="color: #00ff64; font-weight: bold; margin-top:3px;">⭐ Conta Verificada no Jogo</p>
+            <p style="font-size:0.75rem; color:#aaa;">🆔 ID: <span id="ucp-id" style="color:#fff">1</span> | 📄 RG: <span id="ucp-rg" style="color:#fff">0</span></p>
+            <p style="color: var(--success); font-weight: bold; font-size:0.75rem; margin-top:3px;">⭐ Conta Verificada no Jogo</p>
           </div>
         </div>
 
         <div class="ucp-grid-info">
           <div class="ucp-info-box">
             <span>Dinheiro (Mão)</span>
-            <strong id="ucp-dinheiro" style="color: #00ff64;">R$ 0</strong>
+            <strong id="ucp-dinheiro" style="color: var(--success);">R$ 0</strong>
           </div>
           <div class="ucp-info-box">
             <span>Banco</span>
@@ -165,7 +437,7 @@
       <div class="hero-banner">
         <h2>Comunidade Brasil Play</h2>
         <p>Junte-se ao nosso servidor oficial no Discord!</p>
-        <a href="https://discord.gg/SEU_LINK_DO_DISCORD" target="_blank" class="btn-main glow-effect" onclick="tocarSomClique()">Entrar no Discord</a>
+        <a href="https://discord.gg/SEU_LINK_DO_DISCORD" target="_blank" class="btn-main" style="text-decoration:none; display:block; text-align:center;" onclick="tocarSomClique()">Entrar no Discord</a>
       </div>
     </div>
   </div>
