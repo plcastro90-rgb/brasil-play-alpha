@@ -1,3 +1,60 @@
+// Sistema de Partículas Subindo
+const canvas = document.getElementById('particles-canvas');
+const ctx = canvas.getContext('2d');
+
+function resizeCanvas() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+window.addEventListener('resize', resizeCanvas);
+resizeCanvas();
+
+const particlesArray = [];
+const numberOfParticles = 30;
+
+class Particle {
+  constructor() {
+    this.x = Math.random() * canvas.width;
+    this.y = canvas.height + Math.random() * 100;
+    this.size = Math.random() * 2.5 + 1;
+    this.speedY = Math.random() * 1.0 + 0.3;
+    this.speedX = (Math.random() - 0.5) * 0.5;
+    this.opacity = Math.random() * 0.6 + 0.2;
+  }
+  update() {
+    this.y -= this.speedY;
+    this.x += this.speedX;
+    if (this.y < 0) {
+      this.y = canvas.height + 10;
+      this.x = Math.random() * canvas.width;
+    }
+  }
+  draw() {
+    ctx.fillStyle = `rgba(255, 30, 70, ${this.opacity})`;
+    ctx.shadowBlur = 8;
+    ctx.shadowColor = '#ff1a40';
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.shadowBlur = 0;
+  }
+}
+
+for (let i = 0; i < numberOfParticles; i++) {
+  particlesArray.push(new Particle());
+}
+
+function animateParticles() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  particlesArray.forEach(particle => {
+    particle.update();
+    particle.draw();
+  });
+  requestAnimationFrame(animateParticles);
+}
+animateParticles();
+
+// Sistema de Áudio e Interação
 let audioCtx = null;
 
 function initAudioContext() {
@@ -13,14 +70,14 @@ function playClick() {
     const osc = audioCtx.createOscillator();
     const gain = audioCtx.createGain();
     osc.type = 'sine';
-    osc.frequency.setValueAtTime(1200, audioCtx.currentTime);
-    osc.frequency.exponentialRampToValueAtTime(400, audioCtx.currentTime + 0.04);
-    gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.04);
+    osc.frequency.setValueAtTime(1000, audioCtx.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(300, audioCtx.currentTime + 0.05);
+    gain.gain.setValueAtTime(0.12, audioCtx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.05);
     osc.connect(gain);
     gain.connect(audioCtx.destination);
     osc.start();
-    osc.stop(audioCtx.currentTime + 0.04);
+    osc.stop(audioCtx.currentTime + 0.05);
   } catch (e) {}
 }
 
@@ -56,6 +113,7 @@ if (btnMute) {
   });
 }
 
+// Navegação por Abas
 const navBtns = document.querySelectorAll('.nav-btn');
 const tabContents = document.querySelectorAll('.tab-content');
 
@@ -82,7 +140,7 @@ function copiarIP(elementId) {
   });
 }
 
-// Configuração da API UCP
+// UCP Sistema
 const URL_BASE_API = 'https://ucp-api-bpa.onrender.com/api';
 
 async function executarLogin() {
@@ -92,7 +150,7 @@ async function executarLogin() {
   const msg = document.getElementById('mensagem-auth');
 
   if (!nick || !pass) {
-    msg.style.color = '#ff3333';
+    msg.style.color = '#ff3355';
     msg.innerText = 'Preencha todos os campos.';
     return;
   }
@@ -127,7 +185,7 @@ async function executarLogin() {
     }
 
   } catch (erro) {
-    msg.style.color = '#ff3333';
+    msg.style.color = '#ff3355';
     msg.innerText = erro.message;
   }
 }
