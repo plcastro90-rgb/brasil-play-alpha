@@ -98,37 +98,25 @@
     <div id="tab-conta" class="tab-pane">
       <div id="login-box" class="auth-container">
         <h2 id="auth-title">ENTRAR NA UCP</h2>
+        <p style="font-size: 0.78rem; color: #aaa; margin-bottom: 12px; text-align: center;">Use os mesmos dados de login criados no servidor de SA-MP.</p>
         <form onsubmit="return false;">
           <div class="input-group">
             <label>Nome da Conta (Nick)</label>
-            <input type="text" id="userInput" placeholder="Ex: Hecate_Player">
+            <input type="text" id="userInput" placeholder="Ex: Nicolas_samp">
           </div>
-          <div class="input-group" id="pass-group-div">
+          <div class="input-group">
             <label>Palavra-passe</label>
-            <input type="password" id="passInput" placeholder="Sua palavra-passe">
+            <input type="password" id="passInput" placeholder="Sua senha do jogo">
           </div>
-          <div class="input-group" id="email-group-div" style="display:none;">
-            <label>E-mail de Recuperação/Registo</label>
-            <input type="email" id="emailInput" placeholder="seu@email.com">
-          </div>
-          <div class="input-group" id="server-group-div">
+          <div class="input-group">
             <label>Servidor</label>
             <select id="serverSelect">
               <option value="1">Servidor 1</option>
               <option value="2">Servidor 2</option>
             </select>
           </div>
-          <button id="auth-main-btn" class="btn-main glow-effect" onclick="tocarSomClique(); executarAcaoAuth();">Aceder Painel</button>
+          <button id="auth-main-btn" class="btn-main glow-effect" onclick="tocarSomClique(); executarLogin();">Aceder Painel</button>
         </form>
-
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 12px; font-size: 0.78rem;">
-          <button id="toggle-auth-mode" onclick="tocarSomClique(); alternarModoAuth()" style="background:none; border:none; color: var(--primary-red); font-weight: bold; cursor: pointer; text-decoration: underline;">
-            Não tem conta? Criar nova conta
-          </button>
-          <button id="forgot-pass-btn" onclick="tocarSomClique(); alternarModoEsqueciSenha()" style="background:none; border:none; color: #64b5f6; font-weight: bold; cursor: pointer; text-decoration: underline;">
-            Esqueceu a senha?
-          </button>
-        </div>
         <div id="mensagem-auth" style="margin-top: 10px; font-size: 0.85rem; text-align: center;"></div>
       </div>
 
@@ -144,7 +132,7 @@
             <h3 id="ucp-nick">Hécate</h3>
             <p>🆔 ID: <span id="ucp-id" style="color:#fff">1</span></p>
             <p>📄 RG: <span id="ucp-rg" style="color:#fff">0</span></p>
-            <p style="color: #00ff64; font-weight: bold; margin-top:3px;">⭐ Conta Verificada</p>
+            <p style="color: #00ff64; font-weight: bold; margin-top:3px;">⭐ Conta Verificada no Jogo</p>
           </div>
         </div>
 
@@ -188,8 +176,6 @@
 
   <script>
     const URL_BASE_API = 'https://ucp-api-bpa.onrender.com/api';
-    let modoRegisto = false;
-    let modoEsqueci = false;
 
     function mostrarAviso(mensagem) {
       const toast = document.getElementById('custom-toast');
@@ -241,108 +227,32 @@
       }
     }
 
-    function alternarModoAuth() {
-      modoRegisto = !modoRegisto;
-      modoEsqueci = false;
-      atualizarInterfaceAuth();
-    }
-
-    function alternarModoEsqueciSenha() {
-      modoEsqueci = !modoEsqueci;
-      modoRegisto = false;
-      atualizarInterfaceAuth();
-    }
-
-    function atualizarInterfaceAuth() {
-      const title = document.getElementById('auth-title');
-      const btn = document.getElementById('auth-main-btn');
-      const toggleBtn = document.getElementById('toggle-auth-mode');
-      const forgotBtn = document.getElementById('forgot-pass-btn');
-      const serverGroup = document.getElementById('server-group-div');
-      const passGroup = document.getElementById('pass-group-div');
-      const emailGroup = document.getElementById('email-group-div');
-
-      if (modoEsqueci) {
-        title.innerText = 'RECUPERAR PALAVRA-PASSE';
-        btn.innerText = 'Enviar Instruções';
-        passGroup.style.display = 'none';
-        emailGroup.style.display = 'block';
-        serverGroup.style.display = 'none';
-        toggleBtn.innerText = 'Voltar ao Login';
-        forgotBtn.style.display = 'none';
-      } else if (modoRegisto) {
-        title.innerText = 'CRIAR NOVA CONTA';
-        btn.innerText = 'Registar Conta';
-        passGroup.style.display = 'block';
-        emailGroup.style.display = 'block';
-        serverGroup.style.display = 'none';
-        toggleBtn.innerText = 'Já tem conta? Faça login';
-        forgotBtn.style.display = 'inline';
-      } else {
-        title.innerText = 'ENTRAR NA UCP';
-        btn.innerText = 'Aceder Painel';
-        passGroup.style.display = 'block';
-        emailGroup.style.display = 'none';
-        serverGroup.style.display = 'block';
-        toggleBtn.innerText = 'Não tem conta? Criar nova conta';
-        forgotBtn.style.display = 'inline';
-      }
-      document.getElementById('mensagem-auth').innerText = '';
-    }
-
-    async function executarAcaoAuth() {
+    async function executarLogin() {
       const nick = document.getElementById('userInput').value.trim();
-      const pass = document.getElementById('passInput').value.trim();
-      const email = document.getElementById('emailInput').value.trim();
-      const server = document.getElementById('serverSelect').value;
+      const senha = document.getElementById('passInput').value.trim();
+      const servidor = document.getElementById('serverSelect').value;
       const msg = document.getElementById('mensagem-auth');
       
-      if(!nick || (!pass && !modoEsqueci && !modoRegisto) || (modoRegisto && (!pass || !email)) || (modoEsqueci && !email)) {
+      if (!nick || !senha) {
         msg.style.color = '#ff1a1a';
-        msg.innerText = 'Preencha todos os campos obrigatórios!';
+        msg.innerText = 'Insira o seu nick e a palavra-passe do jogo!';
         return;
       }
 
       msg.style.color = '#fff';
-      msg.innerText = 'A processar pedido...';
+      msg.innerText = 'A validar dados no servidor...';
 
       try {
-        let endpoint = '/login';
-        let dadosEnvio = { nick, senha: pass, servidor: server };
-
-        if (modoRegisto) {
-          endpoint = '/register';
-          dadosEnvio = { nick, senha: pass, email };
-        } else if (modoEsqueci) {
-          endpoint = '/forgot-password';
-          dadosEnvio = { email };
-        }
-
-        const resposta = await fetch(URL_BASE_API + endpoint, {
+        const resposta = await fetch(URL_BASE_API + '/login', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(dadosEnvio)
+          body: JSON.stringify({ nick, senha, servidor })
         });
 
         const resultado = await resposta.json();
 
         if (!resposta.ok) {
-          throw new Error(resultado.erro || 'Erro ao processar a requisição.');
-        }
-
-        if (modoEsqueci) {
-          msg.style.color = '#00ff64';
-          msg.innerText = 'Instruções enviadas para o e-mail!';
-          mostrarAviso('E-mail enviado.');
-          return;
-        }
-
-        if (modoRegisto) {
-          msg.style.color = '#00ff64';
-          msg.innerText = 'Conta criada com sucesso!';
-          mostrarAviso('Conta registada.');
-          alternarModoAuth();
-          return;
+          throw new Error(resultado.erro || 'Conta não encontrada ou dados incorretos.');
         }
 
         mostrarAviso('Login efetuado com sucesso!');
@@ -371,7 +281,6 @@
       document.getElementById('login-box').classList.remove('hidden');
       document.getElementById('userInput').value = '';
       document.getElementById('passInput').value = '';
-      document.getElementById('emailInput').value = '';
       document.getElementById('mensagem-auth').innerText = '';
       mostrarAviso('Sessão encerrada.');
     }
