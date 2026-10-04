@@ -121,13 +121,9 @@
             <label>Nome da Conta (Nick)</label>
             <input type="text" id="userInput" placeholder="Ex: Hecate_Player">
           </div>
-          <div class="input-group" id="pass-group-div">
+          <div class="input-group">
             <label>Palavra-passe</label>
             <input type="password" id="passInput" placeholder="Sua palavra-passe">
-          </div>
-          <div class="input-group" id="email-group-div" style="display:none;">
-            <label>E-mail de Recuperação/Registo</label>
-            <input type="email" id="emailInput" placeholder="seu@email.com">
           </div>
           <div class="input-group" id="server-group-div">
             <label>Servidor</label>
@@ -141,13 +137,10 @@
           <button id="auth-main-btn" class="btn-main glow-effect" onclick="tocarSomClique(); executarAcaoAuth();">Aceder Painel</button>
         </form>
 
-        <!-- BOTÕES DE ALTERNÂNCIA E RECUPERAÇÃO -->
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 12px; font-size: 0.78rem;">
-          <button id="toggle-auth-mode" onclick="tocarSomClique(); alternarModoAuth()" style="background:none; border:none; color: var(--primary-red); font-weight: bold; cursor: pointer; text-decoration: underline;">
+        <!-- BOTÃO DE ALTERNÂNCIA ENTRE LOGIN E CRIAR CONTA -->
+        <div style="text-align: center; margin-top: 12px;">
+          <button id="toggle-auth-mode" onclick="tocarSomClique(); alternarModoAuth()" style="background:none; border:none; color: var(--primary-red); font-size: 0.78rem; font-weight: bold; cursor: pointer; text-decoration: underline;">
             Não tem conta? Criar nova conta
-          </button>
-          <button id="forgot-pass-btn" onclick="tocarSomClique(); alternarModoEsqueciSenha()" style="background:none; border:none; color: #64b5f6; font-weight: bold; cursor: pointer; text-decoration: underline;">
-            Esqueceu a senha?
           </button>
         </div>
 
@@ -315,9 +308,9 @@
   </nav>
 
   <script>
+    /* URL BASE DA API NO RENDER */
     const URL_BASE_API = 'https://ucp-api-bpa.onrender.com/api';
     let modoRegisto = false;
-    let modoEsqueci = false;
 
     function mostrarAviso(mensagem) {
       const toast = document.getElementById('custom-toast');
@@ -376,49 +369,21 @@
 
     function alternarModoAuth() {
       modoRegisto = !modoRegisto;
-      modoEsqueci = false;
-      atualizarInterfaceAuth();
-    }
-
-    function alternarModoEsqueciSenha() {
-      modoEsqueci = !modoEsqueci;
-      modoRegisto = false;
-      atualizarInterfaceAuth();
-    }
-
-    function atualizarInterfaceAuth() {
       const title = document.getElementById('auth-title');
       const btn = document.getElementById('auth-main-btn');
       const toggleBtn = document.getElementById('toggle-auth-mode');
-      const forgotBtn = document.getElementById('forgot-pass-btn');
       const serverGroup = document.getElementById('server-group-div');
-      const passGroup = document.getElementById('pass-group-div');
-      const emailGroup = document.getElementById('email-group-div');
 
-      if (modoEsqueci) {
-        title.innerText = 'RECUPERAR PALAVRA-PASSE';
-        btn.innerText = 'Enviar Instruções';
-        passGroup.style.display = 'none';
-        emailGroup.style.display = 'block';
-        serverGroup.style.display = 'none';
-        toggleBtn.innerText = 'Voltar ao Login';
-        forgotBtn.style.display = 'none';
-      } else if (modoRegisto) {
+      if (modoRegisto) {
         title.innerText = 'CRIAR NOVA CONTA';
         btn.innerText = 'Registar Conta';
-        passGroup.style.display = 'block';
-        emailGroup.style.display = 'block';
-        serverGroup.style.display = 'none';
         toggleBtn.innerText = 'Já tem conta? Faça login';
-        forgotBtn.style.display = 'inline';
+        serverGroup.style.display = 'none';
       } else {
         title.innerText = 'ENTRAR NA UCP';
         btn.innerText = 'Aceder Painel';
-        passGroup.style.display = 'block';
-        emailGroup.style.display = 'none';
-        serverGroup.style.display = 'block';
         toggleBtn.innerText = 'Não tem conta? Criar nova conta';
-        forgotBtn.style.display = 'inline';
+        serverGroup.style.display = 'block';
       }
       document.getElementById('mensagem-auth').innerText = '';
     }
@@ -426,31 +391,19 @@
     async function executarAcaoAuth() {
       const nick = document.getElementById('userInput').value.trim();
       const pass = document.getElementById('passInput').value.trim();
-      const email = document.getElementById('emailInput').value.trim();
       const server = document.getElementById('serverSelect').value;
       const msg = document.getElementById('mensagem-auth');
       
-      if(!nick || (!pass && !modoEsqueci && !modoRegisto) || (modoRegisto && (!pass || !email)) || (modoEsqueci && !email)) {
+      if(!nick || !pass) {
         msg.style.color = '#ff1a1a';
-        msg.innerText = 'Preencha todos os campos obrigatórios!';
+        msg.innerText = 'Preencha todos os campos!';
         return;
       }
 
       msg.style.color = '#fff';
-      if (modoEsqueci) msg.innerText = 'A enviar pedido de recuperação...';
-      else if (modoRegisto) msg.innerText = 'A criar conta...';
-      else msg.innerText = 'A autenticar...';
+      msg.innerText = modoRegisto ? 'A criar conta...' : 'A autenticar...';
 
-      let endpoint = `${URL_BASE_API}/login`;
-      let payload = { nick, pass, server };
-
-      if (modoRegisto) {
-        endpoint = `${URL_BASE_API}/register`;
-        payload = { nick, pass, email };
-      } else if (modoEsqueci) {
-        endpoint = `${URL_BASE_API}/forgot-password`;
-        payload = { nick, email };
-      }
+      const endpoint = modoRegisto ? `${URL_BASE_API}/register` : `${URL_BASE_API}/login`;
 
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), 35000);
@@ -459,7 +412,7 @@
         const resposta = await fetch(endpoint, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload),
+          body: JSON.stringify({ nick, pass, server }),
           signal: controller.signal
         });
 
@@ -470,9 +423,6 @@
           if (modoRegisto) {
             mostrarAviso('Conta criada com sucesso! Faça login.');
             alternarModoAuth();
-          } else if (modoEsqueci) {
-            mostrarAviso(dados.mensagem || 'E-mail de recuperação enviado!');
-            alternarModoEsqueciSenha();
           } else {
             document.getElementById('login-box').classList.add('hidden');
             document.getElementById('painel-box').classList.remove('hidden');
@@ -508,7 +458,6 @@
       document.getElementById('login-box').classList.remove('hidden');
       document.getElementById('userInput').value = '';
       document.getElementById('passInput').value = '';
-      document.getElementById('emailInput').value = '';
       mostrarAviso('Sessão encerrada.');
     }
 
