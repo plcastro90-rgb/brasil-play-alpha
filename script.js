@@ -1,4 +1,3 @@
-// Configuração da Web Audio API para gerar som de clique via código
 let audioCtx = null;
 
 function initAudioContext() {
@@ -7,91 +6,137 @@ function initAudioContext() {
   }
 }
 
-// Função que sintetiza o som de clique instantâneo
 function playClick() {
   try {
     initAudioContext();
-    if (audioCtx.state === 'suspended') {
-      audioCtx.resume();
-    }
-
+    if (audioCtx.state === 'suspended') { audioCtx.resume(); }
     const osc = audioCtx.createOscillator();
     const gain = audioCtx.createGain();
-
-    // Tipo de onda sonora (sine = tom limpo e curto)
     osc.type = 'sine';
-    
-    // Frequência inicial do clique (1200Hz caindo rapidamente para 400Hz)
     osc.frequency.setValueAtTime(1200, audioCtx.currentTime);
     osc.frequency.exponentialRampToValueAtTime(400, audioCtx.currentTime + 0.04);
-
-    // Volume do clique (começa alto e desce a zero em 40ms)
     gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
     gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.04);
-
     osc.connect(gain);
     gain.connect(audioCtx.destination);
-
     osc.start();
     osc.stop(audioCtx.currentTime + 0.04);
-  } catch (e) {
-    console.log("Erro ao sintetizar clique:", e);
-  }
+  } catch (e) {}
 }
 
-// Elementos da Página
 const bgMusic = document.getElementById('bg-music');
 const startOverlay = document.getElementById('start-overlay');
 const btnStart = document.getElementById('btn-start');
 const btnMute = document.getElementById('btn-mute');
 
-// Iniciar ao clicar no Overlay inicial
-btnStart.addEventListener('click', () => {
-  initAudioContext();
-  playClick();
-  
-  if (bgMusic && bgMusic.src && !bgMusic.src.endsWith('undefined')) {
-    bgMusic.volume = 0.3;
-    bgMusic.play().catch(e => console.log("Música aguardando arquivo mp3:", e));
-  }
-  
-  startOverlay.style.display = 'none';
-});
+if (btnStart) {
+  btnStart.addEventListener('click', () => {
+    initAudioContext();
+    playClick();
+    if (bgMusic) {
+      bgMusic.volume = 0.3;
+      bgMusic.play().catch(() => {});
+    }
+    if (startOverlay) {
+      startOverlay.style.display = 'none';
+    }
+  });
+}
 
-// Botão de Mute/Unmute da música
-btnMute.addEventListener('click', () => {
-  playClick();
-  if (bgMusic && !bgMusic.paused) {
-    bgMusic.pause();
-    btnMute.textContent = '🔇 Mudo';
-  } else if (bgMusic) {
-    bgMusic.play().catch(() => {});
-    btnMute.textContent = '🔊 Som';
-  }
-});
+if (btnMute) {
+  btnMute.addEventListener('click', () => {
+    playClick();
+    if (bgMusic && !bgMusic.paused) {
+      bgMusic.pause();
+      btnMute.textContent = '🔇 Mudo';
+    } else if (bgMusic) {
+      bgMusic.play().catch(() => {});
+      btnMute.textContent = '🔊 Som';
+    }
+  });
+}
 
-// Navegação entre Abas
 const navBtns = document.querySelectorAll('.nav-btn');
 const tabContents = document.querySelectorAll('.tab-content');
 
 navBtns.forEach(btn => {
   btn.addEventListener('click', () => {
     playClick();
-    
     navBtns.forEach(b => b.classList.remove('active'));
     tabContents.forEach(c => c.classList.remove('active'));
 
     btn.classList.add('active');
     const tabId = btn.getAttribute('data-tab');
-    document.getElementById(tabId).classList.add('active');
+    const targetTab = document.getElementById(tabId);
+    if (targetTab) {
+      targetTab.classList.add('active');
+    }
   });
 });
 
-// Função para Copiar IP
 function copiarIP(elementId) {
   playClick();
   const ipText = document.getElementById(elementId).innerText;
   navigator.clipboard.writeText(ipText).then(() => {
     alert('IP Copiado com sucesso: ' + ipText);
   });
+}
+
+// Configuração da API UCP
+const URL_BASE_API = 'https://ucp-api-bpa.onrender.com/api';
+
+async function executarLogin() {
+  playClick();
+  const nick = document.getElementById('userInput').value.trim();
+  const pass = document.getElementById('passInput').value.trim();
+  const msg = document.getElementById('mensagem-auth');
+
+  if (!nick || !pass) {
+    msg.style.color = '#ff3333';
+    msg.innerText = 'Preencha todos os campos.';
+    return;
+  }
+
+  msg.style.color = '#fff';
+  msg.innerText = 'A validar dados...';
+
+  try {
+    const resposta = await fetch(`${URL_BASE_API}/login`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ nick, pass })
+    });
+
+    const resultado = await resposta.json();
+
+    if (!resultado.sucesso) {
+      throw new Error(resultado.mensagem || 'Conta não encontrada.');
+    }
+
+    document.getElementById('login-box').classList.add('hidden');
+    document.getElementById('painel-box').classList.remove('hidden');
+
+    if (resultado.usuario) {
+      document.getElementById('ucp-nick').innerText = resultado.usuario.nick || nick;
+      document.getElementById('ucp-id').innerText = resultado.usuario.id || '1';
+      document.getElementById('ucp-rg').innerText = resultado.usuario.rg || '0';
+      document.getElementById('ucp-dinheiro').innerText = 'R$ ' + (resultado.usuario.dinheiro || 0).toLocaleString();
+      document.getElementById('ucp-banco').innerText = 'R$ ' + (resultado.usuario.banco || 0).toLocaleString();
+      document.getElementById('ucp-level').innerText = resultado.usuario.level || '1';
+      document.getElementById('ucp-org').innerText = resultado.usuario.organizacao || 'Civil';
+    }
+
+  } catch (erro) {
+    msg.style.color = '#ff3333';
+    msg.innerText = erro.message;
+  }
+}
+
+function fazerLogout() {
+  playClick();
+  document.getElementById('painel-box').classList.add('hidden');
+  document.getElementById('login-box').classList.remove('hidden');
+  document.getElementById('userInput').value = '';
+  document.getElementById('passInput').value = '';
+  document.getElementById('mensagem-auth').innerText = '';
 }
