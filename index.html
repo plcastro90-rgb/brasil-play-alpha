@@ -246,27 +246,29 @@
         const resposta = await fetch(URL_BASE_API + '/login', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ nick, senha, servidor })
+          body: JSON.stringify({ nick, pass: senha, servidor })
         });
 
         const resultado = await resposta.json();
 
-        if (!resposta.ok) {
-          throw new Error(resultado.erro || 'Conta não encontrada ou dados incorretos.');
+        // Validação rigorosa: se o servidor retornar sucesso falso, bloqueia o acesso
+        if (!resultado.sucesso) {
+          throw new Error(resultado.mensagem || 'Conta não encontrada ou dados incorretos.');
         }
 
         mostrarAviso('Login efetuado com sucesso!');
         document.getElementById('login-box').classList.add('hidden');
         document.getElementById('painel-box').classList.remove('hidden');
 
-        if (resultado.player) {
-          document.getElementById('ucp-nick').innerText = resultado.player.Nick || nick;
-          document.getElementById('ucp-id').innerText = resultado.player.ID || '1';
-          document.getElementById('ucp-rg').innerText = resultado.player.RG || '0';
-          document.getElementById('ucp-dinheiro').innerText = 'R$ ' + (resultado.player.Dinheiro || 0).toLocaleString();
-          document.getElementById('ucp-banco').innerText = 'R$ ' + (resultado.player.Banco || 0).toLocaleString();
-          document.getElementById('ucp-level').innerText = resultado.player.Level || '1';
-          document.getElementById('ucp-org').innerText = resultado.player.Organizacao || 'Civil';
+        // Preenche o painel com os dados reais do jogador vindos da API
+        if (resultado.usuario) {
+          document.getElementById('ucp-nick').innerText = resultado.usuario.nick || nick;
+          document.getElementById('ucp-id').innerText = resultado.usuario.id || '1';
+          document.getElementById('ucp-rg').innerText = resultado.usuario.rg || '0';
+          document.getElementById('ucp-dinheiro').innerText = 'R$ ' + (resultado.usuario.dinheiro || 0).toLocaleString();
+          document.getElementById('ucp-banco').innerText = 'R$ ' + (resultado.usuario.banco || 0).toLocaleString();
+          document.getElementById('ucp-level').innerText = resultado.usuario.level || '1';
+          document.getElementById('ucp-org').innerText = resultado.usuario.organizacao || 'Civil';
         }
 
       } catch (erro) {
