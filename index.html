@@ -3,203 +3,560 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Brasil Play Alpha | Portal & UCP</title>
+  <title>Brasil Play Alpha | UCP & Comunidade</title>
   <link rel="stylesheet" href="style.css">
+  <style>
+    /* ESTILO PARA O TOAST DE NOTIFICAÇÃO PERSONALIZADO */
+    #custom-toast {
+      position: fixed;
+      bottom: 80px;
+      left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background: linear-gradient(135deg, #1a0202, #2b0303);
+      border: 1px solid var(--primary-red, #ff1a1a);
+      color: #fff;
+      padding: 12px 20px;
+      border-radius: 8px;
+      box-shadow: 0 8px 25px rgba(255, 26, 26, 0.3);
+      font-size: 0.85rem;
+      font-family: inherit;
+      z-index: 9999;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      text-align: center;
+      max-width: 90%;
+      pointer-events: none;
+    }
+    #custom-toast.show {
+      opacity: 1;
+      visibility: visible;
+      transform: translateX(-50%) translateY(0);
+    }
+  </style>
 </head>
 <body>
 
-  <!-- Canvas de Partículas -->
-  <canvas id="particles-canvas"></canvas>
+  <!-- ELEMENTO DE ÁUDIO EM LOOP (Música de Fundo) -->
+  <audio id="bgMusic" src="assets/bg-music.mp3" loop autoplay></audio>
 
-  <!-- Overlay de Entrada de Áudio -->
-  <div id="start-overlay">
-    <div class="overlay-content">
-      <h1>BRASIL PLAY <span class="highlight">ALPHA</span></h1>
-      <p>Toque para entrar no portal e ativar o som</p>
-      <button id="btn-start" class="btn-primary">ENTRAR NO PORTAL</button>
-    </div>
-  </div>
+  <!-- NOTIFICAÇÃO PERSONALIZADA (TOAST) -->
+  <div id="custom-toast">Notificação do Sistema</div>
 
-  <audio id="bg-music" src="assets/bg-music.mp3" loop></audio>
+  <!-- PARTICULAS ANIMADAS NO FUNDO -->
+  <svg class="particles-bg" xmlns="http://www.w3.org/2000/svg">
+    <polygon class="particle-star" points="15,5 18,12 25,15 18,18 15,25 12,18 5,15 12,12" style="transform: scale(0.8); animation-duration: 7s;" cx="15%" />
+    <polygon class="particle-star" points="15,5 18,12 25,15 18,18 15,25 12,18 5,15 12,12" style="transform: scale(1.2); animation-duration: 11s;" cx="45%" />
+    <circle class="particle-circle" cx="20%" cy="0" r="6" style="animation-duration: 8s;" />
+    <circle class="particle-circle" cx="60%" cy="0" r="8" style="animation-duration: 13s;" />
+  </svg>
 
-  <div class="container">
-    <header class="glass-panel top-header">
-      <div class="logo">BRASIL PLAY <span class="highlight">ALPHA</span></div>
+  <div class="wrapper">
+    
+    <!-- HEADER -->
+    <header class="app-header">
+      <div class="header-logo">BRASIL PLAY <span>ALPHA</span></div>
       <div class="header-right">
-        <button id="btn-mute" class="btn-audio-icon" title="Ativar/Desativar Som">🎵</button>
-        <div class="online-badge">🟢 <span id="online-count">320</span> ONLINE</div>
+        <button id="musicToggleBtn" class="btn-music-toggle" onclick="tocarSomClique(); toggleMusica();" title="Ligar/Desligar Música">🎵</button>
+        <div class="online-counter-badge">
+          <span class="pulse-dot"></span>
+          <span id="total-online">320</span> ONLINE
+        </div>
       </div>
     </header>
 
-    <main class="main-content">
-      <!-- Aba 1: Início -->
-      <section id="tab-wel" class="tab-content active">
-        <div class="card glass-panel">
-          <div class="welcome-box">
-            <h2>VENHA FAZER PARTE <span class="highlight">DESTA FAMÍLIA</span></h2>
-            <p>Mergulhe no mundo virtual do SA-MP RPG. Adrenalina e diversão sem limites no seu telemóvel.</p>
-            <button class="btn-primary glow-btn" onclick="mudarParaAba('tab-down')">Baixar Agora</button>
-          </div>
+    <!-- ABA 1: INÍCIO -->
+    <div id="tab-inicio" class="tab-pane active">
+      <div class="hero-banner">
+        <h1>VENHA FAZER PARTE <span>DESTA FAMÍLIA</span></h1>
+        <p>Mergulhe no mundo virtual do SA-MP RPG. Adrenalina e diversão sem limites no seu telemóvel.</p>
+        <button class="btn-main glow-effect" onclick="tocarSomClique(); mudarAba('tab-downloads', document.querySelectorAll('.nav-item')[1])">Baixar Agora</button>
+      </div>
+
+      <div class="section-title">Servidores Oficiais</div>
+
+      <div class="server-card">
+        <div class="server-info">
+          <span class="server-name">Brasil Play Alpha #1 [Android/PC]</span>
+          <span class="server-ip" id="ip-srv-1">144.217.113.116:7777</span>
         </div>
-
-        <div class="card glass-panel" style="margin-top: 15px;">
-          <h3 class="section-title">SERVIDORES OFICIAIS</h3>
-          
-          <div class="server-item-box">
-            <div class="server-info">
-              <span class="server-title">Brasil Play Alpha #1 [Android/PC]</span>
-              <span class="server-ip" id="ip-1">144.217.113.116:7777</span>
-            </div>
-            <div class="server-action">
-              <span class="server-players">208 / 700</span>
-              <button class="btn-copy" onclick="copiarIP('ip-1')">Copiar IP</button>
-            </div>
-          </div>
-
-          <div class="server-item-box" style="margin-top: 10px;">
-            <div class="server-info">
-              <span class="server-title">Brasil Play Alpha #2 [NOVAGM]</span>
-              <span class="server-ip" id="ip-2">144.217.113.116:7778</span>
-            </div>
-            <div class="server-action">
-              <span class="server-players">112 / 800</span>
-              <button class="btn-copy" onclick="copiarIP('ip-2')">Copiar IP</button>
-            </div>
-          </div>
+        <div class="server-actions">
+          <span class="player-count">208 / 700</span>
+          <button class="btn-forum glow-effect" onclick="tocarSomClique(); copiarIP('ip-srv-1')">Copiar IP</button>
         </div>
-      </section>
+      </div>
 
-      <!-- Aba 2: Downloads -->
-      <section id="tab-down" class="tab-content">
-        <div class="card glass-panel">
-          <h2>DOWNLOADS OFICIAIS</h2>
-          <p class="sub-text">Baixe o Launcher exclusivo e a DATA otimizada para jogar sem travamentos.</p>
-          <div class="download-links">
-            <a href="https://www.mediafire.com/file/iynt0w68xh8lhkl/Brasil_Play_Alpha_hct.apk/file" target="_blank" class="btn-download glow-btn">Baixar APK Launcher</a>
-            <a href="https://www.mediafire.com/file/1hmdo7dmneypdzn/DataBPA01.zip/file" target="_blank" class="btn-download glow-btn">Baixar Data Modificada</a>
-          </div>
+      <div class="server-card">
+        <div class="server-info">
+          <span class="server-name">Brasil Play Alpha #2 [NOVAGM]</span>
+          <span class="server-ip" id="ip-srv-2">144.217.113.116:7778</span>
         </div>
-      </section>
+        <div class="server-actions">
+          <span class="player-count">112 / 800</span>
+          <button class="btn-forum glow-effect" onclick="tocarSomClique(); copiarIP('ip-srv-2')">Copiar IP</button>
+        </div>
+      </div>
 
-      <!-- Aba 3: Site / UCP -->
-      <section id="tab-ucp" class="tab-content">
-        <!-- Caixa de Login UCP -->
-        <div class="card glass-panel ucp-card" id="login-box">
-          <h2 class="ucp-title">ENTRAR NA UCP</h2>
-          
+      <img src="assets/image_inicio.png" alt="Início" class="floating-character">
+    </div>
+
+    <!-- ABA 2: DOWNLOADS -->
+    <div id="tab-downloads" class="tab-pane">
+      <div class="hero-banner" style="text-align: left;">
+        <h2 style="color:var(--primary-red); margin-top:0;">Downloads Oficiais</h2>
+        <p>Baixe o Launcher exclusivo e a DATA otimizada para jogar sem travamentos e com máxima performance.</p>
+        <a href="https://www.mediafire.com/file/iynt0w68xh8lhkl/Brasil_Play_Alpha_hct.apk/file" target="_blank" class="btn-main glow-effect" onclick="tocarSomClique()" style="text-decoration:none; display:block; text-align:center; margin-bottom:12px;">Baixar APK Launcher</a>
+        <a href="https://www.mediafire.com/file/1hmdo7dmneypdzn/DataBPA01.zip/file" target="_blank" class="btn-main glow-effect" onclick="tocarSomClique()" style="text-decoration:none; display:block; text-align:center; background:linear-gradient(135deg, #2b0303, #4a0505); border:1px solid var(--dark-red);">Baixar Data Modificada</a>
+      </div>
+    </div>
+
+    <!-- ABA 3: CONTA / UCP -->
+    <div id="tab-conta" class="tab-pane">
+      
+      <!-- TELA DE LOGIN / REGISTO -->
+      <div id="login-box" class="auth-container">
+        <h2 id="auth-title">ENTRAR NA UCP</h2>
+        <form onsubmit="return false;">
           <div class="input-group">
             <label>Nome da Conta (Nick)</label>
             <input type="text" id="userInput" placeholder="Ex: Hecate_Player">
           </div>
-          
-          <div class="input-group">
+          <div class="input-group" id="pass-group-div">
             <label>Palavra-passe</label>
             <input type="password" id="passInput" placeholder="Sua palavra-passe">
           </div>
-
-          <div class="input-group">
+          <div class="input-group" id="email-group-div" style="display:none;">
+            <label>E-mail de Recuperação/Registo</label>
+            <input type="email" id="emailInput" placeholder="seu@email.com">
+          </div>
+          <div class="input-group" id="server-group-div">
             <label>Servidor</label>
-            <select id="serverSelect" class="select-box">
+            <select id="serverSelect">
               <option value="1">Servidor 1</option>
               <option value="2">Servidor 2</option>
             </select>
           </div>
-
-          <button class="btn-primary glow-btn" onclick="executarLogin()" style="width:100%; margin-top: 5px;">Aceder Painel</button>
-          <div id="mensagem-auth" style="margin-top: 10px; font-size: 0.85rem; text-align: center;"></div>
           
-          <div class="ucp-footer-links">
-            <a href="#" onclick="alert('Funcionalidade de registo no servidor in-game.')">Não tem conta? Criar nova conta</a>
+          <!-- BOTÃO PRINCIPAL DINÂMICO -->
+          <button id="auth-main-btn" class="btn-main glow-effect" onclick="tocarSomClique(); executarAcaoAuth();">Aceder Painel</button>
+        </form>
+
+        <!-- BOTÕES DE ALTERNÂNCIA E RECUPERAÇÃO -->
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 12px; font-size: 0.78rem;">
+          <button id="toggle-auth-mode" onclick="tocarSomClique(); alternarModoAuth()" style="background:none; border:none; color: var(--primary-red); font-weight: bold; cursor: pointer; text-decoration: underline;">
+            Não tem conta? Criar nova conta
+          </button>
+          <button id="forgot-pass-btn" onclick="tocarSomClique(); alternarModoEsqueciSenha()" style="background:none; border:none; color: #64b5f6; font-weight: bold; cursor: pointer; text-decoration: underline;">
+            Esqueceu a senha?
+          </button>
+        </div>
+
+        <div id="mensagem-auth" style="margin-top: 10px; font-size: 0.85rem; text-align: center;"></div>
+      </div>
+
+      <!-- PAINEL PRINCIPAL DO JOGADOR -->
+      <div id="painel-box" class="auth-container hidden" style="padding: 14px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+          <h2 style="color: #00ff64; margin:0; font-size: 1.1rem;">PAINEL DO JOGADOR</h2>
+          <button onclick="tocarSomClique(); fazerLogout()" style="background:none; border:none; color:var(--primary-red); font-size:0.75rem; font-weight:bold; cursor:pointer;">Sair 🚪</button>
+        </div>
+        
+        <div class="ucp-profile-card">
+          <div class="ucp-skin-preview">
+            <span>Skin<br>#299</span>
+          </div>
+          <div class="ucp-details">
+            <h3 id="ucp-nick">Hécate</h3>
+            <p>🆔 ID: <span id="ucp-id" style="color:#fff">1492</span></p>
+            <p>📄 RG: <span id="ucp-rg" style="color:#fff">89210</span></p>
+            <p style="color: #00ff64; font-weight: bold; margin-top:3px;">⭐ VIP Ativo</p>
           </div>
         </div>
 
-        <!-- Painel do Jogador Logado -->
-        <div class="card glass-panel hidden" id="painel-box">
-          <div class="panel-top-bar">
-            <h2>PAINEL DO JOGADOR</h2>
-            <button onclick="fazerLogout()" class="btn-logout">Sair 🚪</button>
+        <div class="ucp-grid-info">
+          <div class="ucp-info-box">
+            <span>Dinheiro (Mão)</span>
+            <strong id="ucp-dinheiro" style="color: #00ff64;">R$ 1.500.000</strong>
           </div>
-
-          <div class="player-profile-card">
-            <div class="skin-box">
-              <span class="skin-tag">Skin<br>#299</span>
-            </div>
-            <div class="player-basic-info">
-              <h3 id="ucp-nick">Hecate_player</h3>
-              <p>ID: <span id="ucp-id">3492</span></p>
-              <p>RG: <span id="ucp-rg">89120</span></p>
-              <p class="vip-status">⭐ VIP Active</p>
-            </div>
+          <div class="ucp-info-box">
+            <span>Banco</span>
+            <strong id="ucp-banco" style="color: #64b5f6;">R$ 15.420.000</strong>
           </div>
-
-          <div class="stats-row">
-            <div class="stat-box">
-              <span class="stat-label">Dinheiro (Mão)</span>
-              <span class="stat-val money" id="ucp-dinheiro">R$ 1.500.000</span>
-            </div>
-            <div class="stat-box">
-              <span class="stat-label">Banco</span>
-              <span class="stat-val bank" id="ucp-banco">R$ 15.420.000</span>
-            </div>
+          <div class="ucp-info-box">
+            <span>Nível (Level)</span>
+            <strong id="ucp-level">45</strong>
           </div>
-
-          <div class="stats-row" style="margin-top: 8px;">
-            <div class="stat-box">
-              <span class="stat-label">Nível (Level)</span>
-              <span class="stat-val" id="ucp-level">65</span>
-            </div>
-            <div class="stat-box">
-              <span class="stat-label">Organização</span>
-              <span class="stat-val" id="ucp-org">Civil / Nenhum</span>
-            </div>
-          </div>
-
-          <div class="inventory-section" style="margin-top: 15px;">
-            <h4 style="font-size: 0.9rem; color: #ff3355; margin-bottom: 8px;">INVENTÁRIO E ITENS</h4>
-            <div class="inventory-slots">
-              <div class="inv-slot">📦</div>
-              <div class="inv-slot">🔫</div>
-              <div class="inv-slot">💊</div>
-              <div class="inv-slot">📻</div>
-            </div>
+          <div class="ucp-info-box">
+            <span>Organização</span>
+            <strong id="ucp-org" style="font-size:0.75rem;">Civil / Nenhum</strong>
           </div>
         </div>
-      </section>
 
-      <!-- Aba 4: Comunidade -->
-      <section id="tab-comm" class="tab-content">
-        <div class="card glass-panel">
-          <h2>COMUNIDADE BRASIL PLAY</h2>
-          <p>Junte-se ao nosso servidor oficial no Discord para interagir com outros jogadores e ficar por dentro de todas as novidades!</p>
-          <div class="video-container" style="margin-top: 15px;">
-            <video src="assets/video_discord.mp4" controls autoplay muted loop playsinline class="responsive-video"></video>
-          </div>
-          <a href="https://discord.gg/SEU_LINK" target="_blank" class="btn-primary glow-btn" style="margin-top:15px; display:inline-block; width:100%; text-align:center;">Entrar no Discord</a>
+        <div class="section-title" style="margin-top: 10px; font-size: 0.85rem;">Inventário e Itens</div>
+        <div class="inventory-grid">
+          <div class="inventory-slot item" title="Telemóvel">📱</div>
+          <div class="inventory-slot item" title="Rádio">📻</div>
+          <div class="inventory-slot item" title="Colete">🛡</div>
+          <div class="inventory-slot item" title="Arma">🔫</div>
+          <div class="inventory-slot"></div>
+          <div class="inventory-slot"></div>
+          <div class="inventory-slot"></div>
+          <div class="inventory-slot"></div>
         </div>
-      </section>
-    </main>
+
+        <!-- BOTÃO PARA ABRIR O SISTEMA DE FÓRUM / DENÚNCIAS & CHAT -->
+        <button class="btn-main glow-effect" style="background: linear-gradient(135deg, #8b0000, #ff1a1a); margin-top: 5px;" onclick="tocarSomClique(); abrirPainelForum();">💬 Fórum, Denúncias & Chat</button>
+      </div>
+
+      <!-- MODAL / PAINEL INTERNO DE FÓRUM, CHAT E DENÚNCIAS -->
+      <div id="modal-forum" class="auth-container hidden" style="margin-top: 0px; border-color: var(--primary-red);">
+        <div class="forum-modal-header" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+          <div class="forum-title-wrapper" style="display:flex; align-items:center; gap:6px;">
+            <span class="forum-icon-indicator"></span>
+            <h2 style="font-size:0.95rem; margin:0; color:var(--primary-red);">CENTRAL DA COMUNIDADE</h2>
+          </div>
+          <button class="forum-close-btn" onclick="tocarSomClique(); fecharPainelForum()" style="background:none; border:none; color:#fff; font-size:1rem; cursor:pointer;">✕</button>
+        </div>
+
+        <!-- ABAS DO FÓRUM/CHAT -->
+        <div class="forum-tabs">
+          <button class="forum-tab-btn active" onclick="tocarSomClique(); mudarAbaForum('chat', this)">
+            <i>💬</i> Chat Global
+          </button>
+          <button class="forum-tab-btn" onclick="tocarSomClique(); mudarAbaForum('denuncias', this)">
+            <i>🚨</i> Denúncias
+          </button>
+          <button class="forum-tab-btn" onclick="tocarSomClique(); mudarAbaForum('forum', this)">
+            <i>📜</i> Tópicos
+          </button>
+        </div>
+
+        <!-- CONTEÚDO: CHAT GLOBAL -->
+        <div id="f-tab-chat" class="forum-pane active">
+          <div class="chat-box-messages" id="chatMessages">
+            <div class="chat-msg"><span>[Staff] Admin_Hecate:</span> Sejam bem-vindos ao Brasil Play Alpha!</div>
+            <div class="chat-msg"><span>[Player] Carlos123:</span> Servidor tá top demais! 🔥</div>
+          </div>
+          <div class="chat-input-area">
+            <input type="text" id="chatInputText" placeholder="Escreva sua mensagem..." onkeypress="if(event.key === 'Enter') enviarMensagemChat()">
+            <button class="glow-effect" onclick="tocarSomClique(); enviarMensagemChat()">Enviar</button>
+          </div>
+        </div>
+
+        <!-- CONTEÚDO: DENÚNCIAS -->
+        <div id="f-tab-denuncias" class="forum-pane">
+          <div class="denuncia-card-info" style="margin-bottom:8px; font-size:0.75rem; color:var(--text-muted);">
+            <p>Relate infrações, comportamentos tóxicos ou bugs diretamente à nossa moderação.</p>
+          </div>
+          <div class="input-group">
+            <label>Nick do Infrator</label>
+            <input type="text" id="denunciaNick" placeholder="Ex: Player_Infrator">
+          </div>
+          <div class="input-group">
+            <label>Motivo e Prova (Link)</label>
+            <input type="text" id="denunciaMotivo" placeholder="Ex: Uso de Bug / DM + Link">
+          </div>
+          <button class="btn-main glow-effect" style="margin-top: 4px;" onclick="tocarSomClique(); enviarDenuncia()">Transmitir Denúncia</button>
+        </div>
+
+        <!-- CONTEÚDO: FÓRUM / TÓPICOS -->
+        <div id="f-tab-forum" class="forum-pane">
+          <div class="forum-topic-item glow-effect">
+            <strong>Regras Gerais do Servidor</strong>
+            <span>Atualizado em Outubro/2026 • Por Staff</span>
+          </div>
+          <div class="forum-topic-item glow-effect">
+            <strong>Recrutamento para Organizações</strong>
+            <span>Vagas abertas para Polícia, SAMU e Máfias.</span>
+          </div>
+          <div class="forum-topic-item glow-effect">
+            <strong>Guia de Instalação e Otimização</strong>
+            <span>Aprenda a rodar o SA-MP a 60 FPS sem travamentos.</span>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- ABA 4: COMUNIDADE (DISCORD) -->
+    <div id="tab-comunidade" class="tab-pane">
+      <div class="hero-banner">
+        <h2>Comunidade Brasil Play</h2>
+        <p>Junte-se ao nosso servidor oficial no Discord para interagir com outros jogadores e ficar por dentro de todas as novidades!</p>
+        <a href="https://discord.gg/SEU_LINK_DO_DISCORD" target="_blank" class="btn-main glow-effect" onclick="tocarSomClique()">Entrar no Discord</a>
+      </div>
+
+      <div class="discord-video-container">
+        <video src="assets/video_discord.mp4" autoplay muted loop playsinline class="discord-video"></video>
+      </div>
+    </div>
+
   </div>
 
-  <!-- Menu de Navegação Inferior Fixo -->
-  <nav class="bottom-nav">
-    <button class="bottom-btn active" data-tab="tab-wel">
-      <span class="b-icon">🏠</span>
-      <span class="b-label">Início</span>
+  <!-- MENU DE NAVEGAÇÃO INFERIOR -->
+  <nav class="floating-nav">
+    <button class="nav-item active" onclick="tocarSomClique(); mudarAba('tab-inicio', this)">
+      <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+      Início
     </button>
-    <button class="bottom-btn" data-tab="tab-down">
-      <span class="b-icon">📥</span>
-      <span class="b-label">Downloads</span>
+    <button class="nav-item" onclick="tocarSomClique(); mudarAba('tab-downloads', this)">
+      <svg viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
+      Downloads
     </button>
-    <button class="bottom-btn" data-tab="tab-ucp">
-      <span class="b-icon">👤</span>
-      <span class="b-label">Site</span>
+    <button class="nav-item" onclick="tocarSomClique(); mudarAba('tab-conta', this)">
+      <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+      Site
     </button>
-    <button class="bottom-btn" data-tab="tab-comm">
-      <span class="b-icon">💬</span>
-      <span class="b-label">Comunidade</span>
+    <button class="nav-item" onclick="tocarSomClique(); mudarAba('tab-comunidade', this)">
+      <svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0-2-.9-2-2V4c0-1.1-.9-2-2-2z"/></svg>
+      Comunidade
     </button>
   </nav>
 
-  <script src="script.js"></script>
+  <script>
+    const URL_BASE_API = 'https://ucp-api-bpa.onrender.com/api';
+    let modoRegisto = false;
+    let modoEsqueci = false;
+
+    function mostrarAviso(mensagem) {
+      const toast = document.getElementById('custom-toast');
+      toast.innerText = mensagem;
+      toast.classList.add('show');
+      setTimeout(() => { toast.classList.remove('show'); }, 3000);
+    }
+
+    function tocarSomClique() {
+      try {
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        const osc = audioCtx.createOscillator();
+        const gainNode = audioCtx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(580, audioCtx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(220, audioCtx.currentTime + 0.08);
+        gainNode.gain.setValueAtTime(0.12, audioCtx.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.08);
+        osc.connect(gainNode);
+        gainNode.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + 0.08);
+      } catch(e) {}
+    }
+
+    function mudarAba(idAba, elementoBotao) {
+      document.querySelectorAll('.tab-pane').forEach(aba => aba.classList.remove('active'));
+      document.querySelectorAll('.nav-item').forEach(btn => btn.classList.remove('active'));
+      document.getElementById(idAba).classList.add('active');
+      if (elementoBotao) elementoBotao.classList.add('active');
+      document.body.className = '';
+      if (idAba === 'tab-downloads') document.body.classList.add('bg-downloads');
+      if (idAba === 'tab-comunidade') document.body.classList.add('bg-comunidade');
+    }
+
+    function copiarIP(idElemento) {
+      const ipText = document.getElementById(idElemento).innerText;
+      navigator.clipboard.writeText(ipText).then(() => {
+        mostrarAviso("IP copiado com sucesso: " + ipText);
+      });
+    }
+
+    function toggleMusica() {
+      const audio = document.getElementById('bgMusic');
+      const btn = document.getElementById('musicToggleBtn');
+      if (audio.paused) {
+        audio.play();
+        btn.classList.remove('muted');
+        btn.innerText = '🎵';
+      } else {
+        audio.pause();
+        btn.classList.add('muted');
+        btn.innerText = '🔇';
+      }
+    }
+
+    function alternarModoAuth() {
+      modoRegisto = !modoRegisto;
+      modoEsqueci = false;
+      atualizarInterfaceAuth();
+    }
+
+    function alternarModoEsqueciSenha() {
+      modoEsqueci = !modoEsqueci;
+      modoRegisto = false;
+      atualizarInterfaceAuth();
+    }
+
+    function atualizarInterfaceAuth() {
+      const title = document.getElementById('auth-title');
+      const btn = document.getElementById('auth-main-btn');
+      const toggleBtn = document.getElementById('toggle-auth-mode');
+      const forgotBtn = document.getElementById('forgot-pass-btn');
+      const serverGroup = document.getElementById('server-group-div');
+      const passGroup = document.getElementById('pass-group-div');
+      const emailGroup = document.getElementById('email-group-div');
+
+      if (modoEsqueci) {
+        title.innerText = 'RECUPERAR PALAVRA-PASSE';
+        btn.innerText = 'Enviar Instruções';
+        passGroup.style.display = 'none';
+        emailGroup.style.display = 'block';
+        serverGroup.style.display = 'none';
+        toggleBtn.innerText = 'Voltar ao Login';
+        forgotBtn.style.display = 'none';
+      } else if (modoRegisto) {
+        title.innerText = 'CRIAR NOVA CONTA';
+        btn.innerText = 'Registar Conta';
+        passGroup.style.display = 'block';
+        emailGroup.style.display = 'block';
+        serverGroup.style.display = 'none';
+        toggleBtn.innerText = 'Já tem conta? Faça login';
+        forgotBtn.style.display = 'inline';
+      } else {
+        title.innerText = 'ENTRAR NA UCP';
+        btn.innerText = 'Aceder Painel';
+        passGroup.style.display = 'block';
+        emailGroup.style.display = 'none';
+        serverGroup.style.display = 'block';
+        toggleBtn.innerText = 'Não tem conta? Criar nova conta';
+        forgotBtn.style.display = 'inline';
+      }
+      document.getElementById('mensagem-auth').innerText = '';
+    }
+
+    async function executarAcaoAuth() {
+      const nick = document.getElementById('userInput').value.trim();
+      const pass = document.getElementById('passInput').value.trim();
+      const email = document.getElementById('emailInput').value.trim();
+      const server = document.getElementById('serverSelect').value;
+      const msg = document.getElementById('mensagem-auth');
+      
+      if(!nick || (!pass && !modoEsqueci && !modoRegisto) || (modoRegisto && (!pass || !email)) || (modoEsqueci && !email)) {
+        msg.style.color = '#ff1a1a';
+        msg.innerText = 'Preencha todos os campos obrigatórios!';
+        return;
+      }
+
+      msg.style.color = '#fff';
+      if (modoEsqueci) msg.innerText = 'A enviar pedido de recuperação...';
+      else if (modoRegisto) msg.innerText = 'A criar conta...';
+      else msg.innerText = 'A autenticar...';
+
+      let endpoint = `${URL_BASE_API}/login`;
+      let payload = { nick, pass, server };
+
+      if (modoRegisto) {
+        endpoint = `${URL_BASE_API}/register`;
+        payload = { nick, pass, email };
+      } else if (modoEsqueci) {
+        endpoint = `${URL_BASE_API}/forgot-password`;
+        payload = { nick, email };
+      }
+
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 35000);
+
+      try {
+        const resposta = await fetch(endpoint, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+          signal: controller.signal
+        });
+
+        clearTimeout(timeoutId);
+        const dados = await resposta.json();
+
+        if (dados.sucesso) {
+          if (modoRegisto) {
+            mostrarAviso('Conta criada com sucesso! Faça login.');
+            alternarModoAuth();
+          } else if (modoEsqueci) {
+            mostrarAviso(dados.mensagem || 'E-mail de recuperação enviado!');
+            alternarModoEsqueciSenha();
+          } else {
+            document.getElementById('login-box').classList.add('hidden');
+            document.getElementById('painel-box').classList.remove('hidden');
+            
+            document.getElementById('ucp-nick').innerText = dados.usuario.nick || nick;
+            document.getElementById('ucp-id').innerText = dados.usuario.id || 'N/A';
+            document.getElementById('ucp-rg').innerText = dados.usuario.rg || 'N/A';
+            document.getElementById('ucp-dinheiro').innerText = `R$ ${(dados.usuario.dinheiro || 0).toLocaleString()}`;
+            document.getElementById('ucp-banco').innerText = `R$ ${(dados.usuario.banco || 0).toLocaleString()}`;
+            document.getElementById('ucp-level').innerText = dados.usuario.level || '1';
+            document.getElementById('ucp-org').innerText = dados.usuario.organizacao || 'Civil / Nenhum';
+            
+            mostrarAviso('Login efetuado com sucesso!');
+          }
+          msg.innerText = '';
+        } else {
+          msg.style.color = '#ff1a1a';
+          msg.innerText = dados.mensagem || 'Ocorreu um erro.';
+        }
+      } catch (erro) {
+        console.error(erro);
+        msg.style.color = '#ff1a1a';
+        if (erro.name === 'AbortError') {
+          msg.innerText = 'O servidor demorou muito a responder. Tente novamente.';
+        } else {
+          msg.innerText = 'Erro ao conectar à API do Render.';
+        }
+      }
+    }
+
+    function fazerLogout() {
+      document.getElementById('painel-box').classList.add('hidden');
+      document.getElementById('login-box').classList.remove('hidden');
+      document.getElementById('userInput').value = '';
+      document.getElementById('passInput').value = '';
+      document.getElementById('emailInput').value = '';
+      mostrarAviso('Sessão encerrada.');
+    }
+
+    function abrirPainelForum() {
+      document.getElementById('painel-box').classList.add('hidden');
+      document.getElementById('modal-forum').classList.remove('hidden');
+    }
+
+    function fecharPainelForum() {
+      document.getElementById('modal-forum').classList.add('hidden');
+      document.getElementById('painel-box').classList.remove('hidden');
+    }
+
+    function mudarAbaForum(nomeAba, elementoBtn) {
+      document.querySelectorAll('.forum-pane').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('.forum-tab-btn').forEach(b => b.classList.remove('active'));
+      document.getElementById('f-tab-' + nomeAba).classList.add('active');
+      if (elementoBtn) elementoBtn.classList.add('active');
+    }
+
+    function enviarMensagemChat() {
+      const input = document.getElementById('chatInputText');
+      const texto = input.value.trim();
+      if(!texto) return;
+
+      const chatBox = document.getElementById('chatMessages');
+      const novaMsg = document.createElement('div');
+      novaMsg.className = 'chat-msg';
+      novaMsg.innerHTML = `<span>[Player] Hécate:</span> ${texto}`;
+      chatBox.appendChild(novaMsg);
+      chatBox.scrollTop = chatBox.scrollHeight;
+      input.value = '';
+    }
+
+    function enviarDenuncia() {
+      const nick = document.getElementById('denunciaNick').value.trim();
+      const motivo = document.getElementById('denunciaMotivo').value.trim();
+
+      if(!nick || !motivo) {
+        mostrarAviso('Preencha o nick e o motivo da denúncia!');
+        return;
+      }
+
+      mostrarAviso('Denúncia enviada à moderação com sucesso!');
+      document.getElementById('denunciaNick').value = '';
+      document.getElementById('denunciaMotivo').value = '';
+      fecharPainelForum();
+    }
+  </script>
 </body>
 </html>
