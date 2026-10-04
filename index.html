@@ -1,3 +1,191 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Brasil Play Alpha | UCP & Comunidade</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    #custom-toast {
+      position: fixed;
+      bottom: 80px;
+      left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background: linear-gradient(135deg, #1a0202, #2b0303);
+      border: 1px solid var(--primary-red, #ff1a1a);
+      color: #fff;
+      padding: 12px 20px;
+      border-radius: 8px;
+      box-shadow: 0 8px 25px rgba(255, 26, 26, 0.3);
+      font-size: 0.85rem;
+      font-family: inherit;
+      z-index: 9999;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      text-align: center;
+      max-width: 90%;
+      pointer-events: none;
+    }
+    #custom-toast.show {
+      opacity: 1;
+      visibility: visible;
+      transform: translateX(-50%) translateY(0);
+    }
+  </style>
+</head>
+<body>
+
+  <audio id="bgMusic" src="assets/bg-music.mp3" loop autoplay></audio>
+  <div id="custom-toast">Notificação do Sistema</div>
+
+  <div class="wrapper">
+    <header class="app-header">
+      <div class="header-logo">BRASIL PLAY <span>ALPHA</span></div>
+      <div class="header-right">
+        <button id="musicToggleBtn" class="btn-music-toggle" onclick="tocarSomClique(); toggleMusica();" title="Ligar/Desligar Música">🎵</button>
+        <div class="online-counter-badge">
+          <span class="pulse-dot"></span>
+          <span id="total-online">320</span> ONLINE
+        </div>
+      </div>
+    </header>
+
+    <!-- ABA 1: INÍCIO -->
+    <div id="tab-inicio" class="tab-pane active">
+      <div class="hero-banner">
+        <h1>VENHA FAZER PARTE <span>DESTA FAMÍLIA</span></h1>
+        <p>Mergulhe no mundo virtual do SA-MP RPG. Adrenalina e diversão sem limites no seu telemóvel.</p>
+        <button class="btn-main glow-effect" onclick="tocarSomClique(); mudarAba('tab-downloads', document.querySelectorAll('.nav-item')[1])">Baixar Agora</button>
+      </div>
+
+      <div class="section-title">Servidores Oficiais</div>
+
+      <div class="server-card">
+        <div class="server-info">
+          <span class="server-name">Brasil Play Alpha #1 [Android/PC]</span>
+          <span class="server-ip" id="ip-srv-1">144.217.113.116:7777</span>
+        </div>
+        <div class="server-actions">
+          <span class="player-count">208 / 700</span>
+          <button class="btn-forum glow-effect" onclick="tocarSomClique(); copiarIP('ip-srv-1')">Copiar IP</button>
+        </div>
+      </div>
+
+      <div class="server-card">
+        <div class="server-info">
+          <span class="server-name">Brasil Play Alpha #2 [NOVAGM]</span>
+          <span class="server-ip" id="ip-srv-2">144.217.113.116:7778</span>
+        </div>
+        <div class="server-actions">
+          <span class="player-count">112 / 800</span>
+          <button class="btn-forum glow-effect" onclick="tocarSomClique(); copiarIP('ip-srv-2')">Copiar IP</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ABA 2: DOWNLOADS -->
+    <div id="tab-downloads" class="tab-pane">
+      <div class="hero-banner" style="text-align: left;">
+        <h2 style="color:var(--primary-red); margin-top:0;">Downloads Oficiais</h2>
+        <p>Baixe o Launcher exclusivo e a DATA otimizada para jogar sem travamentos.</p>
+        <a href="https://www.mediafire.com/file/iynt0w68xh8lhkl/Brasil_Play_Alpha_hct.apk/file" target="_blank" class="btn-main glow-effect" style="text-decoration:none; display:block; text-align:center; margin-bottom:12px;">Baixar APK Launcher</a>
+        <a href="https://www.mediafire.com/file/1hmdo7dmneypdzn/DataBPA01.zip/file" target="_blank" class="btn-main glow-effect" style="text-decoration:none; display:block; text-align:center;">Baixar Data Modificada</a>
+      </div>
+    </div>
+
+    <!-- ABA 3: CONTA / UCP -->
+    <div id="tab-conta" class="tab-pane">
+      <div id="login-box" class="auth-container">
+        <h2 id="auth-title">ENTRAR NA UCP</h2>
+        <form onsubmit="return false;">
+          <div class="input-group">
+            <label>Nome da Conta (Nick)</label>
+            <input type="text" id="userInput" placeholder="Ex: Hecate_Player">
+          </div>
+          <div class="input-group" id="pass-group-div">
+            <label>Palavra-passe</label>
+            <input type="password" id="passInput" placeholder="Sua palavra-passe">
+          </div>
+          <div class="input-group" id="email-group-div" style="display:none;">
+            <label>E-mail de Recuperação/Registo</label>
+            <input type="email" id="emailInput" placeholder="seu@email.com">
+          </div>
+          <div class="input-group" id="server-group-div">
+            <label>Servidor</label>
+            <select id="serverSelect">
+              <option value="1">Servidor 1</option>
+              <option value="2">Servidor 2</option>
+            </select>
+          </div>
+          <button id="auth-main-btn" class="btn-main glow-effect" onclick="tocarSomClique(); executarAcaoAuth();">Aceder Painel</button>
+        </form>
+
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 12px; font-size: 0.78rem;">
+          <button id="toggle-auth-mode" onclick="tocarSomClique(); alternarModoAuth()" style="background:none; border:none; color: var(--primary-red); font-weight: bold; cursor: pointer; text-decoration: underline;">
+            Não tem conta? Criar nova conta
+          </button>
+          <button id="forgot-pass-btn" onclick="tocarSomClique(); alternarModoEsqueciSenha()" style="background:none; border:none; color: #64b5f6; font-weight: bold; cursor: pointer; text-decoration: underline;">
+            Esqueceu a senha?
+          </button>
+        </div>
+        <div id="mensagem-auth" style="margin-top: 10px; font-size: 0.85rem; text-align: center;"></div>
+      </div>
+
+      <!-- PAINEL PRINCIPAL DO JOGADOR -->
+      <div id="painel-box" class="auth-container hidden" style="padding: 14px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+          <h2 style="color: #00ff64; margin:0; font-size: 1.1rem;">PAINEL DO JOGADOR</h2>
+          <button onclick="tocarSomClique(); fazerLogout()" style="background:none; border:none; color:var(--primary-red); font-size:0.75rem; font-weight:bold; cursor:pointer;">Sair 🚪</button>
+        </div>
+        
+        <div class="ucp-profile-card">
+          <div class="ucp-details">
+            <h3 id="ucp-nick">Hécate</h3>
+            <p>🆔 ID: <span id="ucp-id" style="color:#fff">1</span></p>
+            <p>📄 RG: <span id="ucp-rg" style="color:#fff">0</span></p>
+            <p style="color: #00ff64; font-weight: bold; margin-top:3px;">⭐ Conta Verificada</p>
+          </div>
+        </div>
+
+        <div class="ucp-grid-info">
+          <div class="ucp-info-box">
+            <span>Dinheiro (Mão)</span>
+            <strong id="ucp-dinheiro" style="color: #00ff64;">R$ 0</strong>
+          </div>
+          <div class="ucp-info-box">
+            <span>Banco</span>
+            <strong id="ucp-banco" style="color: #64b5f6;">R$ 0</strong>
+          </div>
+          <div class="ucp-info-box">
+            <span>Nível (Level)</span>
+            <strong id="ucp-level">1</strong>
+          </div>
+          <div class="ucp-info-box">
+            <span>Organização</span>
+            <strong id="ucp-org" style="font-size:0.75rem;">Civil</strong>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ABA 4: COMUNIDADE -->
+    <div id="tab-comunidade" class="tab-pane">
+      <div class="hero-banner">
+        <h2>Comunidade Brasil Play</h2>
+        <p>Junte-se ao nosso servidor oficial no Discord!</p>
+        <a href="https://discord.gg/SEU_LINK_DO_DISCORD" target="_blank" class="btn-main glow-effect" onclick="tocarSomClique()">Entrar no Discord</a>
+      </div>
+    </div>
+  </div>
+
+  <nav class="floating-nav">
+    <button class="nav-item active" onclick="tocarSomClique(); mudarAba('tab-inicio', this)">Início</button>
+    <button class="nav-item" onclick="tocarSomClique(); mudarAba('tab-downloads', this)">Downloads</button>
+    <button class="nav-item" onclick="tocarSomClique(); mudarAba('tab-conta', this)">Site</button>
+    <button class="nav-item" onclick="tocarSomClique(); mudarAba('tab-comunidade', this)">Comunidade</button>
+  </nav>
+
   <script>
     const URL_BASE_API = 'https://ucp-api-bpa.onrender.com/api';
     let modoRegisto = false;
@@ -32,9 +220,6 @@
       document.querySelectorAll('.nav-item').forEach(btn => btn.classList.remove('active'));
       document.getElementById(idAba).classList.add('active');
       if (elementoBotao) elementoBotao.classList.add('active');
-      document.body.className = '';
-      if (idAba === 'tab-downloads') document.body.classList.add('bg-downloads');
-      if (idAba === 'tab-comunidade') document.body.classList.add('bg-comunidade');
     }
 
     function copiarIP(idElemento) {
@@ -49,11 +234,9 @@
       const btn = document.getElementById('musicToggleBtn');
       if (audio.paused) {
         audio.play();
-        btn.classList.remove('muted');
         btn.innerText = '🎵';
       } else {
         audio.pause();
-        btn.classList.add('muted');
         btn.innerText = '🔇';
       }
     }
@@ -150,28 +333,26 @@
         if (modoEsqueci) {
           msg.style.color = '#00ff64';
           msg.innerText = 'Instruções enviadas para o e-mail!';
-          mostrarAviso('E-mail de recuperação enviado com sucesso.');
+          mostrarAviso('E-mail enviado.');
           return;
         }
 
         if (modoRegisto) {
           msg.style.color = '#00ff64';
-          msg.innerText = 'Conta criada com sucesso! Faça login.';
-          mostrarAviso('Conta registada com sucesso.');
+          msg.innerText = 'Conta criada com sucesso!';
+          mostrarAviso('Conta registada.');
           alternarModoAuth();
           return;
         }
 
-        // LOGIN BEM-SUCEDIDO
         mostrarAviso('Login efetuado com sucesso!');
         document.getElementById('login-box').classList.add('hidden');
         document.getElementById('painel-box').classList.remove('hidden');
 
-        // Preencher os dados do jogador dinamicamente (ajustar conforme as colunas reais da base de dados)
         if (resultado.player) {
           document.getElementById('ucp-nick').innerText = resultado.player.Nick || nick;
           document.getElementById('ucp-id').innerText = resultado.player.ID || '1';
-          document.getElementById('ucp-rg').innerText = resultado.player.RG || '00000';
+          document.getElementById('ucp-rg').innerText = resultado.player.RG || '0';
           document.getElementById('ucp-dinheiro').innerText = 'R$ ' + (resultado.player.Dinheiro || 0).toLocaleString();
           document.getElementById('ucp-banco').innerText = 'R$ ' + (resultado.player.Banco || 0).toLocaleString();
           document.getElementById('ucp-level').innerText = resultado.player.Level || '1';
@@ -192,48 +373,8 @@
       document.getElementById('passInput').value = '';
       document.getElementById('emailInput').value = '';
       document.getElementById('mensagem-auth').innerText = '';
-      mostrarAviso('Sessão encerrada com sucesso.');
-    }
-
-    function abrirPainelForum() {
-      document.getElementById('painel-box').classList.add('hidden');
-      document.getElementById('modal-forum').classList.remove('hidden');
-    }
-
-    function fecharPainelForum() {
-      document.getElementById('modal-forum').classList.add('hidden');
-      document.getElementById('painel-box').classList.remove('hidden');
-    }
-
-    function mudarAbaForum(nomeAba, elementoBtn) {
-      document.querySelectorAll('.forum-pane').forEach(p => p.classList.remove('active'));
-      document.querySelectorAll('.forum-tab-btn').forEach(b => b.classList.remove('active'));
-      document.getElementById('f-tab-' + nomeAba).classList.add('active');
-      elementoBtn.classList.add('active');
-    }
-
-    function enviarMensagemChat() {
-      const input = document.getElementById('chatInputText');
-      const texto = input.value.trim();
-      if (!texto) return;
-      const chatBox = document.getElementById('chatMessages');
-      const novaMsg = document.createElement('div');
-      novaMsg.className = 'chat-msg';
-      novaMsg.innerHTML = `<span>[Você]:</span> ${texto}`;
-      chatBox.appendChild(novaMsg);
-      input.value = '';
-      chatBox.scrollTop = chatBox.scrollHeight;
-    }
-
-    function enviarDenuncia() {
-      const nickInf = document.getElementById('denunciaNick').value.trim();
-      const motivo = document.getElementById('denunciaMotivo').value.trim();
-      if (!nickInf || !motivo) {
-        mostrarAviso('Preencha todos os campos da denúncia!');
-        return;
-      }
-      mostrarAviso('Denúncia transmitida à moderação com sucesso.');
-      document.getElementById('denunciaNick').value = '';
-      document.getElementById('denunciaMotivo').value = '';
+      mostrarAviso('Sessão encerrada.');
     }
   </script>
+</body>
+</html>
