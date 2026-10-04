@@ -6,7 +6,9 @@
   <title>Brasil Play Alpha | UCP & Comunidade</title>
   <link rel="stylesheet" href="style.css">
   <style>
-    /* ESTILO PARA O TOAST DE NOTIFICAÇÃO PERSONALIZADO */
+    .hidden {
+      display: none !important;
+    }
     #custom-toast {
       position: fixed;
       bottom: 80px;
@@ -37,23 +39,10 @@
 </head>
 <body>
 
-  <!-- ELEMENTO DE ÁUDIO EM LOOP (Música de Fundo) -->
   <audio id="bgMusic" src="assets/bg-music.mp3" loop autoplay></audio>
-
-  <!-- NOTIFICAÇÃO PERSONALIZADA (TOAST) -->
   <div id="custom-toast">Notificação do Sistema</div>
 
-  <!-- PARTICULAS ANIMADAS NO FUNDO -->
-  <svg class="particles-bg" xmlns="http://www.w3.org/2000/svg">
-    <polygon class="particle-star" points="15,5 18,12 25,15 18,18 15,25 12,18 5,15 12,12" style="transform: scale(0.8); animation-duration: 7s;" cx="15%" />
-    <polygon class="particle-star" points="15,5 18,12 25,15 18,18 15,25 12,18 5,15 12,12" style="transform: scale(1.2); animation-duration: 11s;" cx="45%" />
-    <circle class="particle-circle" cx="20%" cy="0" r="6" style="animation-duration: 8s;" />
-    <circle class="particle-circle" cx="60%" cy="0" r="8" style="animation-duration: 13s;" />
-  </svg>
-
   <div class="wrapper">
-    
-    <!-- HEADER -->
     <header class="app-header">
       <div class="header-logo">BRASIL PLAY <span>ALPHA</span></div>
       <div class="header-right">
@@ -96,61 +85,41 @@
           <button class="btn-forum glow-effect" onclick="tocarSomClique(); copiarIP('ip-srv-2')">Copiar IP</button>
         </div>
       </div>
-
-      <img src="assets/image_inicio.png" alt="Início" class="floating-character">
     </div>
 
     <!-- ABA 2: DOWNLOADS -->
     <div id="tab-downloads" class="tab-pane">
       <div class="hero-banner" style="text-align: left;">
         <h2 style="color:var(--primary-red); margin-top:0;">Downloads Oficiais</h2>
-        <p>Baixe o Launcher exclusivo e a DATA otimizada para jogar sem travamentos e com máxima performance.</p>
-        <a href="https://www.mediafire.com/file/iynt0w68xh8lhkl/Brasil_Play_Alpha_hct.apk/file" target="_blank" class="btn-main glow-effect" onclick="tocarSomClique()" style="text-decoration:none; display:block; text-align:center; margin-bottom:12px;">Baixar APK Launcher</a>
-        <a href="https://www.mediafire.com/file/1hmdo7dmneypdzn/DataBPA01.zip/file" target="_blank" class="btn-main glow-effect" onclick="tocarSomClique()" style="text-decoration:none; display:block; text-align:center; background:linear-gradient(135deg, #2b0303, #4a0505); border:1px solid var(--dark-red);">Baixar Data Modificada</a>
+        <p>Baixe o Launcher exclusivo e a DATA otimizada para jogar sem travamentos.</p>
+        <a href="https://www.mediafire.com/file/iynt0w68xh8lhkl/Brasil_Play_Alpha_hct.apk/file" target="_blank" class="btn-main glow-effect" style="text-decoration:none; display:block; text-align:center; margin-bottom:12px;">Baixar APK Launcher</a>
+        <a href="https://www.mediafire.com/file/1hmdo7dmneypdzn/DataBPA01.zip/file" target="_blank" class="btn-main glow-effect" style="text-decoration:none; display:block; text-align:center;">Baixar Data Modificada</a>
       </div>
     </div>
 
     <!-- ABA 3: CONTA / UCP -->
     <div id="tab-conta" class="tab-pane">
-      
-      <!-- TELA DE LOGIN / REGISTO -->
       <div id="login-box" class="auth-container">
         <h2 id="auth-title">ENTRAR NA UCP</h2>
+        <p style="font-size: 0.78rem; color: #aaa; margin-bottom: 12px; text-align: center;">Use os mesmos dados de login criados no servidor de SA-MP.</p>
         <form onsubmit="return false;">
           <div class="input-group">
             <label>Nome da Conta (Nick)</label>
-            <input type="text" id="userInput" placeholder="Ex: Hecate_Player">
+            <input type="text" id="userInput" placeholder="Ex: Nicolas_samp">
           </div>
-          <div class="input-group" id="pass-group-div">
+          <div class="input-group">
             <label>Palavra-passe</label>
-            <input type="password" id="passInput" placeholder="Sua palavra-passe">
+            <input type="password" id="passInput" placeholder="Sua senha do jogo">
           </div>
-          <div class="input-group" id="email-group-div" style="display:none;">
-            <label>E-mail de Recuperação/Registo</label>
-            <input type="email" id="emailInput" placeholder="seu@email.com">
-          </div>
-          <div class="input-group" id="server-group-div">
+          <div class="input-group">
             <label>Servidor</label>
             <select id="serverSelect">
               <option value="1">Servidor 1</option>
               <option value="2">Servidor 2</option>
             </select>
           </div>
-          
-          <!-- BOTÃO PRINCIPAL DINÂMICO -->
-          <button id="auth-main-btn" class="btn-main glow-effect" onclick="tocarSomClique(); executarAcaoAuth();">Aceder Painel</button>
+          <button id="auth-main-btn" class="btn-main glow-effect" onclick="tocarSomClique(); executarLogin();">Aceder Painel</button>
         </form>
-
-        <!-- BOTÕES DE ALTERNÂNCIA E RECUPERAÇÃO -->
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 12px; font-size: 0.78rem;">
-          <button id="toggle-auth-mode" onclick="tocarSomClique(); alternarModoAuth()" style="background:none; border:none; color: var(--primary-red); font-weight: bold; cursor: pointer; text-decoration: underline;">
-            Não tem conta? Criar nova conta
-          </button>
-          <button id="forgot-pass-btn" onclick="tocarSomClique(); alternarModoEsqueciSenha()" style="background:none; border:none; color: #64b5f6; font-weight: bold; cursor: pointer; text-decoration: underline;">
-            Esqueceu a senha?
-          </button>
-        </div>
-
         <div id="mensagem-auth" style="margin-top: 10px; font-size: 0.85rem; text-align: center;"></div>
       </div>
 
@@ -162,162 +131,54 @@
         </div>
         
         <div class="ucp-profile-card">
-          <div class="ucp-skin-preview">
-            <span>Skin<br>#299</span>
-          </div>
           <div class="ucp-details">
             <h3 id="ucp-nick">Hécate</h3>
-            <p>🆔 ID: <span id="ucp-id" style="color:#fff">1492</span></p>
-            <p>📄 RG: <span id="ucp-rg" style="color:#fff">89210</span></p>
-            <p style="color: #00ff64; font-weight: bold; margin-top:3px;">⭐ VIP Ativo</p>
+            <p>🆔 ID: <span id="ucp-id" style="color:#fff">1</span></p>
+            <p>📄 RG: <span id="ucp-rg" style="color:#fff">0</span></p>
+            <p style="color: #00ff64; font-weight: bold; margin-top:3px;">⭐ Conta Verificada no Jogo</p>
           </div>
         </div>
 
         <div class="ucp-grid-info">
           <div class="ucp-info-box">
             <span>Dinheiro (Mão)</span>
-            <strong id="ucp-dinheiro" style="color: #00ff64;">R$ 1.500.000</strong>
+            <strong id="ucp-dinheiro" style="color: #00ff64;">R$ 0</strong>
           </div>
           <div class="ucp-info-box">
             <span>Banco</span>
-            <strong id="ucp-banco" style="color: #64b5f6;">R$ 15.420.000</strong>
+            <strong id="ucp-banco" style="color: #64b5f6;">R$ 0</strong>
           </div>
           <div class="ucp-info-box">
             <span>Nível (Level)</span>
-            <strong id="ucp-level">45</strong>
+            <strong id="ucp-level">1</strong>
           </div>
           <div class="ucp-info-box">
             <span>Organização</span>
-            <strong id="ucp-org" style="font-size:0.75rem;">Civil / Nenhum</strong>
+            <strong id="ucp-org" style="font-size:0.75rem;">Civil</strong>
           </div>
         </div>
-
-        <div class="section-title" style="margin-top: 10px; font-size: 0.85rem;">Inventário e Itens</div>
-        <div class="inventory-grid">
-          <div class="inventory-slot item" title="Telemóvel">📱</div>
-          <div class="inventory-slot item" title="Rádio">📻</div>
-          <div class="inventory-slot item" title="Colete">🛡</div>
-          <div class="inventory-slot item" title="Arma">🔫</div>
-          <div class="inventory-slot"></div>
-          <div class="inventory-slot"></div>
-          <div class="inventory-slot"></div>
-          <div class="inventory-slot"></div>
-        </div>
-
-        <!-- BOTÃO PARA ABRIR O SISTEMA DE FÓRUM / DENÚNCIAS & CHAT -->
-        <button class="btn-main glow-effect" style="background: linear-gradient(135deg, #8b0000, #ff1a1a); margin-top: 5px;" onclick="tocarSomClique(); abrirPainelForum();">💬 Fórum, Denúncias & Chat</button>
       </div>
-
-      <!-- MODAL / PAINEL INTERNO DE FÓRUM, CHAT E DENÚNCIAS -->
-      <div id="modal-forum" class="auth-container hidden" style="margin-top: 0px; border-color: var(--primary-red);">
-        <div class="forum-modal-header" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
-          <div class="forum-title-wrapper" style="display:flex; align-items:center; gap:6px;">
-            <span class="forum-icon-indicator"></span>
-            <h2 style="font-size:0.95rem; margin:0; color:var(--primary-red);">CENTRAL DA COMUNIDADE</h2>
-          </div>
-          <button class="forum-close-btn" onclick="tocarSomClique(); fecharPainelForum()" style="background:none; border:none; color:#fff; font-size:1rem; cursor:pointer;">✕</button>
-        </div>
-
-        <!-- ABAS DO FÓRUM/CHAT -->
-        <div class="forum-tabs">
-          <button class="forum-tab-btn active" onclick="tocarSomClique(); mudarAbaForum('chat', this)">
-            <i>💬</i> Chat Global
-          </button>
-          <button class="forum-tab-btn" onclick="tocarSomClique(); mudarAbaForum('denuncias', this)">
-            <i>🚨</i> Denúncias
-          </button>
-          <button class="forum-tab-btn" onclick="tocarSomClique(); mudarAbaForum('forum', this)">
-            <i>📜</i> Tópicos
-          </button>
-        </div>
-
-        <!-- CONTEÚDO: CHAT GLOBAL -->
-        <div id="f-tab-chat" class="forum-pane active">
-          <div class="chat-box-messages" id="chatMessages">
-            <div class="chat-msg"><span>[Staff] Admin_Hecate:</span> Sejam bem-vindos ao Brasil Play Alpha!</div>
-            <div class="chat-msg"><span>[Player] Carlos123:</span> Servidor tá top demais! 🔥</div>
-          </div>
-          <div class="chat-input-area">
-            <input type="text" id="chatInputText" placeholder="Escreva sua mensagem..." onkeypress="if(event.key === 'Enter') enviarMensagemChat()">
-            <button class="glow-effect" onclick="tocarSomClique(); enviarMensagemChat()">Enviar</button>
-          </div>
-        </div>
-
-        <!-- CONTEÚDO: DENÚNCIAS -->
-        <div id="f-tab-denuncias" class="forum-pane">
-          <div class="denuncia-card-info" style="margin-bottom:8px; font-size:0.75rem; color:var(--text-muted);">
-            <p>Relate infrações, comportamentos tóxicos ou bugs diretamente à nossa moderação.</p>
-          </div>
-          <div class="input-group">
-            <label>Nick do Infrator</label>
-            <input type="text" id="denunciaNick" placeholder="Ex: Player_Infrator">
-          </div>
-          <div class="input-group">
-            <label>Motivo e Prova (Link)</label>
-            <input type="text" id="denunciaMotivo" placeholder="Ex: Uso de Bug / DM + Link">
-          </div>
-          <button class="btn-main glow-effect" style="margin-top: 4px;" onclick="tocarSomClique(); enviarDenuncia()">Transmitir Denúncia</button>
-        </div>
-
-        <!-- CONTEÚDO: FÓRUM / TÓPICOS -->
-        <div id="f-tab-forum" class="forum-pane">
-          <div class="forum-topic-item glow-effect">
-            <strong>Regras Gerais do Servidor</strong>
-            <span>Atualizado em Outubro/2026 • Por Staff</span>
-          </div>
-          <div class="forum-topic-item glow-effect">
-            <strong>Recrutamento para Organizações</strong>
-            <span>Vagas abertas para Polícia, SAMU e Máfias.</span>
-          </div>
-          <div class="forum-topic-item glow-effect">
-            <strong>Guia de Instalação e Otimização</strong>
-            <span>Aprenda a rodar o SA-MP a 60 FPS sem travamentos.</span>
-          </div>
-        </div>
-
-      </div>
-
     </div>
 
-    <!-- ABA 4: COMUNIDADE (DISCORD) -->
+    <!-- ABA 4: COMUNIDADE -->
     <div id="tab-comunidade" class="tab-pane">
       <div class="hero-banner">
         <h2>Comunidade Brasil Play</h2>
-        <p>Junte-se ao nosso servidor oficial no Discord para interagir com outros jogadores e ficar por dentro de todas as novidades!</p>
+        <p>Junte-se ao nosso servidor oficial no Discord!</p>
         <a href="https://discord.gg/SEU_LINK_DO_DISCORD" target="_blank" class="btn-main glow-effect" onclick="tocarSomClique()">Entrar no Discord</a>
       </div>
-
-      <div class="discord-video-container">
-        <video src="assets/video_discord.mp4" autoplay muted loop playsinline class="discord-video"></video>
-      </div>
     </div>
-
   </div>
 
-  <!-- MENU DE NAVEGAÇÃO INFERIOR -->
   <nav class="floating-nav">
-    <button class="nav-item active" onclick="tocarSomClique(); mudarAba('tab-inicio', this)">
-      <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
-      Início
-    </button>
-    <button class="nav-item" onclick="tocarSomClique(); mudarAba('tab-downloads', this)">
-      <svg viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
-      Downloads
-    </button>
-    <button class="nav-item" onclick="tocarSomClique(); mudarAba('tab-conta', this)">
-      <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
-      Site
-    </button>
-    <button class="nav-item" onclick="tocarSomClique(); mudarAba('tab-comunidade', this)">
-      <svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0-2-.9-2-2V4c0-1.1-.9-2-2-2z"/></svg>
-      Comunidade
-    </button>
+    <button class="nav-item active" onclick="tocarSomClique(); mudarAba('tab-inicio', this)">Início</button>
+    <button class="nav-item" onclick="tocarSomClique(); mudarAba('tab-downloads', this)">Downloads</button>
+    <button class="nav-item" onclick="tocarSomClique(); mudarAba('tab-conta', this)">Site</button>
+    <button class="nav-item" onclick="tocarSomClique(); mudarAba('tab-comunidade', this)">Comunidade</button>
   </nav>
 
   <script>
     const URL_BASE_API = 'https://ucp-api-bpa.onrender.com/api';
-    let modoRegisto = false;
-    let modoEsqueci = false;
 
     function mostrarAviso(mensagem) {
       const toast = document.getElementById('custom-toast');
@@ -348,9 +209,6 @@
       document.querySelectorAll('.nav-item').forEach(btn => btn.classList.remove('active'));
       document.getElementById(idAba).classList.add('active');
       if (elementoBotao) elementoBotao.classList.add('active');
-      document.body.className = '';
-      if (idAba === 'tab-downloads') document.body.classList.add('bg-downloads');
-      if (idAba === 'tab-comunidade') document.body.classList.add('bg-comunidade');
     }
 
     function copiarIP(idElemento) {
@@ -365,141 +223,59 @@
       const btn = document.getElementById('musicToggleBtn');
       if (audio.paused) {
         audio.play();
-        btn.classList.remove('muted');
         btn.innerText = '🎵';
       } else {
         audio.pause();
-        btn.classList.add('muted');
         btn.innerText = '🔇';
       }
     }
 
-    function alternarModoAuth() {
-      modoRegisto = !modoRegisto;
-      modoEsqueci = false;
-      atualizarInterfaceAuth();
-    }
-
-    function alternarModoEsqueciSenha() {
-      modoEsqueci = !modoEsqueci;
-      modoRegisto = false;
-      atualizarInterfaceAuth();
-    }
-
-    function atualizarInterfaceAuth() {
-      const title = document.getElementById('auth-title');
-      const btn = document.getElementById('auth-main-btn');
-      const toggleBtn = document.getElementById('toggle-auth-mode');
-      const forgotBtn = document.getElementById('forgot-pass-btn');
-      const serverGroup = document.getElementById('server-group-div');
-      const passGroup = document.getElementById('pass-group-div');
-      const emailGroup = document.getElementById('email-group-div');
-
-      if (modoEsqueci) {
-        title.innerText = 'RECUPERAR PALAVRA-PASSE';
-        btn.innerText = 'Enviar Instruções';
-        passGroup.style.display = 'none';
-        emailGroup.style.display = 'block';
-        serverGroup.style.display = 'none';
-        toggleBtn.innerText = 'Voltar ao Login';
-        forgotBtn.style.display = 'none';
-      } else if (modoRegisto) {
-        title.innerText = 'CRIAR NOVA CONTA';
-        btn.innerText = 'Registar Conta';
-        passGroup.style.display = 'block';
-        emailGroup.style.display = 'block';
-        serverGroup.style.display = 'none';
-        toggleBtn.innerText = 'Já tem conta? Faça login';
-        forgotBtn.style.display = 'inline';
-      } else {
-        title.innerText = 'ENTRAR NA UCP';
-        btn.innerText = 'Aceder Painel';
-        passGroup.style.display = 'block';
-        emailGroup.style.display = 'none';
-        serverGroup.style.display = 'block';
-        toggleBtn.innerText = 'Não tem conta? Criar nova conta';
-        forgotBtn.style.display = 'inline';
-      }
-      document.getElementById('mensagem-auth').innerText = '';
-    }
-
-    async function executarAcaoAuth() {
+    async function executarLogin() {
       const nick = document.getElementById('userInput').value.trim();
-      const pass = document.getElementById('passInput').value.trim();
-      const email = document.getElementById('emailInput').value.trim();
-      const server = document.getElementById('serverSelect').value;
+      const senha = document.getElementById('passInput').value.trim();
+      const servidor = document.getElementById('serverSelect').value;
       const msg = document.getElementById('mensagem-auth');
       
-      if(!nick || (!pass && !modoEsqueci && !modoRegisto) || (modoRegisto && (!pass || !email)) || (modoEsqueci && !email)) {
+      if (!nick || !senha) {
         msg.style.color = '#ff1a1a';
-        msg.innerText = 'Preencha todos os campos obrigatórios!';
+        msg.innerText = 'Insira o seu nick e a palavra-passe do jogo!';
         return;
       }
 
       msg.style.color = '#fff';
-      if (modoEsqueci) msg.innerText = 'A enviar pedido de recuperação...';
-      else if (modoRegisto) msg.innerText = 'A criar conta...';
-      else msg.innerText = 'A autenticar...';
-
-      let endpoint = `${URL_BASE_API}/login`;
-      let payload = { nick, pass, server };
-
-      if (modoRegisto) {
-        endpoint = `${URL_BASE_API}/register`;
-        payload = { nick, pass, email };
-      } else if (modoEsqueci) {
-        endpoint = `${URL_BASE_API}/forgot-password`;
-        payload = { nick, email };
-      }
-
-      const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 35000);
+      msg.innerText = 'A validar dados no servidor...';
 
       try {
-        const resposta = await fetch(endpoint, {
+        const resposta = await fetch(URL_BASE_API + '/login', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload),
-          signal: controller.signal
+          body: JSON.stringify({ nick, pass: senha, servidor })
         });
 
-        clearTimeout(timeoutId);
-        const dados = await resposta.json();
+        const resultado = await resposta.json();
 
-        if (dados.sucesso) {
-          if (modoRegisto) {
-            mostrarAviso('Conta criada com sucesso! Faça login.');
-            alternarModoAuth();
-          } else if (modoEsqueci) {
-            mostrarAviso(dados.mensagem || 'E-mail de recuperação enviado!');
-            alternarModoEsqueciSenha();
-          } else {
-            document.getElementById('login-box').classList.add('hidden');
-            document.getElementById('painel-box').classList.remove('hidden');
-            
-            document.getElementById('ucp-nick').innerText = dados.usuario.nick || nick;
-            document.getElementById('ucp-id').innerText = dados.usuario.id || 'N/A';
-            document.getElementById('ucp-rg').innerText = dados.usuario.rg || 'N/A';
-            document.getElementById('ucp-dinheiro').innerText = `R$ ${(dados.usuario.dinheiro || 0).toLocaleString()}`;
-            document.getElementById('ucp-banco').innerText = `R$ ${(dados.usuario.banco || 0).toLocaleString()}`;
-            document.getElementById('ucp-level').innerText = dados.usuario.level || '1';
-            document.getElementById('ucp-org').innerText = dados.usuario.organizacao || 'Civil / Nenhum';
-            
-            mostrarAviso('Login efetuado com sucesso!');
-          }
-          msg.innerText = '';
-        } else {
-          msg.style.color = '#ff1a1a';
-          msg.innerText = dados.mensagem || 'Ocorreu um erro.';
+        if (!resultado.sucesso) {
+          throw new Error(resultado.mensagem || 'Conta não encontrada ou dados incorretos.');
         }
+
+        mostrarAviso('Login efetuado com sucesso!');
+        document.getElementById('login-box').classList.add('hidden');
+        document.getElementById('painel-box').classList.remove('hidden');
+
+        if (resultado.usuario) {
+          document.getElementById('ucp-nick').innerText = resultado.usuario.nick || nick;
+          document.getElementById('ucp-id').innerText = resultado.usuario.id || '1';
+          document.getElementById('ucp-rg').innerText = resultado.usuario.rg || '0';
+          document.getElementById('ucp-dinheiro').innerText = 'R$ ' + (resultado.usuario.dinheiro || 0).toLocaleString();
+          document.getElementById('ucp-banco').innerText = 'R$ ' + (resultado.usuario.banco || 0).toLocaleString();
+          document.getElementById('ucp-level').innerText = resultado.usuario.level || '1';
+          document.getElementById('ucp-org').innerText = resultado.usuario.organizacao || 'Civil';
+        }
+
       } catch (erro) {
-        console.error(erro);
         msg.style.color = '#ff1a1a';
-        if (erro.name === 'AbortError') {
-          msg.innerText = 'O servidor demorou muito a responder. Tente novamente.';
-        } else {
-          msg.innerText = 'Erro ao conectar à API do Render.';
-        }
+        msg.innerText = erro.message;
+        mostrarAviso(erro.message);
       }
     }
 
@@ -508,54 +284,8 @@
       document.getElementById('login-box').classList.remove('hidden');
       document.getElementById('userInput').value = '';
       document.getElementById('passInput').value = '';
-      document.getElementById('emailInput').value = '';
+      document.getElementById('mensagem-auth').innerText = '';
       mostrarAviso('Sessão encerrada.');
-    }
-
-    function abrirPainelForum() {
-      document.getElementById('painel-box').classList.add('hidden');
-      document.getElementById('modal-forum').classList.remove('hidden');
-    }
-
-    function fecharPainelForum() {
-      document.getElementById('modal-forum').classList.add('hidden');
-      document.getElementById('painel-box').classList.remove('hidden');
-    }
-
-    function mudarAbaForum(nomeAba, elementoBtn) {
-      document.querySelectorAll('.forum-pane').forEach(p => p.classList.remove('active'));
-      document.querySelectorAll('.forum-tab-btn').forEach(b => b.classList.remove('active'));
-      document.getElementById('f-tab-' + nomeAba).classList.add('active');
-      if (elementoBtn) elementoBtn.classList.add('active');
-    }
-
-    function enviarMensagemChat() {
-      const input = document.getElementById('chatInputText');
-      const texto = input.value.trim();
-      if(!texto) return;
-
-      const chatBox = document.getElementById('chatMessages');
-      const novaMsg = document.createElement('div');
-      novaMsg.className = 'chat-msg';
-      novaMsg.innerHTML = `<span>[Player] Hécate:</span> ${texto}`;
-      chatBox.appendChild(novaMsg);
-      chatBox.scrollTop = chatBox.scrollHeight;
-      input.value = '';
-    }
-
-    function enviarDenuncia() {
-      const nick = document.getElementById('denunciaNick').value.trim();
-      const motivo = document.getElementById('denunciaMotivo').value.trim();
-
-      if(!nick || !motivo) {
-        mostrarAviso('Preencha o nick e o motivo da denúncia!');
-        return;
-      }
-
-      mostrarAviso('Denúncia enviada à moderação com sucesso!');
-      document.getElementById('denunciaNick').value = '';
-      document.getElementById('denunciaMotivo').value = '';
-      fecharPainelForum();
     }
   </script>
 </body>
